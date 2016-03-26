@@ -1,9 +1,9 @@
 {
-	"name": "Bower-Gulp-Starterkit-with-Sass",
+	"name": "melodicsimilarity",
 	"version": "1.0.0",
-	"description": "Website Starterkit with Bower, Gulp and Sass",
+	"description": "App for MusicIR",
 	"author": "Lukas Lamm <lukas.lamm89@gmail.com>",
-	"license": "ISC",
+	"license": "MIT",
 	"main": "gulpfile.js",
 	"private": true,
 	"dependencies": {

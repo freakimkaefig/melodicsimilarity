@@ -1,6 +1,6 @@
 {
-  "name": "Bower-Gulp-Starterkit",
-  "description": "Website Starterkit with Bower and Gulp",
+  "name": "melodicsimilarity",
+  "description": "App for MusicIR",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -10,7 +10,6 @@
     "test",
     "tests"
   ],
-  "dependencies": {},
   "overrides": {},
   "authors": [
     "Lukas Lamm <lukas.lamm89@gmail.com>"
@@ -19,7 +18,11 @@
   "moduleType": [
     "node"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "homepage": "http://lukaslamm.de",
-  "private": true
+  "private": true,
+  "keywords": [
+    "MusicIR",
+    "MelodicSimilarity"
+  ]
 }
