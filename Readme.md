@@ -1,4 +1,19 @@
 # melodic similarity
+
+## Start
+To start with the prebuilt dependencies, clone the repo and start the node.js server by running:
+```sh
+git clone https://github.com/freakimkaefig/melodicsimilarity.git
+
+cd melodicsimilarity
+
+npm install --production
+
+node server/server.js
+```
+The project url is [http://localhost:3000](http://localhost:3000).
+
+## Structure
 The app is structured in frontend and backend. The backend part is in `server/`, the frontend part is in `public/`, which is also the webroot.
 ```
 melodicsimilarity
@@ -29,7 +44,21 @@ melodicsimilarity
  └── Readme.md                             # You're here
 ```
 
-## Start debug session
+## Custom build
+### Install dependencies (optional)
+The dependencies are compiled to `public/` and checked into VCS. To create a new and maybe adjusted build proceed with the following steps.
+
+Run `npm install` to install build tools and utilities.
+
+To create build from scratch run:
+```sh
+bower install
+gulp copyfiles
+gulp scripts
+gulp sass
+```
+
+### Start debug session
 To start full debug session, simply run `gulp`.
 
 The default gulp task triggers BrowserSync, Nodemon and Sass compiler.
