@@ -1,25 +1,30 @@
 {
-	"name": "melodicsimilarity",
-	"version": "1.0.0",
-	"description": "App for MusicIR",
-	"author": "Lukas Lamm <lukas.lamm89@gmail.com>",
-	"license": "MIT",
-	"main": "gulpfile.js",
-	"private": true,
-	"dependencies": {
-		
-	},
-	"devDependencies": {
-		"gulp": "^3.8.8",
-		"del": "^2.2.0",
-		"gulp-concat": "^2.6.0",
-		"gulp-sass": "^2.2.0",
-		"gulp-rename": "^1.2.2",
-		"gulp-strip-comments": "^1.0.1",
-		"gulp-sourcemaps": "^1.6.0",
-		"gulp-autoprefixer": "^3.1.0"
-		},
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	}
+  "name": "melodicsimilarity",
+  "version": "1.0.0",
+  "description": "App for MusicIR",
+  "author": "Lukas Lamm <lukas.lamm89@gmail.com>",
+  "license": "MIT",
+  "main": "gulpfile.js",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "express": "^4.13.4",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.11.2",
+    "del": "^2.2.0",
+    "gulp": "^3.8.8",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-strip-comments": "^1.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node server/server.js"
+  }
 }
