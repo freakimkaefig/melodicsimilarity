@@ -1,5 +1,10 @@
 extends layout
 
+block head
+  link(rel='stylesheet', href='build/index.css')
+
 block content
   #react-container
-  script(src='/build/main.js')
+
+block scripts
+  script(src='/build/index.js')

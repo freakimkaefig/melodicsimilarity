@@ -3,13 +3,14 @@ var path = require('path');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-var APP_DIR = path.resolve(__dirname, 'client/app');
-
 var config = {
   cache: true,
   entry: {
-    main: './src/index.jsx',
-    bootstrap: 'bootstrap-webpack!./config/bootstrap.config.js'
+    common: './src/common.jsx',
+    // layout: './src/layout.jsx',
+    // common: ['jquery'],
+    index: './src/index.jsx',
+    admin: './src/admin.jsx'
   },
   output: {
     path: 'public/build',
@@ -30,7 +31,6 @@ var config = {
   plugins: [
     new WebpackCleanupPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.CommonsChunkPlugin('common.js'),
     new ExtractTextPlugin('[name].css')
   ]
 };

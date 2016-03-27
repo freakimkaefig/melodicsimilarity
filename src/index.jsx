@@ -1,24 +1,19 @@
-import React from 'react';
-import {render} from 'react-dom';
+var React = require('react');
+var ReactDOM = require('react-dom');
 
-require('expose?$!expose?jQuery!jquery');
-require('./stylesheets/app.less');
+// var Header = require('./components/Header.jsx');
+// var Footer = require('./components/Footer.jsx');
+var Layout = require('./components/layout/Layout.jsx');
+var AwesomeComponent = require('./components/AwesomeComponent.jsx');
 
-import Header from './components/Header.jsx';
-import Footer from './components/Footer.jsx';
-import AwesomeComponent from './components/AwesomeComponent.jsx';
+require('./stylesheets/index.less');
 
-class App extends React.Component {
-  render () {
-    return (
-      <div className="container">
-        <Header />
-        <p>Hello React!</p>
-        <AwesomeComponent />
-        <Footer />
-      </div>
-    );
-  }
-}
-
-render(<App/>, document.getElementById('react-container'));
+ReactDOM.render(
+  <div>
+    <Layout>
+      <p>Hello React!</p>
+      <AwesomeComponent />
+    </Layout>
+  </div>,
+  document.getElementById('react-container')
+);

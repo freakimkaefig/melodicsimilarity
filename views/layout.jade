@@ -2,8 +2,11 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='/build/bootstrap.css')
-    link(rel='stylesheet', href='/build/main.css')
+    link(rel='stylesheet', href='/build/common.css')
     script(src='/build/common.js')
+    block head
   body
+    include ./partials/header
     block content
+    include ./partials/footer
+    block scripts
