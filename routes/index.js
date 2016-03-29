@@ -9,12 +9,8 @@ router.get('/api', function(req, res) {
     version: apiConfig.version
   });
 });
-router.get('/api/user-controller', function(req, res) {
-  // console.log(userController);
-  res.json({
-    version: apiConfig.version,
-    userController: userController
-  });
+router.get('/api/users', function(req, res) {
+  var users = userController.getUsers(req, res);
 });
 
 /* GET protected api requests */
@@ -25,8 +21,7 @@ router.get('/api/protected/random-quote', function(req, res) {
 
 /* GET authentication */
 router.post('/sessions/create', function(req, res) {
-  var response = userController.handleLogin(req);
-  res.status(response.status).send(response.message);
+  var response = userController.handleLogin(req, res);
 });
 
 /* GET frontend pages */

@@ -1,64 +1,59 @@
 var express = require('express');
 var jwt = require('express-jwt');
 var jsonwebtoken = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
 var _ = require('lodash');
-var config = require('../config/user.config');
+var userConfig = require('../config/user.config');
+var databaseController = require('../controllers/databaseController');
 
 var that = {};
 
-// TODO: this should be retrieved from Database
-var users = [{
-  id: 1,
-  username: 'admin',
-  password: 'admin'
-}];
-
 var jwtCheck = jwt({
-  secret: config.secret
+  secret: userConfig.secret
 });
 
 var createToken = function(user) {
-  return jsonwebtoken.sign(_.omit(user, 'password'), config.secret, { expiresIn: 60*60*5 });
+  return jsonwebtoken.sign(_.omit(user, 'password'), userConfig.secret, { expiresIn: 60*60*5 });
 };
 
-var findUser = function(username) {
+var _findUser = function(users, username) {
   return _.find(users, { username: username });
 };
 
-var handleLogin = function(req) {
-  var status;
-  var message;
+var getUsers = function(req, res) {
+  databaseController.getCollection(userConfig.databaseCollection, function(users) {
+    res.json({
+      users: users
+    })
+  });
+};
 
-  if (!req.body.username || !req.body.password) {
-    return {
-      status: 400,
-      message: "You must send the username and the password"
+var handleLogin = function(req, res) {
+  databaseController.getCollection(userConfig.databaseCollection, function(users) {
+    if (!req.body.username || !req.body.password) {
+      res.status(400).send("You must send the username and the password");
+      return;
     }
-  }
 
-  var user = findUser(req.body.username);
+    var user = _findUser(users, req.body.username);
 
-  if (!user) {
-    return {
-      status: 401,
-      message: "The username or password don't match"
+    if (!user) {
+      res.status(401).send("The username or password don't match");
+      return;
     }
-  }
 
-  if (user.password !== req.body.password) {
-    return {
-      status: 401,
-      message: "The username or password don't match"
+    if (!bcrypt.hashSync(req.body.password, user.hash)) {
+      res.status(401).send("The username or password don't match");
+      return;
     }
-  }
 
-  return {
-    status: 201,
-    message: { id_token: createToken(user) }
-  }
+    res.status(201).send({ id_token: createToken(user) });
+    return;
+  });
 };
 
 that.jwtCheck = jwtCheck;
 that.handleLogin = handleLogin;
+that.getUsers = getUsers;
 
 module.exports = that;

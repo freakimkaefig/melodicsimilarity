@@ -1,3 +1,4 @@
 {
-  "secret": "admin"
+  "secret": "admin",
+  "databaseCollection": "usercollection"
 }

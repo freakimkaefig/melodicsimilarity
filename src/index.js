@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import RouterContainer from './services/RouterContainer';
 import LoginActions from './actions/LoginActions';
 import App from './App';
 import HomePage from './pages/HomePage';
@@ -20,8 +19,6 @@ var router = (
     </Route>
   </Router>
 );
-
-RouterContainer.set(router);
 
 let jwt = localStorage.getItem('jwt');
 if (jwt) {

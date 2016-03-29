@@ -14,7 +14,7 @@ var config = {
   },
   module: {
     loaders: [
-      {test: /\.js?/, loader: 'babel', exclude: /(node_modules)/ },
+      {test: /\.js?/, loader: 'babel', exclude: /(node_modules|lib)/ },
       {test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less')},
       {test: /\.png$/, loader: 'url?limit=10000&mimetype=image/png'},
       {test: /\.(woff|woff2)$/, loader: 'url?limit=10000&mimetype=application/font-woff'},

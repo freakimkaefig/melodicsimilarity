@@ -1,0 +1,1 @@
+export const SET_MUSIC_JSON = 'SET_MUSIC_JSON';
