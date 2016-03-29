@@ -34,9 +34,10 @@ melodicsimilarity
  │   ├── dispatcher/
  │   ├── stores/
  │   ├── stylesheets/
- │   ├── admin.jsx               # Entry point for admin page
- │   ├── common.jsx              # Common dependencies (jquery, bootstrap)
- │   └── index.jsx               # Entry point for index page
+ │   ├── App.js                 # Renders main page layout
+ │   ├── common.js              # Common dependencies (jquery, bootstrap)
+ │   ├── index.js               # Entry point for index page
+ │   └── Root.js                # Router from `react-router`
  ├── views/                      # Jade view templates
  ├── .babelrc
  ├── .gitignore

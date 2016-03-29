@@ -6,11 +6,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var config = {
   cache: true,
   entry: {
-    common: './src/common.jsx',
-    // layout: './src/layout.jsx',
-    // common: ['jquery'],
-    index: './src/index.jsx',
-    admin: './src/admin.jsx'
+    index: './src/index.js'
   },
   output: {
     path: 'public/build',
@@ -18,8 +14,7 @@ var config = {
   },
   module: {
     loaders: [
-      {test: /\.jsx?/, loader: 'babel', exclude: /(node_modules|bower_components)/, query: { presets: ['react', 'es2015'] }},
-      {test: /\.js?/, loader: 'babel', exclude: /(node_modules|bower_components)/, query: { presets: ['react', 'es2015'] }},
+      {test: /\.js?/, loader: 'babel', exclude: /(node_modules)/ },
       {test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less')},
       {test: /\.png$/, loader: 'url?limit=10000&mimetype=image/png'},
       {test: /\.(woff|woff2)$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
