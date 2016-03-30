@@ -13,7 +13,7 @@ var getCollection = function(collection, callback) {
     if (err) {
       throw err;
     }
-    db.collection(collection).find().toArray(function(err, result) {
+    db.collection(collection).find({}).toArray(function(err, result) {
       if (err) {
         throw err;
       }
@@ -22,24 +22,54 @@ var getCollection = function(collection, callback) {
   });
 };
 
-var addUser = function(username, password) {
+var addUser = function(collection, username, password, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
     }
-    var collection = db.collection('usercollection');
-    collection.insertMany([
-      {
-        username: username,
-        hash: bcrypt.hashSync(password, 10)
+
+
+    var getCollection = function(collection, callback) {
+      MongoClient.connect(url, function(err, db) {
+        if (err) {
+          throw err;
+        }
+        db.collection(collection).find({}).toArray(function(err, result) {
+          if (err) {
+            throw err;
+          }
+          callback(result);
+        })
+      });
+    };
+
+
+    var collection = db.collection(userConfig.databaseCollection);
+    collection.find({ "username": username }).toArray(function(err, result) {
+      if (err) {
+        throw err;
       }
-    ], function(err, result) {
-      console.log("inserted");
+      if (result.length > 0) {
+        callback({ result: { ok: 0, message: "User already exists" }});
+      } else {
+        collection.insertMany([
+          {
+            username: username,
+            hash: bcrypt.hashSync(password, 10)
+          }
+        ], function(err, result) {
+          if (err) {
+            throw err;
+          }
+          callback(result);
+        });
+      }
     });
+
   });
 };
 
-// that.addUser = addUser;
 that.getCollection = getCollection;
+that.addUser = addUser;
 
 module.exports = that;

@@ -1,5 +1,12 @@
 # melodic similarity
 
+## Database
+Start local database server:
+```
+mongo-express -u admin -p admin -d melodicsimilarity
+```
+
+
 ## Start
 To start with the prebuilt dependencies, clone the repo and start the node.js server by running:
 ```sh
