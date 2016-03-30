@@ -42,7 +42,7 @@ var handleLogin = function(req, res) {
       return;
     }
 
-    if (!bcrypt.hashSync(req.body.password, user.hash)) {
+    if (!bcrypt.compareSync(req.body.password, user.hash)) {
       res.status(401).send("The username or password don't match");
       return;
     }
