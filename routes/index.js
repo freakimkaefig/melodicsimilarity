@@ -18,6 +18,9 @@ router.get('/api/protected/random-quote', function(req, res) {
 router.get('/api/protected/users', function(req, res) {
   var users = userController.getUsers(req, res);
 });
+router.post('/api/protected/find-document', function(req, res) {
+  
+});
 
 /* Authentication */
 router.post('/user/create', function(req, res) {

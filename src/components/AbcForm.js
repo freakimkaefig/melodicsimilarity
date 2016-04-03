@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import AbcActions from '../actions/AbcActions';
 
+require('../stylesheets/AbcForm.less');
+
 export default class AbcForm extends React.Component {
 
   handleChange(event) {
@@ -9,7 +11,6 @@ export default class AbcForm extends React.Component {
     reader.readAsText(file);
     reader.onload = (function(theFile) {
       return function(e) {
-        // console.log(e.target.result);
         AbcActions.setJsonString(JSON.parse(e.target.result));
       }
     })(file);
@@ -17,12 +18,17 @@ export default class AbcForm extends React.Component {
 
   render() {
     return (
-      <form>
-        <div className="form-group">
-          <label htmlFor="jsonFile">JSON file</label>
-          <input type="file" id="jsonFile" onChange={this.handleChange} />
-        </div>
-      </form>
+      <div>
+        <hr/>
+        <h3>Upload Music JSON</h3>
+        <form>
+          <div className="form-group">
+            <span className="btn btn-primary btn-file">
+              Browse <input type="file" id="jsonFile" onChange={this.handleChange} />
+            </span>
+          </div>
+        </form>
+      </div>
     );
   }
 }

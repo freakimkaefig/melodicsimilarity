@@ -3,6 +3,8 @@ import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import LoginStore from '../stores/LoginStore';
 
+require('../stylesheets/NavBar.less');
+
 export default class Header extends React.Component {
   static propTypes = {
     header: PropTypes.bool,
@@ -52,7 +54,7 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <Navbar>
+      <Navbar className={this.props.header ? 'header' : 'footer'}>
         {this.getNavbarHeader()}
         <Navbar.Collapse>
           <Nav pullRight>

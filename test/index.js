@@ -2,7 +2,6 @@ var should = require('should');
 var request = require('supertest');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
-var bcrypt = require('bcryptjs');
 var $ = require('jquery');
 
 var apiConfig = require('../config/api.config');
@@ -136,6 +135,23 @@ describe('Routing', function() {
         .expect(200, done);
     });
   });
+  
+  // describe('Apache Solr Instance', function() {
+  //   it('should return docs', function(done) {
+  //     request('http://localhost:8983')
+  //       .post('/solr/searchableDocs/query')
+  //       .send({ params: { signature: "A 59440"} })
+  //       .end(function(err, res) {
+  //         if (err) {
+  //           throw err;
+  //         }
+  //         res.body.should.have.property('response');
+  //         res.body.response.should.have.property('numFound');
+  //         parseInt(res.body.response.numFound).should.be.above(0);
+  //         done();
+  //       });
+  //   });
+  // });
 
   after(function(done) {
     MongoClient.connect(dbUrl, function(err, db) {
