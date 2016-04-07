@@ -1,7 +1,8 @@
 # Contribute
 ## Prerequisites
-1. `npm install webpack -g`
-2. `npm install nodemon -g`
+1. Install [Node.js](https://nodejs.org) (version >= 5.3.0)
+2. `npm install webpack -g`
+3. `npm install nodemon -g`
 
 ## Start
 1. Fork it
