@@ -1,3 +1,3 @@
 [submodule "solr"]
 	path = solr
-	url = git@github.com:freakimkaefig/solr.git
+	url = ../../freakimkaefig/solr.git
