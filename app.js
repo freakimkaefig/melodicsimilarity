@@ -2,12 +2,11 @@
  * Created by Lukas Lamm on 26.03.2016.
  */
 'use strict';
-var env = require('node-env-file');
+var dotenv = require('dotenv');
+var env = dotenv.config();
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
-
-env(path.join(__dirname, '.env'));
 
 var routes = require('./routes/index');
 

@@ -1,16 +1,18 @@
+var dotenv = require('dotenv');
+var env = dotenv.config();
 var should = require('should');
 var request = require('supertest');
 var mongo = require('mongodb');
 var MongoClient = mongo.MongoClient;
-var $ = require('jquery');
 
 var apiConfig = require('../config/api.config');
-var databaseConfig = require('../config/database.config');
 var userConfig = require('../config/user.config');
 
+require('../bin/www');
+
 describe('Routing', function() {
-  var url = 'http://localhost:3000';
-  var dbUrl = 'mongodb://' + databaseConfig.host + ':' + databaseConfig.port + '/' + databaseConfig.database;
+  var url = process.env.BASE_URL;
+  var dbUrl = process.env.MONGOLAB_URI;
   var testUser = {
     username: 'test',
     password: 'mysecrettest'
