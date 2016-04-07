@@ -9,6 +9,7 @@ addons:
       - oracle-java8-installer
 
 before_script:
+  - chmod +x solr/bin/solr
   - solr/bin/solr start
 
 after_script:
