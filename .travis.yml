@@ -1,0 +1,24 @@
+language: node_js
+node_js:
+  - "5"
+  - "5.1"
+  - "4"
+  - "4.2"
+  - "4.1"
+  - "4.0"
+  - "0.12"
+  - "0.11"
+  - "0.10"
+  - "0.8"
+  - "0.6"
+  - "iojs"
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: HKKPlioam5DYw33ardZBYO/RBWQxB2Z/YhrzCR8q3d5rX+qMSrdQmJJ4+BhBo+y1kywXYv38eWTQ5fCpPVovu1+/x9V42FYKzfctcoqH435Fz7GAcQHQS2bC4FPgrT5KtFPAE9aDU82Lw0ApC0XIvTtnOcryGg/mWfo60fP4ataC6VgexWcJJWXHI8U7Zvm4gyUzKp9F3GmF9xGZM+Wg6AYrG3Rr4T82H/bhnScGgl0XBv8iei/OoaFg5xqfJ76QY7p9Fz1A3OA3XVynC/yVts2YXxPioAbyRmRL7EvCedcGVmkL0o60tS74fms4oAGp22R/ADEc79B6ZRFam/1UKI+irCWlM69rpqrz8+S6UvA/s6THSM7HT9a0QlLOBy/1uxKkda6UfUCUXI/Lypl6IjU/zFosECSMyMi6GEBJt96hw6BHNUf8w4XSak5cdVsZKliYv0r3l8i6bNz0kevBW9oRp+7owGUWdiCx2kY5+GmEhnH2QbV5Yo+tyYQ9Y/SihO0pvGyML4gf3XHE050EGE3bmGuvYWAQKZwJp+LJGTA4/aiif2z3Pt7XNWykaTRSOfU5l0j95fSHKmQatNh1LowvEIldiUn0whqeRHH1tf8UYWN7JFs8JEL5ekJ+0KpBpYpCelnL3P8hSf96HF3shJMv/h3GTEFxN6XWK9euoBc=
+  app:
+    master: melodicsimilarity
+    staging: melodicsimilarity-staging
+  on:
+    repo: freakimkaefig/melodicsimilarity
