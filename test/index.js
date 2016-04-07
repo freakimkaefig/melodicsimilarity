@@ -1,5 +1,5 @@
 var dotenv = require('dotenv');
-var env = dotenv.config();
+var env = dotenv.config({silent: true});
 var should = require('should');
 var request = require('supertest');
 var mongo = require('mongodb');
