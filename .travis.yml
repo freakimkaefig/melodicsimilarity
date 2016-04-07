@@ -9,10 +9,10 @@ addons:
       - oracle-java8-installer
 
 before_script:
-  - ./solr/bin/solr start
+  - solr/bin/solr start
 
 after_script:
-  - ./solr/bin/solr stop -all
+  - solr/bin/solr stop -all
 
 deploy:
   provider: heroku
