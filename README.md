@@ -1,4 +1,5 @@
 # melodic similarity
+[![Build Status](https://travis-ci.org/freakimkaefig/melodicsimilarity.svg?branch=master)](https://travis-ci.org/freakimkaefig/melodicsimilarity)
 
 Repository for the melodic similarity platform at [melodicsimilarity.herokuapp.com](http://melodicsimilarity.herokuapp.com)
 
