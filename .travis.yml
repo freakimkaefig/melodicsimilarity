@@ -3,6 +3,17 @@ node_js:
   - "5"
   - "5.3.0"
 
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+
+before_script:
+  - ./solr/bin/solr start
+
+after_script:
+  - ./solr/bin/solr stop -all
+
 deploy:
   provider: heroku
   api_key:
