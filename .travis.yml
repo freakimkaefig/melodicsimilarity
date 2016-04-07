@@ -1,18 +1,24 @@
 language: node_js
 node_js:
   - "5"
+  - "5.10"
+  - "5.9"
+  - "5.8"
+  - "5.7"
+  - "5.6"
+  - "5.5"
+  - "5.4"
+  - "5.3"
+  - "5.2"
   - "5.1"
-  - "4"
-  - "4.2"
-  - "4.1"
-  - "4.0"
+  - "5.3.0"
 
 deploy:
   provider: heroku
   api_key:
     secure: "EEt2augLYtgaCOMimSpyiRukBZXzTHLkGdpGj3GAPo7Xy1RCUPCT92xu9+/myszUcEMkhGGw5lSsM8scBsd0NM6eL1d89VfjDZMwg0rNp7wIA0FlrB5h/ZXQfZHPIS9Dvcw+vhb4Dk9KGzQQijzU2UdrZOpskiQdsAmnDMFJ3NhkHNUCSJ+at+ObgqVxOQ0GFTs4tn9Sa4yLW+8ETAhBalCJsBDGCNi5xWrFa74ve8ncDNQ2gKiFHPQGVFYtvCY2uanDixXiPtWqfLYJHih0WUwvAtSUO6ACxYuIT+rBU1AjaKs+/02250CnNKQBf7wpO54mm/52UgJcfY0qUKF8Loq99IL9Me6Un2K57M1ckEYvYozOQf64MNPl2sOe3vUU6VWLkK4iKr2IQf1oG8Fc4xXmyrM6S09Rx54fbZ67YhPbPWxvA6NPm/FenYbi6f5HxSv5NucMIOqtuz5Jw9MKJcJvTYdFTK2lI5mXsLNq0JZd4afpK+MKdK4FVt+JCcDvzMVivBx6EW1cTI/bZ35nnuSFdUINNXsHYBO/ut1VF0ipbtcdDli5QyjzfsxOqP8s4eWHxCeqcJ7MiVZxmWTZYtvFdBI3wLdU2gAK4K3SZbvzOZYKdgD78NGLysXyd7imuLYI0DIhasU+UmfcdiPlluj/LdO95XX3Vy8FvSZRQUU="
-  app:
-    master: melodicsimilarity
-    staging: melodicsimilarity-staging
+  app: melodicsimilarity-staging
   on:
-    repo: freakimkaefig/melodicsimilarity
+    branch: master
+    node: "5.3.0"
+
