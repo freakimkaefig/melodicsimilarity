@@ -1,12 +1,11 @@
 var mongo = require('mongodb');
-var databaseConfig = require('../config/database.config');
 var userConfig = require('../config/user.config');
 var MongoClient = mongo.MongoClient;
 var bcrypt = require('bcryptjs');
 
 var that = {};
 
-var url = 'mongodb://' + databaseConfig.host + ':' + databaseConfig.port + '/' + databaseConfig.database;
+var url = process.env.MONGOLAB_URI;
 
 var getCollection = function(collection, callback) {
   MongoClient.connect(url, function(err, db) {
