@@ -9,7 +9,7 @@ export default class AbcForm extends React.Component {
     var file = event.target.files[0];
     var reader = new FileReader();
     reader.readAsText(file);
-    reader.onload = (function(theFile) {
+    reader.onload = (function() {
       return function(e) {
         AbcActions.setJsonString(JSON.parse(e.target.result));
       }
