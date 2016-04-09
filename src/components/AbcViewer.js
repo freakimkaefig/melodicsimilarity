@@ -7,7 +7,7 @@ require('expose?Stream!exports?Stream!../../node_modules/midi/inc/jasmid/stream.
 require('expose?MidiFile!exports?MidiFile!../../node_modules/midi/inc/jasmid/midifile.js');
 require('expose?Replayer!exports?Replayer!../../node_modules/midi/inc/jasmid/replayer.js');
 
-var MIDI = require('exports?MIDI!script!../../node_modules/midi/build/MIDI.min');
+var MIDI = require('exports?MIDI!script!../../node_modules/midi/build/MIDI');
 var ABCJS = require('exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js');
 
 require('../stylesheets/AbcViewer.less');
@@ -54,11 +54,8 @@ export default class AbcViewer extends React.Component {
 
   componentDidMount() {
     this._renderAbc();
+    this._renderMidi();
   }
-
-  _onHighlight() {}
-
-  _modelChanged() {}
 
   _renderAbc() {
     ABCJS.renderAbc('notation-' + this.props.itemKey, this.props.abc, this.state.parserParams, this.state.engraverParams, this.state.renderParams);
@@ -73,19 +70,23 @@ export default class AbcViewer extends React.Component {
 
   _midiPluginLoaded = () => {
     let player = MIDI.Player;
-    let song = $('#midi-' + this.props.itemKey + 'a').attr('href');
+    let midi = document.getElementById('midi-' + this.props.itemKey);
+    let song = midi.getElementsByTagName('a')[0].href;
     player.loadFile(song, function() {
-      player.addListener(function(data) {
-        this.setState({playerProgress: (data.now / data.end) * 100});
-        console.log(data);
-      }.bind(this));
+      player.addListener(this._midiEventListener.bind(this));
       this.setState({midiLoaded: true});
     }.bind(this));
     this.setState({player: player});
+  };
+
+  _onMidiLoaded(player) {
+    player.addListener(this._midiEventListener.bind(this));
+    this.setState({midiLoaded: true});
+    return player;
   }
 
-  _midiListener(data) {
-    console.log(data);
+  _midiEventListener(data) {
+    this.setState({playerProgress: (data.now / data.end) * 100});
   }
 
   _onPlayClick() {
@@ -102,10 +103,13 @@ export default class AbcViewer extends React.Component {
     this.setState({playing: this.state.player.playing, playerProgress: 0});
   }
 
-  render() {
+  _onHighlight() {}
 
-    // this._renderMidi();
+  _modelChanged() {}
+
+  render() {
     let key = this.props.itemKey;
+    let playClass = this.state.player.playing ? 'pause' : 'play';
 
     return (
       <div>
@@ -117,8 +121,8 @@ export default class AbcViewer extends React.Component {
             <div className="progress">
               <div className="progress-bar" style={{width: this.state.playerProgress + '%'}}></div>
             </div>
-            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onPlayClick : null}>{this.state.player.playing ? 'Pause' : 'Play'}</Button>
-            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onStopClick : null}>Stop</Button>
+            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onPlayClick : null}><span className={`fa fa-${playClass}-circle-o`}></span></Button>
+            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onStopClick : null}><span className={`fa fa-stop-circle-o`}></span></Button>
           </div>
         </div>
       </div>

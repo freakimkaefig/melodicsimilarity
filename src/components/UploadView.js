@@ -8,16 +8,17 @@ export default class UploadView extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.state = {
-      images: {
-        files: [],
-        counter: 0
-      },
-      jsons: {
-        files: [],
-        counter: 0
-      },
-      files: []
+      files: [],
+      imageFiles: [],
+      imageCounter: 0,
+      imageMessage: 'Dateien hierher ziehen oder klicken zum auswählen.',
+      imageStatus: 'muted',
+      jsonFiles: [],
+      jsonCounter: 0,
+      jsonMessage: 'Dateien hierher ziehen oder klicken zum auswählen.',
+      jsonStatus: 'muted'
     };
 
     this.onImageInputChange = this.onImageInputChange.bind(this);
@@ -49,7 +50,13 @@ export default class UploadView extends React.Component {
     for (var i = 0, f; f = files[i]; i++) {
       var reader = new FileReader();
 
-      if (f.type !== 'image/png') continue;
+      if (f.name.split('.').pop() !== 'png' && f.name.split('.').pop() !== 'jpg') {
+        this.setState({
+          imageMessage: 'Hier können nur png oder jpg Dateien hochgeladen werden.',
+          imageStatus: 'warning'
+        });
+        continue;
+      }
 
       reader.readAsDataURL(f);
       reader.onload = (function(theFile) {
@@ -57,23 +64,23 @@ export default class UploadView extends React.Component {
           var content = e.target.result;
 
           this.setState({
-            images: {
-              files: this.state.images.files.concat({
-                clearName: theFile.name.replace(/\.[^/.]+$/, ''),
-                image: content
-              }),
-              counter: this.state.images.counter + 1
-            }
+            imageFiles: this.state.imageFiles.concat({
+              clearName: theFile.name.replace(/\.[^/.]+$/, ''),
+              image: content
+            }),
+            imageCounter: this.state.imageCounter + 1,
+            imageMessage: 'Dateien hinzugefügt',
+            imageStatus: 'success'
           });
 
-          UploadActions.saveImageFiles(this.state.images.files);
+          UploadActions.saveImageFiles(this.state.imageFiles);
         }
       })(f).bind(this);
     }
   }
 
-  onJsonInputChange(event) {
-    this.saveJsonFiles(event.target.files);
+  onJsonInputChange(files) {
+    this.saveJsonFiles(files);
   }
   onJsonDropzoneDrop(files) {
     
@@ -83,7 +90,11 @@ export default class UploadView extends React.Component {
     for (var i = 0, f; f = files[i]; i++) {
       var reader = new FileReader();
 
-      if (f.type === 'image/png') {
+      if (f.name.split('.').pop() !== 'json') {
+        this.setState({
+          jsonMessage: 'Hier können nur JSON Dateien hochgeladen werden.',
+          jsonStatus: 'warning'
+        });
         continue;
       }
       reader.readAsText(f);
@@ -92,21 +103,21 @@ export default class UploadView extends React.Component {
           var content = e.target.result;
 
           this.setState({
-            jsons: {
-              files: this.state.jsons.files.concat({
-                key: this.state.jsons.counter + 1,
-                name: theFile.name,
-                clearName: theFile.name.replace(/\.[^/.]+$/, ''),
-                store: false,
-                upload: true,
-                content: JSON.parse(content),
-                abc: convert2Abc(content)
-              }),
-              counter: this.state.jsons.counter + 1
-            }
+            jsonFiles: this.state.jsonFiles.concat({
+              key: this.state.jsonCounter + 1,
+              name: theFile.name,
+              clearName: theFile.name.replace(/\.[^/.]+$/, ''),
+              store: false,
+              upload: true,
+              content: JSON.parse(content),
+              abc: convert2Abc(content)
+            }),
+            jsonCounter: this.state.jsonCounter + 1,
+            jsonMessage: 'Dateien hinzugefügt',
+            jsonStatus: 'success'
           });
 
-          UploadActions.saveJsonFiles(this.state.jsons.files);
+          UploadActions.saveJsonFiles(this.state.jsonFiles);
         }
       })(f).bind(this);
     }
@@ -115,14 +126,10 @@ export default class UploadView extends React.Component {
   onStoreChange() {
     console.log(UploadStore.files, UploadStore.jsons, UploadStore.images);
     this.setState({
-      images: {
-        files: UploadStore.images
-      },
-      jsons: {
-        files: UploadStore.jsons
-      },
+      imageFiles: UploadStore.images,
+      jsonFiles: UploadStore.jsons,
       files: UploadStore.files
-    })
+    });
   }
 
   render() {
@@ -137,23 +144,27 @@ export default class UploadView extends React.Component {
         <div className="row">
           <div className="col-xs-12 col-sm-6">
             <h3>Schritt 1: Transkribierte Liedblatt-Dateien</h3>
-            <div><span>Counter: </span><span>{ this.state.jsons.counter }</span></div>
+            <div><span>Counter: </span><span>{ this.state.jsonCounter }</span></div>
             <Dropzone
               id="json-files"
               onInputChange={this.onJsonInputChange}
               onDropzoneDrop={this.onJsonDropzoneDrop}
-              files={this.state.jsons.files}
+              files={this.state.jsonFiles}
+              message={this.state.jsonMessage}
+              status={this.state.jsonStatus}
             />
           </div>
 
           <div className="col-xs-12 col-sm-6">
             <h3>Schritt 2: Gescannte Liedblatt-Dateien</h3>
-            <div><span>Counter: </span><span>{ this.state.images.counter }</span></div>
+            <div><span>Counter: </span><span>{ this.state.imageCounter }</span></div>
             <Dropzone
               id="image-files"
               onInputChange={this.onImageInputChange}
               onDropzoneDrop={this.onImageDropzoneDrop}
-              files={this.state.images.files}
+              files={this.state.imageFiles}
+              message={this.state.imageMessage}
+              status={this.state.imageStatus}
             />
           </div>
         </div>

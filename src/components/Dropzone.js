@@ -7,17 +7,16 @@ export default class Dropzone extends React.Component {
     id: PropTypes.string.isRequired,
     onInputChange: PropTypes.func.isRequired,
     onDropzoneDrop: PropTypes.func.isRequired,
-    files: PropTypes.arrayOf(PropTypes.object).isRequired
+    files: PropTypes.arrayOf(PropTypes.object).isRequired,
+    message: PropTypes.string
   };
 
   createFileList(files) {
     if (files.length > 0) {
       return files.map((file, index) => {
-        let cssClass = file.store === true ? ' uploaded' : '';
+        let stored = file.store === true ? 'success' : 'primary';
         return (
-          <div className={'item' + cssClass} key={index}>
-            <span className="name">{file.clearName}</span><br/>
-          </div>
+          <span className={`item label label-${stored}`} key={index}>{file.clearName}</span>
         );
       });
     } else {
@@ -53,21 +52,24 @@ export default class Dropzone extends React.Component {
 
   render() {
     return (
-      <div className="dropzone-wrapper">
-        <input
-          type="file"
-          name={this.props.id}
-          id={this.props.id}
-          onChange={this.handleInputChange.bind(this)}
-          multiple />
-        <div
-          id="image-dropzone"
-          className="dropzone"
-          onDragOver={this.handleDropzoneDragOver.bind(this)}
-          onClick={this.handleDropzoneClick.bind(this)}
-          onDrop={this.handleDropzoneDrop.bind(this)}>
-          {this.createFileList(this.props.files)}
+      <div>
+        <div className="dropzone-wrapper">
+          <input
+            type="file"
+            name={this.props.id}
+            id={this.props.id}
+            onChange={this.handleInputChange.bind(this)}
+            multiple />
+          <div
+            id="image-dropzone"
+            className="dropzone"
+            onDragOver={this.handleDropzoneDragOver.bind(this)}
+            onClick={this.handleDropzoneClick.bind(this)}
+            onDrop={this.handleDropzoneDrop.bind(this)}>
+            {this.createFileList(this.props.files)}
+          </div>
         </div>
+        <p className={`dropzone-messages text-center text-${this.props.status}`}>{this.props.message}</p>
       </div>
     )
   }
