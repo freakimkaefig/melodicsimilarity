@@ -8,7 +8,7 @@
 ## Start
 1. Fork it
 2. `npm install`
-3. `webpack -d`
+3. `npm run build-dev`
 4. Create your feature branch (`git checkout -b my-new-feature`)
 5. Commit your changes (`git commit -am 'Added some feature'`)
 6. `npm test`
