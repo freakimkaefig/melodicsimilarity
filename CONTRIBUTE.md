@@ -1,8 +1,9 @@
 # Contribute
 ## Prerequisites
 1. Install [Node.js](https://nodejs.org) (version >= 5.3.0)
-2. `npm install webpack -g`
-3. `npm install nodemon -g`
+2. Install [Java](https://www.java.com/de/download/) (version >= 8)
+3. `npm install webpack -g`
+4. `npm install nodemon -g`
 
 ## Start
 1. Fork it
@@ -26,10 +27,41 @@ BASE_URL=http://localhost:3000
 MONGOLAB_URI=mongodb://<dbuser>:<dbpassword>@ds013260.mlab.com:13260/<dbname>
 ```
 
-## Start express webserver
+## Express webserver
 Run `npm run dev-server` for nodemon version, or `node start` for standard server.
 
+The output should be something like this:
+```
+> melodicsimilarity@1.0.0 dev-server path/to/your/working/copy
+> nodemon bin/www
+
+[nodemon] 1.9.1
+[nodemon] to restart at any time, enter `rs`
+[nodemon] watching: *.*
+[nodemon] starting `node bin/www`
+```
+
 The project url is [http://localhost:3000](http://localhost:3000).
+
+## Apache Solr
+Run `solr/bin/solr start` from the project root.
+
+The output should be something like this:
+```
+Backing up path/to/your/working/copy/solr/server/logs/solr.log
+        1 file(a) moved.
+Backing up path/to/your/working/copy/solr/server/logs/solr_gc.log
+        1 file(s) moved.
+Waiting up to 30 to see Solr running on port 8983
+Started Solr server on port 8983. Happy searching!
+```
+---
+Stopping Apache Solr: `solr/bin/solr stop -all`.
+
+The output should say:
+```
+Stopping Solr process 2436 running on port 8983
+```
 
 ## Structure
 The app is structured in frontend and backend. The backend part is in `app.js`, the frontend part is in `public/`, which is also the webroot.
@@ -75,3 +107,5 @@ I'm using [mocha](https://mochajs.org/) and [should](https://shouldjs.github.io/
 Run the test suite with:
 
 `npm test`
+
+The `test` script starts Express webserver, so port `3000` shouldn't be in use. Apache Solr isn't yet covered in tests.

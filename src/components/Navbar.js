@@ -18,7 +18,7 @@ export default class Header extends React.Component {
       })
     ).isRequired,
     route: PropTypes.string.isRequired
-  }
+  };
 
   getVisibleLinks() {
     return this.props.links.filter(link => {

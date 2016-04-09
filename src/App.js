@@ -20,7 +20,7 @@ var footerLinks = [
 export default class App extends React.Component {
   static propTypes = {
     children: PropTypes.object
-  }
+  };
 
   static willTransitionTo(transition) {
     if (!LoginStore.isLoggedIn()) {
