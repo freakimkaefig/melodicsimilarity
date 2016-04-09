@@ -1,8 +1,4 @@
-import React from 'react';
-import AbcStore from '../stores/AbcStore';
-import { convert2Abc } from 'musicjson2abc';
-import Solr from '../services/SolrService';
-import MetadataViewer from './MetadataViewer';
+import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 
 require('expose?Base64Binary!exports?Base64Binary!../../node_modules/midi/inc/base64binary.js');
@@ -13,21 +9,20 @@ require('expose?Replayer!exports?Replayer!../../node_modules/midi/inc/jasmid/rep
 
 var MIDI = require('exports?MIDI!script!../../node_modules/midi/build/MIDI.min');
 var ABCJS = require('exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js');
-// require('script!../../node_modules/midi/build/MIDI');
-// require('script!../../node_modules/midi/inc/jasmid/stream');
-// require('script!../../node_modules/midi/inc/jasmid/midifile');
-// require('script!../../node_modules/midi/inc/jasmid/replayer');
-// require('script!../../node_modules/midi/inc/Base64');
 
 require('../stylesheets/AbcViewer.less');
 
 
 export default class AbcViewer extends React.Component {
 
+  static propTypes = {
+    abc: PropTypes.string.isRequired,
+    itemKey: PropTypes.number.isRequired
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      json: {},
       midiLoaded: false,
       player: {},
       playerProgress: 0,
@@ -35,6 +30,11 @@ export default class AbcViewer extends React.Component {
       parserParams: {},
       renderParams: {},
       engraverParams: {
+        staffwidth: 330,
+        paddingtop: 5,
+        paddingbottom: 30,
+        paddingleft: 0,
+        paddingright: 0,
         add_classes: true,
         listener: {
           highlight: this._onHighlight,
@@ -48,39 +48,24 @@ export default class AbcViewer extends React.Component {
         callback: this._midiPluginLoaded
       }
     };
-    this.onJsonChange = () => this._onJsonChange();
     this.onPlayClick = () => this._onPlayClick();
     this.onStopClick = () => this._onStopClick();
   }
 
   componentDidMount() {
-    AbcStore.addChangeListener(this.onJsonChange);
-  }
-  componentWillUnmount() {
-    AbcStore.removeChangeListener(this.onJsonChange);
+    this._renderAbc();
   }
 
   _onHighlight() {}
 
   _modelChanged() {}
 
-  _onJsonChange() {
-    this.setState({json: AbcStore.json});
-    let notation = document.getElementById('notation');
-
-    this._renderAbc();
-    this._renderMidi();
-
-    let signatureId = this.state.json.id;
-    Solr.findDoc(signatureId);
-  };
-
   _renderAbc() {
-    ABCJS.renderAbc('notation', convert2Abc(JSON.stringify(this.state.json)), this.state.parserParams, this.state.engraverParams, this.state.renderParams);
+    ABCJS.renderAbc('notation-' + this.props.itemKey, this.props.abc, this.state.parserParams, this.state.engraverParams, this.state.renderParams);
   }
 
   _renderMidi() {
-    ABCJS.renderMidi('midi', convert2Abc(JSON.stringify(this.state.json)), this.state.parserParams, this.state.midiParams, this.state.renderParams);
+    ABCJS.renderMidi('midi-' + this.props.itemKey, this.props.abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
 
     let conf = this.state.midiPluginConf;
     MIDI.loadPlugin(conf);
@@ -88,7 +73,7 @@ export default class AbcViewer extends React.Component {
 
   _midiPluginLoaded = () => {
     let player = MIDI.Player;
-    let song = $('#midi a').attr('href');
+    let song = $('#midi-' + this.props.itemKey + 'a').attr('href');
     player.loadFile(song, function() {
       player.addListener(function(data) {
         this.setState({playerProgress: (data.now / data.end) * 100});
@@ -118,26 +103,24 @@ export default class AbcViewer extends React.Component {
   }
 
   render() {
+
+    // this._renderMidi();
+    let key = this.props.itemKey;
+
     return (
       <div>
-        <h3>Notation</h3>
-        <div id="notation"></div>
-        <div id="midi-player">
-          <div id="midi"></div>
-          <div id="player">
+        <div id={`notation-${key}`} className="notation"></div>
+        <div id={`midi-player-${key}`}>
+          <div id={`midi-${key}`}></div>
+          <div id={`player-${key}`}>
             {this.state.player.playing}
             <div className="progress">
               <div className="progress-bar" style={{width: this.state.playerProgress + '%'}}></div>
             </div>
-            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onPlayClick : null}>
-              {this.state.player.playing ? 'Pause' : 'Play'}
-            </Button>
-            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onStopClick : null}>
-              Stop
-            </Button>
+            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onPlayClick : null}>{this.state.player.playing ? 'Pause' : 'Play'}</Button>
+            <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onStopClick : null}>Stop</Button>
           </div>
         </div>
-        <MetadataViewer />
       </div>
     )
   }

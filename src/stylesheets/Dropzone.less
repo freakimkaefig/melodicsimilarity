@@ -1,0 +1,28 @@
+.dropzone-wrapper {
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 10px;
+  input[type="file"] {
+    display: none !important;
+  }
+  .dropzone {
+    border: 2px dashed #bbb;
+    border-radius: 5px;
+    padding: 25px;
+    text-align: center;
+    color: #bbb;
+    overflow: hidden;
+    .item {
+      width: 22.75%;
+      float: left;
+      border: 1px solid #ccc;
+      padding: 5px;
+      margin: 5px;
+      overflow: hidden;
+      height: 54px;
+      &.uploaded {
+        border-color: #00ee55;
+      }
+    }
+  }
+}

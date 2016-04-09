@@ -1,6 +1,9 @@
 import React from 'react';
 import AuthenticatedComponent from '../components/AuthenticatedComponent';
 import DocumentTitle from 'react-document-title';
+import UploadView from '../components/UploadView';
+import FileList from '../components/FileList';
+
 import AbcForm from '../components/AbcForm';
 import AbcViewer from '../components/AbcViewer';
 
@@ -15,8 +18,8 @@ export default AuthenticatedComponent(class AdminPage extends React.Component {
       <DocumentTitle title="Admin // MusicIR">
         <div>
           <h1>Hello Admin Page!</h1>
-          <AbcForm />
-          <AbcViewer />
+          <UploadView />
+          <FileList />
         </div>
       </DocumentTitle>
     );

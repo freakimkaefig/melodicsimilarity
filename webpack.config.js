@@ -11,7 +11,8 @@ var config = {
   },
   output: {
     path: 'public/build',
-    filename: '[name].js'
+    filename: '[name].js',
+    publicPath: 'build/'
   },
   module: {
     loaders: [
@@ -23,7 +24,9 @@ var config = {
       {test: /\.ttf$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
       {test: /\.eot$/, loader: 'file'},
       {test: /\.svg$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
-      {test: /\.mp3$/, loader: 'file'}
+      {test: /\.mp3$/, loader: 'file'},
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+      { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
     ]
   },
   plugins: [

@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 
 require('expose?$!expose?jQuery!jquery');
 require('!bootstrap-webpack!../config/bootstrap.config');
+require('font-awesome-webpack!../config/font-awesome.config');
 
 var headerLinks = [
   { to: '/', component: 'HomePage', title: 'Home', nav: true, auth: false, default: true }
