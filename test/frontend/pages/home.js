@@ -1,7 +1,7 @@
 var request = require('supertest');
 var should = require('should');
 
-describe('HomePage', function() {
+describe('Home', function() {
   it('should return home page when navigating', function (done) {
     request(process.env.BASE_URL)
       .get('/')

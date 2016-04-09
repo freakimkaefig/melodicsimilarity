@@ -1,11 +1,13 @@
 import request from 'reqwest';
 import when from 'when';
 import { QUERY_URL } from '../constants/SolrConstants';
-import SolrActions from '../actions/SolrActions';
+import UploadActions from '../actions/UploadActions';
 
 class SolrService {
 
-  findDoc(id) {
+  findDoc(file) {
+    let id = file.content.id;
+    let name = file.clearname;
     return this.handleFindResponse(when(request({
       url: QUERY_URL,
       method: 'POST',
@@ -23,7 +25,7 @@ class SolrService {
   handleFindResponse(findPremise) {
     return findPremise
       .then(function(response) {
-        SolrActions.renderResult(response);
+        UploadActions.renderMetadata(response);
         return true;
       });
   }

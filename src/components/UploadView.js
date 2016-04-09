@@ -107,6 +107,7 @@ export default class UploadView extends React.Component {
               key: this.state.jsonCounter + 1,
               name: theFile.name,
               clearName: theFile.name.replace(/\.[^/.]+$/, ''),
+              metadata: {},
               store: false,
               upload: true,
               content: JSON.parse(content),

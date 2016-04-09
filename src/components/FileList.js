@@ -3,8 +3,8 @@ import _ from 'lodash';
 import UploadStore from '../stores/UploadStore';
 import Collapse from './Accordion/index';
 import AbcViewer from './AbcViewer';
-
-require('../stylesheets/FileList.less');
+import MetadataViewer from './MetadataViewer';
+import '../stylesheets/FileList.less';
 
 export default class FileList extends React.Component {
 
@@ -54,11 +54,12 @@ export default class FileList extends React.Component {
             header={file.name}
             checkbox={file.upload}
             onCheckboxClick={this.onCheckboxClick}>
-            <div className="col-xs-4">
+            <div className="col-xs-5">
               <img src={file.image} className="img-responsive" />
             </div>
-            <div className="col-xs-4">
+            <div className="col-xs-7">
               <AbcViewer itemKey={file.key} abc={file.abc} />
+              <MetadataViewer file={file} />
             </div>
           </Collapse.Panel>
         );

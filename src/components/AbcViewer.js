@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 
-require('expose?Base64Binary!exports?Base64Binary!../../node_modules/midi/inc/base64binary.js');
-require('expose?atob&btoa!exports?atob&btoa!../../node_modules/midi/inc/Base64.js');
-require('expose?Stream!exports?Stream!../../node_modules/midi/inc/jasmid/stream.js');
-require('expose?MidiFile!exports?MidiFile!../../node_modules/midi/inc/jasmid/midifile.js');
-require('expose?Replayer!exports?Replayer!../../node_modules/midi/inc/jasmid/replayer.js');
+import 'expose?Base64Binary!exports?Base64Binary!../../node_modules/midi/inc/base64binary.js';
+import 'expose?atob&btoa!exports?atob&btoa!../../node_modules/midi/inc/Base64.js';
+import 'expose?Stream!exports?Stream!../../node_modules/midi/inc/jasmid/stream.js';
+import 'expose?MidiFile!exports?MidiFile!../../node_modules/midi/inc/jasmid/midifile.js';
+import 'expose?Replayer!exports?Replayer!../../node_modules/midi/inc/jasmid/replayer.js';
 
-var MIDI = require('exports?MIDI!script!../../node_modules/midi/build/MIDI');
-var ABCJS = require('exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js');
+import MIDI from 'exports?MIDI!script!../../node_modules/midi/build/MIDI';
+import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js';
 
-require('../stylesheets/AbcViewer.less');
+import '../stylesheets/AbcViewer.less';
 
 
 export default class AbcViewer extends React.Component {
@@ -30,7 +30,7 @@ export default class AbcViewer extends React.Component {
       parserParams: {},
       renderParams: {},
       engraverParams: {
-        staffwidth: 330,
+        staffwidth: 600,
         paddingtop: 5,
         paddingbottom: 30,
         paddingleft: 0,

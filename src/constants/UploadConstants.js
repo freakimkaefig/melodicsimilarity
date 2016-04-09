@@ -1,2 +1,3 @@
 export const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 export const UPLOAD_JSONS = 'UPLOAD_JSONS';
+export const RENDER_METADATA = 'RENDER_METADATA';

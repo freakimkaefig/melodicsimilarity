@@ -12,7 +12,8 @@ describe('Backend', function() {
 });
 
 describe('Frontend', function() {
-  require('./frontend/HomePage');
+  require('./frontend/pages');
+  // require('./frontend/components');
 });
 
 
