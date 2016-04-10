@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import UploadStore from '../stores/UploadStore';
 import Collapse from './Accordion/index';
@@ -8,41 +8,22 @@ import '../stylesheets/FileList.less';
 
 export default class FileList extends React.Component {
 
+  static propTypes = {
+    files: PropTypes.arrayOf(PropTypes.object).isRequired,
+    onCheckboxClick: PropTypes.func
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      files: []
-    };
 
-    this.onFilesChange = this.onFilesChange.bind(this);
-    this.onCheckboxClick = this.onCheckboxClick.bind(this);
+    // this.onCheckboxClick = this.onCheckboxClick.bind(this);
   }
 
-  componentDidMount() {
-    UploadStore.addChangeListener(this.onFilesChange);
-  }
-
-  componentWillUnmount() {
-    UploadStore.removeChangeListener(this.onFilesChange);
-  }
-
-  onFilesChange() {
-    this.setState({files: UploadStore.files});
-  }
-
-  onCheckboxClick(key) {
-    return () => {
-      let updatedFiles = this.state.files;
-      updatedFiles.find(function(f) {
-        return f.key == key;
-      })
-      .upload = !updatedFiles.find(function(f) {
-        return f.key == key;
-      }).upload;
-
-      this.setState({files: updatedFiles});
-    }
-  }
+  // onCheckboxClick(key) {
+  //   return () => {
+  //    this.props.onCheckboxClick(key);
+  //   }
+  // }
 
   createFileList(files) {
     return files.filter(file => {
@@ -53,7 +34,7 @@ export default class FileList extends React.Component {
             key={file.key}
             header={file.name}
             checkbox={file.upload}
-            onCheckboxClick={this.onCheckboxClick}>
+            onCheckboxClick={this.props.onCheckboxClick}>
             <div className="col-xs-5">
               <img src={file.image} className="img-responsive" />
             </div>
@@ -69,7 +50,7 @@ export default class FileList extends React.Component {
   render() {
     return (
       <Collapse accordion={true}>
-        { this.createFileList(this.state.files) }
+        { this.createFileList(this.props.files) }
       </Collapse>
     );
   }

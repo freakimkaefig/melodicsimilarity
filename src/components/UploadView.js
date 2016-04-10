@@ -3,6 +3,7 @@ import Dropzone from './Dropzone';
 import { convert2Abc } from 'musicjson2abc';
 import UploadActions from '../actions/UploadActions';
 import UploadStore from '../stores/UploadStore';
+import FileList from './FileList';
 
 export default class UploadView extends React.Component {
 
@@ -124,6 +125,17 @@ export default class UploadView extends React.Component {
     }
   }
 
+  onFileListCheckboxClick(key) {
+    return () => {
+      let updatedFiles = this.state.files;
+      updatedFiles.forEach(f => {
+        if (f.key == key) {
+          f.upload = !f.upload;
+        }
+      });
+      this.setState({files: updatedFiles});
+    }
+  }
   onStoreChange() {
     console.log(UploadStore.files, UploadStore.jsons, UploadStore.images);
     this.setState({
@@ -145,7 +157,7 @@ export default class UploadView extends React.Component {
         <div className="row">
           <div className="col-xs-12 col-sm-6">
             <h3>Schritt 1: Transkribierte Liedblatt-Dateien</h3>
-            <div><span>Counter: </span><span>{ this.state.jsonCounter }</span></div>
+            <div className="hidden"><span>Counter: </span><span>{ this.state.jsonCounter }</span></div>
             <Dropzone
               id="json-files"
               onInputChange={this.onJsonInputChange}
@@ -158,7 +170,7 @@ export default class UploadView extends React.Component {
 
           <div className="col-xs-12 col-sm-6">
             <h3>Schritt 2: Gescannte Liedblatt-Dateien</h3>
-            <div><span>Counter: </span><span>{ this.state.imageCounter }</span></div>
+            <div className="hidden"><span>Counter: </span><span>{ this.state.imageCounter }</span></div>
             <Dropzone
               id="image-files"
               onInputChange={this.onImageInputChange}
@@ -167,6 +179,12 @@ export default class UploadView extends React.Component {
               message={this.state.imageMessage}
               status={this.state.imageStatus}
             />
+          </div>
+        </div>
+        
+        <div className="row">
+          <div className="col-xs-12">
+            <FileList files={this.state.files} onCheckboxClick={this.onFileListCheckboxClick} />
           </div>
         </div>
       </div>
