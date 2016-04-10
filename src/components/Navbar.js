@@ -1,17 +1,17 @@
 import React, { PropTypes } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 import LoginStore from '../stores/LoginStore';
+import { RouterContext } from 'react-router';
 
 require('../stylesheets/NavBar.less');
 
-export default class Header extends React.Component {
+export default class NavBar extends React.Component {
   static propTypes = {
     header: PropTypes.bool,
     links: PropTypes.arrayOf(
       PropTypes.shape({
-        to: PropTypes.string.isRequired,
-        component: PropTypes.string.isRequired,
+        path: PropTypes.string.isRequired,
         title: PropTypes.string.isRequired,
         nav: PropTypes.bool,
         auth: PropTypes.bool
@@ -27,11 +27,10 @@ export default class Header extends React.Component {
   }
 
   getLinkComponents() {
-    return this.getVisibleLinks().map(link => {
-      let cssClass = (link.component === this.props.route) ? 'link active' : 'link';
+    return this.getVisibleLinks().map((link, index) => {
       return (
-        <LinkContainer to={link.to} key={link.component}>
-          <NavItem className={cssClass} eventKey={link.component}>{link.title}</NavItem>
+        <LinkContainer to={link.path} key={index}>
+          <NavItem active={(link.path === this.props.route)} eventKey={index}>{link.title}</NavItem>
         </LinkContainer>
       );
     });
@@ -39,8 +38,7 @@ export default class Header extends React.Component {
 
   getNavbarHeader() {
     return (
-      this.props.header === true
-        ? (
+      this.props.header === true ? (
           <Navbar.Header>
             <Navbar.Brand>
               <LinkContainer to="/"><div>MusicIR</div></LinkContainer>
@@ -52,16 +50,29 @@ export default class Header extends React.Component {
     );
   }
 
+  getNavbarIndex() {
+    return (
+      this.props.header === true ? (
+        <IndexLinkContainer to="/" key={0}>
+          <NavItem active={this.props.route === '/'} eventKey={0}>Home</NavItem>
+        </IndexLinkContainer>
+      ) : ''
+    );
+  }
+
   render() {
     return (
-      <Navbar className={this.props.header ? 'header' : 'footer'}>
-        {this.getNavbarHeader()}
-        <Navbar.Collapse>
-          <Nav pullRight>
-            {this.getLinkComponents()}
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <div>
+        <Navbar className={this.props.header ? 'header' : 'footer'}>
+          {this.getNavbarHeader()}
+          <Navbar.Collapse>
+            <Nav pullRight>
+              {this.getNavbarIndex()}
+              {this.getLinkComponents()}
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      </div>
     );
   }
 }

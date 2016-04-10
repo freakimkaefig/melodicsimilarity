@@ -8,7 +8,6 @@ import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
 import AdminPage from './pages/AdminPage';
 
-
 var router = (
   <Router history={browserHistory}>
     <Route name="home" path="/" component={App}>

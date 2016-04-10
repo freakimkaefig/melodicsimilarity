@@ -8,12 +8,12 @@ require('!bootstrap-webpack!../config/bootstrap.config');
 require('font-awesome-webpack!../config/font-awesome.config');
 
 var headerLinks = [
-  { to: '/', component: 'HomePage', title: 'Home', nav: true, auth: false, default: true }
+  
 ];
 
 var footerLinks = [
-  { to: 'admin', component: 'AdminPage', title: 'Admin', nav: true, auth: false },
-  { to: 'logout', component: 'HomePage', title: 'Logout', nav: true, auth: true }
+  { path: 'admin', title: 'Admin', nav: true, auth: false },
+  { path: 'logout', title: 'Logout', nav: true, auth: true }
 ];
 
 
@@ -33,6 +33,15 @@ export default class App extends React.Component {
     this.state = this._getLoginState();
   }
 
+  componentDidMount() {
+    this.changeListener = this._onChange.bind(this);
+    LoginStore.addChangeListener(this.changeListener);
+  }
+
+  componentWillUnmount() {
+    LoginStore.removeChangeListener(this.changeListener);
+  }
+
   _getLoginState() {
     return {
       userLoggedIn: LoginStore.isLoggedIn(),
@@ -41,28 +50,19 @@ export default class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.changeListener = this._onChange.bind(this);
-    LoginStore.addChangeListener(this.changeListener);
-  }
-
   _onChange() {
     this.setState(this._getLoginState());
-  }
-
-  componentWillUnmount() {
-    LoginStore.removeChangeListener(this.changeListener);
   }
 
   render() {
     return (
       <DocumentTitle title="MusicIR App">
         <div className="App">
-          <Navbar header={true} links={headerLinks} route={this.props.children.type.name} />
+          <Navbar header={true} links={headerLinks} route={this.props.location.pathname} />
           <div className="container">
             {this.props.children}
           </div>
-          <Navbar header={false} links={footerLinks} route={this.props.children.type.name} />
+          <Navbar header={false} links={footerLinks} route={this.props.location.pathname} />
         </div>
       </DocumentTitle>
     );
