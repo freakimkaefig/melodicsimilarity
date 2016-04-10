@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA } from '../constants/UploadConstants';
+import { UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import { browserHistory } from 'react-router';
 
 export default {
   saveImageFiles: (files) => {
@@ -19,6 +20,13 @@ export default {
   renderMetadata: (response) => {
     AppDispatcher.dispatch({
       actionType: RENDER_METADATA,
+      response: response
+    });
+  },
+  
+  handleUpload: (response) => {
+    AppDispatcher.dispatch({
+      actionType: UPLOAD_FINISHED,
       response: response
     });
   }

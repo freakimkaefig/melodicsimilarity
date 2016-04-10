@@ -7,13 +7,14 @@ var that = {};
 
 var url = process.env.MONGOLAB_URI;
 
-var getCollection = function(collection, callback) {
+var getCollection = function(collectionName, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
     }
 
-    var collection = db.collection(collection);
+    console.log(typeof collectionName, collectionName);
+    var collection = db.collection(collectionName);
     collection.find({}).toArray(function(err, result) {
       if (err) {
         throw err;
@@ -24,7 +25,7 @@ var getCollection = function(collection, callback) {
   });
 };
 
-var addUser = function(collection, username, password, callback) {
+var addUser = function(username, password, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
@@ -52,31 +53,22 @@ var addDocument = function(data, callback) {
       throw err;
     }
     var collection = db.collection(databaseConfig.collections.songsheets);
-    for (var i = 0, f; f = data[i]; i++) {
-      collection.findOneAndUpdate(
-        { id: f.id },
-        f,
-        { upsert: true, returnOriginal: false },
-        function(err, result) {
-          if (err) {
-            throw err;
-          }
-          console.log(result);
-          db.close();
+    collection.findOneAndUpdate(
+      { signature: data.signature },
+      data,
+      { upsert: true, returnOriginal: false },
+      function(err, result) {
+        if (err) {
+          throw err;
         }
-      )
-    }
-    // collection.updateMany(
-    //   {},
-    //   {},
-    //   { upsert: true, w: 1 },
-    //   function(err, result) {
-    //     if (err) {
-    //       throw err;
-    //     }
-    //     callback(result);
-    //   }
-    // )
+        callback({
+          value: result.value,
+          ok: result.ok,
+          signature: result.value.signature
+        });
+        db.close();
+      }
+    )
   });
 };
 

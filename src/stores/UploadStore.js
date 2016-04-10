@@ -1,6 +1,6 @@
 import BaseStore from './BaseStore';
 import _ from 'lodash';
-import { UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA } from '../constants/UploadConstants';
+import { UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
 
 class UploadStore extends BaseStore {
 
@@ -10,7 +10,9 @@ class UploadStore extends BaseStore {
     this._images = [];
     this._jsons = [];
     this._files = [];
+    this._responses = [];
   }
+
 
   _registerToActions(action) {
     switch (action.actionType) {
@@ -33,12 +35,14 @@ class UploadStore extends BaseStore {
         this.emitChange();
         break;
       case RENDER_METADATA:
-        console.log(action.response);
         var signature = this.extractValue(JSON.parse(action.response.responseHeader.params.json).params.q);
-        console.log(signature);
         this._files.find(function(file) {
           return file.content.id == signature;
         }).metadata = action.response.response.docs[0];
+        this.emitChange();
+        break;
+      case UPLOAD_FINISHED:
+        this._responses.push(action.response);
         this.emitChange();
         break;
       default:
@@ -56,6 +60,10 @@ class UploadStore extends BaseStore {
   
   get files() {
     return this._files;
+  }
+
+  get responses() {
+    return this._responses;
   }
 
   mergeByProperty(arr1, arr2, prop) {

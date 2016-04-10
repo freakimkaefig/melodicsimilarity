@@ -33,7 +33,7 @@ var handleSignup = function(req, res) {
     res.status(400).send("You must send the username and the password");
     return;
   }
-  databaseService.addUser(databaseConfig.collections.users, req.body.username, req.body.password, function(result) {
+  databaseService.addUser(req.body.username, req.body.password, function(result) {
     if (result.ok && result.value.username == req.body.username) {
       res.status(201).send(result);
     } else {

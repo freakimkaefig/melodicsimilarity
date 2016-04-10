@@ -3,7 +3,7 @@ import AuthenticatedComponent from '../components/AuthenticatedComponent';
 import DocumentTitle from 'react-document-title';
 import UploadView from '../components/UploadView';
 
-export default AuthenticatedComponent(class AdminPage extends React.Component {
+export default AuthenticatedComponent(class UploadPage extends React.Component {
 
   constructor(props) {
     super(props);
@@ -13,7 +13,7 @@ export default AuthenticatedComponent(class AdminPage extends React.Component {
     return (
       <DocumentTitle title="Admin // MusicIR">
         <div>
-          <h1>Hello Admin Page!</h1>
+          <h1>Liedblattdateien hochladen</h1>
           <UploadView />
         </div>
       </DocumentTitle>

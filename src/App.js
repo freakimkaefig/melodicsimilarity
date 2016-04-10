@@ -12,7 +12,7 @@ var headerLinks = [
 ];
 
 var footerLinks = [
-  { path: 'admin', title: 'Admin', nav: true, auth: false },
+  { path: 'upload', title: 'Upload', nav: true, auth: false },
   { path: 'logout', title: 'Logout', nav: true, auth: true }
 ];
 

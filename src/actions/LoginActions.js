@@ -17,7 +17,8 @@ export default {
     });
   
     if (savedJwt !== jwt) {
-      browserHistory.push('/admin');
+      // TODO: Weiterleitung an gewünschtes Ziel
+      browserHistory.push('/');
       localStorage.setItem('jwt', jwt);
     }
   },

@@ -3,8 +3,8 @@ var databaseService = require('../services/databaseService');
 var that = {};
 
 var handleUpload = function(req, res) {
-  databaseService.addDocument(req.body.documents, function(documents) {
-    res.send(documents);
+  databaseService.addDocument(req.body, function(results) {
+    res.send(results);
   });
 };
 

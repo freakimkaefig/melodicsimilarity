@@ -6,7 +6,8 @@ import App from './App';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
-import AdminPage from './pages/AdminPage';
+import UploadPage from './pages/UploadPage';
+import UploadSuccessPage from './pages/UploadSuccessPage';
 
 var router = (
   <Router history={browserHistory}>
@@ -14,7 +15,8 @@ var router = (
       <IndexRoute component={HomePage} />
       <Route name="login" path="login" component={LoginPage} />
       <Route name="logout" path="logout" component={LogoutPage} />
-      <Route name="admin" path="admin" component={AdminPage} onEnter={AdminPage.willTransitionTo} />
+      <Route name="upload" path="upload" component={UploadPage} onEnter={UploadPage.willTransitionTo} />
+      <Route name="upload/success" path="upload/success" component={UploadSuccessPage} onEnter={UploadSuccessPage.willTransitionTo} />
     </Route>
   </Router>
 );
