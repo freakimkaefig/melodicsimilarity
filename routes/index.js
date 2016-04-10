@@ -1,6 +1,7 @@
 var express = require('express');
 var apiConfig = require('../config/api.config');
 var userController = require('../controllers/userController.js');
+var uploadController = require('../controllers/uploadController');
 var router = express.Router();
 
 /* Public api requests */
@@ -9,8 +10,8 @@ router.get('/api', function(req, res) {
     version: apiConfig.version
   });
 });
-/* Protected api requests */
 
+/* Protected api requests */
 router.use('/api/protected', userController.jwtCheck);
 router.get('/api/protected/random-quote', function(req, res) {
   res.status(200).send("Chuck Norris doesn't call the wrong number. You answer the wrong phone.");
@@ -18,8 +19,8 @@ router.get('/api/protected/random-quote', function(req, res) {
 router.get('/api/protected/users', function(req, res) {
   userController.getUsers(req, res);
 });
-router.post('/api/protected/find-document', function(req, res) {
-  
+router.post('/api/protected/upload', function(req, res) {
+  uploadController.handleUpload(req, res);
 });
 
 /* Authentication */
