@@ -4,7 +4,8 @@ var jsonwebtoken = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
 var _ = require('lodash');
 var userConfig = require('../config/user.config');
-var databaseController = require('../controllers/databaseController');
+var databaseService = require('../services/databaseService');
+var databaseConfig = require('../config/database.config.json');
 
 var that = {};
 
@@ -21,7 +22,7 @@ var _findUser = function(users, username) {
 };
 
 var getUsers = function(req, res) {
-  databaseController.getCollection(userConfig.databaseCollection, function(users) {
+  databaseService.getCollection(databaseConfig.collections.users, function(users) {
     res.json({
       users: users
     })
@@ -33,9 +34,8 @@ var handleSignup = function(req, res) {
     res.status(400).send("You must send the username and the password");
     return;
   }
-  databaseController.addUser(userConfig.databaseCollection, req.body.username, req.body.password, function(result) {
-    if (result)
-    if (result.result.ok && result.ops[0].username == req.body.username) {
+  databaseService.addUser(databaseConfig.collections.users, req.body.username, req.body.password, function(result) {
+    if (result.ok && result.value.username == req.body.username) {
       res.status(201).send(result);
     } else {
       res.status(400).send(result.message);
@@ -48,7 +48,7 @@ var handleLogin = function(req, res) {
     res.status(400).send("You must send the username and the password");
     return;
   }
-  databaseController.getCollection(userConfig.databaseCollection, function(users) {
+  databaseService.getCollection(databaseConfig.collections.users, function(users) {
 
     var user = _findUser(users, req.body.username);
 
