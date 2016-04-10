@@ -1,4 +1,3 @@
-var express = require('express');
 var jwt = require('express-jwt');
 var jsonwebtoken = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
