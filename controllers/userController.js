@@ -24,7 +24,7 @@ var getUsers = function(req, res) {
   databaseService.getCollection(databaseConfig.collections.users, function(users) {
     res.json({
       users: users
-    })
+    });
   });
 };
 

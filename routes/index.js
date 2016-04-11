@@ -1,29 +1,50 @@
 var express = require('express');
 var apiConfig = require('../config/api.config');
 var userController = require('../controllers/userController.js');
-var uploadController = require('../controllers/uploadController');
+var songsheetController = require('../controllers/songsheetController');
 var router = express.Router();
 
-/* Public api requests */
+
+/* ========================================
+ * ========== PUBLIC API REQUESTS =========
+ * ======================================== */
 router.get('/api', function(req, res) {
   res.json({
     version: apiConfig.version
   });
 });
 
-/* Protected api requests */
+/* Songsheets */
+router.get('/api/songsheets', function(req, res) {
+  songsheetController.getUploads(req, res);
+});
+router.get('/api/songsheets/:signature', function(req, res) {
+  songsheetController.getSongsheetBySignature(req, res);
+});
+router.post('/api/protected/upload', function(req, res) {
+  songsheetController.handleUpload(req, res);
+});
+
+
+/* ========================================
+ * ======== PROTECTED API REQUESTS ========
+ * ======================================== */
 router.use('/api/protected', userController.jwtCheck);
+
+/* Test random quote */
 router.get('/api/protected/random-quote', function(req, res) {
   res.status(200).send("Chuck Norris doesn't call the wrong number. You answer the wrong phone.");
 });
+
+/* Users */
 router.get('/api/protected/users', function(req, res) {
   userController.getUsers(req, res);
 });
-router.post('/api/protected/upload', function(req, res) {
-  uploadController.handleUpload(req, res);
-});
 
-/* Authentication */
+
+/* ========================================
+ * ============ AUTHENTICATION ============
+ * ======================================== */
 router.post('/user/create', function(req, res) {
   userController.handleSignup(req, res);
 });
@@ -31,7 +52,10 @@ router.post('/user/login', function(req, res) {
   userController.handleLogin(req, res);
 });
 
-/* Frontend */
+
+/* ========================================
+ * =============== FRONTEND ===============
+ * ======================================== */
 router.get('*', function(req, res) {
   res.render('index', { title: 'Main' });
 });

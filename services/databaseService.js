@@ -23,6 +23,22 @@ var getCollection = function(collectionName, callback) {
   });
 };
 
+var getDocument = function(collectionName, query, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    var collection = db.collection(collectionName);
+    collection.find(query).limit(1).toArray(function(err, result) {
+      if (err) {
+        throw err;
+      }
+      callback(result.pop());
+      db.close();
+    });
+  });
+};
+
 var addUser = function(username, password, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -70,6 +86,7 @@ var addDocument = function(data, callback) {
 };
 
 that.getCollection = getCollection;
+that.getDocument = getDocument;
 that.addUser = addUser;
 that.addDocument = addDocument;
 
