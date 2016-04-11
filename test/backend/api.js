@@ -4,7 +4,7 @@ var apiConfig = require('../../config/api.config');
 describe('Api', function() {
   it('should return api version as json', function(done) {
     request(process.env.BASE_URL)
-      .get('/api')
+      .get('api')
       .end(function(err, res) {
         if (err) {
           throw err;

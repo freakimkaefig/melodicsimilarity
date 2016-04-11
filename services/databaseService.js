@@ -12,8 +12,6 @@ var getCollection = function(collectionName, callback) {
     if (err) {
       throw err;
     }
-
-    console.log(typeof collectionName, collectionName);
     var collection = db.collection(collectionName);
     collection.find({}).toArray(function(err, result) {
       if (err) {
@@ -30,7 +28,6 @@ var addUser = function(username, password, callback) {
     if (err) {
       throw err;
     }
-
     var collection = db.collection(databaseConfig.collections.users);
     collection.findOneAndUpdate(
       { username: username },
