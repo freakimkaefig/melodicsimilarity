@@ -9,6 +9,7 @@ import UploadActions from '../actions/UploadActions';
 import UploadStore from '../stores/UploadStore';
 import FileList from './FileList';
 import { Button } from 'react-bootstrap';
+import ImageZoom from './ImageZoom';
 import UploadService from '../services/UploadService';
 import { browserHistory } from 'react-router';
 
@@ -151,7 +152,9 @@ export default class UploadView extends React.Component {
           onCheckboxClick={props.onCheckboxClick}>
           <div className="col-xs-5">
             <div className="row">
-              <div className="col-xs-12 image"><img src={file.image} className="img-responsive" /></div>
+              <div className="col-xs-12 image">
+                <ImageZoom image={file.image} />
+              </div>
               <div className="col-xs-12 text">{file.metadata.text}</div>
             </div>
           </div>
