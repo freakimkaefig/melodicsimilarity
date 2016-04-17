@@ -150,7 +150,10 @@ export default class UploadView extends React.Component {
           checkbox={file.upload}
           onCheckboxClick={props.onCheckboxClick}>
           <div className="col-xs-5">
-            <img src={file.image} className="img-responsive" />
+            <div className="row">
+              <div className="col-xs-12 image"><img src={file.image} className="img-responsive" /></div>
+              <div className="col-xs-12 text">{file.metadata.text}</div>
+            </div>
           </div>
           <div className="col-xs-7">
             <AbcViewer itemKey={file.key} abc={file.abc} />

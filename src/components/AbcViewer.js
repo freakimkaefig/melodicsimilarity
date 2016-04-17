@@ -6,6 +6,7 @@ import 'expose?Stream!exports?Stream!../../node_modules/midi/inc/jasmid/stream.j
 import 'expose?MidiFile!exports?MidiFile!../../node_modules/midi/inc/jasmid/midifile.js';
 import 'expose?Replayer!exports?Replayer!../../node_modules/midi/inc/jasmid/replayer.js';
 import MIDI from 'exports?MIDI!script!../../node_modules/midi/build/MIDI';
+import {SOUNDFONT_URL} from '../constants/MidiConstants';
 import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js';
 import '../stylesheets/AbcViewer.less';
 
@@ -49,17 +50,19 @@ export default class AbcViewer extends React.Component {
     this.onStopClick = () => this._onStopClick();
   }
 
-  componentDidMount() {
-    this._renderAbc();
-    this._renderMidi();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.abc != '') {
+      this._renderAbc(nextProps.abc, nextProps.itemKey);
+      this._renderMidi(nextProps.abc, nextProps.itemKey);
+    }
   }
 
-  _renderAbc() {
-    ABCJS.renderAbc('notation-' + this.props.itemKey, this.props.abc, this.state.parserParams, this.state.engraverParams, this.state.renderParams);
+  _renderAbc(abc, itemKey) {
+    ABCJS.renderAbc('notation-' + itemKey, abc, this.state.parserParams, this.state.engraverParams, this.state.renderParams);
   }
 
-  _renderMidi() {
-    ABCJS.renderMidi('midi-' + this.props.itemKey, this.props.abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
+  _renderMidi(abc, itemKey) {
+    ABCJS.renderMidi('midi-' + itemKey, abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
 
     let conf = this.state.midiPluginConf;
     MIDI.loadPlugin(conf);
@@ -112,14 +115,14 @@ export default class AbcViewer extends React.Component {
       <div>
         <div id={`notation-${key}`} className="notation"></div>
         <div id={`midi-player-${key}`}>
-          <div id={`midi-${key}`}></div>
-          <div id={`player-${key}`}>
+          <div id={`player-${key}`} className="player-container">
             {this.state.player.playing}
             <div className="progress">
               <div className="progress-bar" style={{width: this.state.playerProgress + '%'}}></div>
             </div>
             <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onPlayClick : null}><span className={`fa fa-${playClass}-circle-o`}></span></Button>
             <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onStopClick : null}><span className={`fa fa-stop-circle-o`}></span></Button>
+            <div id={`midi-${key}`} className="midi-container"></div>
           </div>
         </div>
       </div>

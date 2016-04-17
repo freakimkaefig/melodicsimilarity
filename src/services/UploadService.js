@@ -21,7 +21,6 @@ class UploadService {
   handleUploadResponse(uploadPremise) {
     return uploadPremise
       .then(function(response) {
-        console.log(response);
         UploadActions.handleUpload(response);
       });
   }

@@ -8,12 +8,13 @@ require('!bootstrap-webpack!../config/bootstrap.config');
 require('font-awesome-webpack!../config/font-awesome.config');
 
 var headerLinks = [
-  
+  { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false }
 ];
 
 var footerLinks = [
-  { path: 'upload', title: 'Upload', nav: true, auth: false },
-  { path: 'logout', title: 'Logout', nav: true, auth: true }
+  { path: '/upload', title: 'Upload', nav: true, auth: true },
+  { path: '/login', title: 'Login', nav: false, auth: false },
+  { path: '/logout', title: 'Logout', nav: true, auth: true }
 ];
 
 
@@ -59,7 +60,7 @@ export default class App extends React.Component {
       <DocumentTitle title="MusicIR App">
         <div className="App">
           <Navbar header={true} links={headerLinks} route={this.props.location.pathname} />
-          <div className="container">
+          <div className="container" id="app">
             {this.props.children}
           </div>
           <Navbar header={false} links={footerLinks} route={this.props.location.pathname} />

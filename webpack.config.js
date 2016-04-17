@@ -12,20 +12,21 @@ var config = {
   output: {
     path: 'public/build',
     filename: '[name].js',
-    publicPath: 'build/'
+    publicPath: '/build/'
   },
   module: {
     loaders: [
-      {test: /\.js?/, loader: 'babel', exclude: /(node_modules|lib)/ },
-      {test: /\.less$/, loader: ExtractTextPlugin.extract('style', 'css!less')},
-      {test: /\.scss$/, loader: ExtractTextPlugin.extract('style', 'css!sass')},
+      {test: /\.js?/, loader: 'babel-loader', exclude: /(node_modules|lib)/ },
+      // {test: /\.less$/, loader: ['isomorphic-style-loader', 'css-loader?modules&localIdentName=[name]_[local]_[hash:base64:3]', 'postcss-loader']},
+      {test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader', 'css!less')},
+      {test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css!sass')},
       {test: /\.png$/, loader: 'url?limit=10000&mimetype=image/png'},
       {test: /\.(woff|woff2)$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
       {test: /\.ttf$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},
       {test: /\.eot$/, loader: 'file'},
       {test: /\.svg$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
       {test: /\.mp3$/, loader: 'file'},
-      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+      { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff&name=./[hash].[ext]" },
       { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
     ]
   },

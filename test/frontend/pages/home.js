@@ -12,7 +12,7 @@ describe('Home', function() {
         }
         res.should.have.property('status', 200);
         var title = res.text.match(/<title[^>]*>([^<]+)<\/title>/)[1];
-        should(title).be.equal('Main');
+        should(title).be.equal('Home');
         done();
       });
   });

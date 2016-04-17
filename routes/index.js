@@ -57,7 +57,7 @@ router.post('/user/login', function(req, res) {
  * =============== FRONTEND ===============
  * ======================================== */
 router.get('*', function(req, res) {
-  res.render('index', { title: 'Main' });
+  res.render('index', { title: 'Home' });
 });
 
 
