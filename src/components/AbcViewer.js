@@ -14,8 +14,8 @@ import '../stylesheets/AbcViewer.less';
 export default class AbcViewer extends React.Component {
 
   static propTypes = {
-    abc: PropTypes.string.isRequired,
-    itemKey: PropTypes.number.isRequired
+    abc: PropTypes.string,
+    itemKey: PropTypes.number
   };
 
   constructor(props) {

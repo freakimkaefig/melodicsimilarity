@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import LoadingOverlay from './LoadingOverlay';
 import {Link} from 'react-router';
 import '../stylesheets/FileGrid.less';
 
@@ -35,9 +36,7 @@ export default class FileGrid extends React.Component {
       });
     } else {
       return (
-        <div className="loading text-center">
-          <span className="fa fa-circle-o-notch fa-spin"></span>
-        </div>
+        <LoadingOverlay loading={true} />
       );
     }
   }
