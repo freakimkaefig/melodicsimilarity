@@ -2,17 +2,17 @@
 ## Prerequisites
 1. Install [Node.js](https://nodejs.org) (version >= 5.3.0)
 2. Install [Java](https://www.java.com/de/download/) (version >= 8)
-3. `npm install webpack -g`
-4. `npm install nodemon -g`
+3. `$ npm install webpack -g`
+4. `$ npm install nodemon -g`
 
 ## Start
 1. Fork it
-2. `npm install`
-3. `npm run build-dev`
-4. Create your feature branch (`git checkout -b my-new-feature`)
-5. Commit your changes (`git commit -am 'Added some feature'`)
-6. `npm test`
-7. Push to the branch (`git push origin my-new-feature`)
+2. `$ npm install`
+3. `$ npm run build-dev`
+4. Create your feature branch (`$ git checkout -b my-new-feature`)
+5. Commit your changes (`$ git commit -am 'Added some feature'`)
+6. `$ npm test`
+7. Push to the branch (`$ git push origin my-new-feature`)
 8. Create new Pull Request
 
 ## Setup MongoDB database
@@ -28,7 +28,7 @@ MONGOLAB_URI=mongodb://<dbuser>:<dbpassword>@ds013260.mlab.com:13260/<dbname>
 ```
 
 ## Express webserver
-Run `npm run dev-server` for nodemon version, or `node start` for standard server.
+Run `$ npm run dev-server` for nodemon version, or `$ node start` for standard server.
 
 The output should be something like this:
 ```
@@ -44,7 +44,7 @@ The output should be something like this:
 The project url is [http://localhost:3000](http://localhost:3000).
 
 ## Apache Solr
-Run `solr/bin/solr start` from the project root.
+Run `$ solr/bin/solr start` from the project root.
 
 The output should be something like this:
 ```
@@ -56,7 +56,7 @@ Waiting up to 30 to see Solr running on port 8983
 Started Solr server on port 8983. Happy searching!
 ```
 ---
-Stopping Apache Solr: `solr/bin/solr stop -all`.
+Stopping Apache Solr: `$ solr/bin/solr stop -all`.
 
 The output should say:
 ```
@@ -106,6 +106,39 @@ melodicsimilarity
 I'm using [mocha](https://mochajs.org/) and [should](https://shouldjs.github.io/) for testing.
 Run the test suite with:
 
-`npm test`
+`$ npm test`
 
 The `test` script starts Express webserver, so port `3000` shouldn't be in use. Apache Solr isn't yet covered in tests.
+
+# Docker
+Add mongo container with `$ docker run --name melodicsimilarity-mongo -d mongo --auth`.
+
+Start MongoDB shell & create db user:
+```
+$ docker exec -it melodicsimilarity-mongo mongo admin
+MongoDB shell version: 3.2.5
+connecting to: admin
+Welcome to the MongoDB shell.
+For interactive help, type "help".
+For more comprehensive documentation, see
+        http://docs.mongodb.org/
+Questions? Try the support group
+        http://groups.google.com/group/mongodb-user
+> db.createUser({ user: 'username', pwd: 'password', roles: [ { role: "userAdminAnyDatabase", db: "admin"} ] });
+Successfully added user: {
+        "user" : "username",
+        "roles" : [
+                {
+                        "role" : "userAdminAnyDatabase",
+                        "db" : "admin"
+                }
+        ]
+}
+```
+
+Create database:
+```
+$ docker run -it --rm --link melodicsimilarity-mongo:mongo mongo mongo -u username -p password --authenticationDatabase admin melodicsimilarity-mongo/melodicsimilarity-db
+```
+
+Stop db container with `$ docker stop db`.
