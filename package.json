@@ -33,7 +33,7 @@
     "less": "^2.6.1",
     "less-loader": "^2.2.3",
     "lodash": "^4.9.0",
-    "midi": "github:panarch/MIDI.js",
+    "midi": "git:github.com/panarch/MIDI.js",
     "mongodb": "^2.1.16",
     "musicjson2abc": "^0.3.0",
     "node-sass": "^3.4.2",
