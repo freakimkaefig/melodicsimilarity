@@ -1,5 +1,5 @@
 var express = require('express');
-var apiConfig = require('../config/api.config');
+var apiController = require('../controllers/apiController');
 var userController = require('../controllers/userController.js');
 var songsheetController = require('../controllers/songsheetController');
 var router = express.Router();
@@ -9,9 +9,7 @@ var router = express.Router();
  * ========== PUBLIC API REQUESTS =========
  * ======================================== */
 router.get('/api', function(req, res) {
-  res.json({
-    version: apiConfig.version
-  });
+  apiController.getStats(req, res);
 });
 
 /* Songsheets */

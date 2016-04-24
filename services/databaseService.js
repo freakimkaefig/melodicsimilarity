@@ -7,6 +7,21 @@ var that = {};
 
 var url = process.env.MONGOLAB_URI;
 
+var getStats = function(callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    db.stats(function (err, stats) {
+      if (err) {
+        throw err;
+      }
+      callback(stats);
+      db.close();
+    });
+  })
+};
+
 var getCollection = function(collectionName, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -85,6 +100,7 @@ var addDocument = function(data, callback) {
   });
 };
 
+that.getStats = getStats;
 that.getCollection = getCollection;
 that.getDocument = getDocument;
 that.addUser = addUser;
