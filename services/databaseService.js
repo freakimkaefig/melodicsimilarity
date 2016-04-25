@@ -2,10 +2,11 @@ var mongo = require('mongodb');
 var databaseConfig = require('../config/database.config.json');
 var MongoClient = mongo.MongoClient;
 var bcrypt = require('bcryptjs');
+var env = require('../.env');
 
 var that = {};
 
-var url = process.env.MONGOLAB_URI;
+var url = env.MONGO_URI;
 
 var getStats = function(callback) {
   MongoClient.connect(url, function(err, db) {

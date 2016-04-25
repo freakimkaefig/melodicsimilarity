@@ -2,8 +2,6 @@
  * Created by Lukas Lamm on 26.03.2016.
  */
 'use strict';
-var dotenv = require('dotenv');
-var env = dotenv.config({silent: true});
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');

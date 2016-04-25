@@ -9,3 +9,4 @@ vendor/
 npm-debug.log
 
 public/build/
+.env.js

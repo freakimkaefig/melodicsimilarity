@@ -1,1 +1,3 @@
-export const APP_URL = "http://localhost:3000/";
+import env from '../../.env';
+
+export const APP_URL = env.MONGO_URI;

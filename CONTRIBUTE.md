@@ -18,13 +18,16 @@
 ## Setup MongoDB database
 You'll need a MongoDB database running. You can host free ones on [MongoLab](https://www.mlab.com).
 
-Put your connect uri in a file `.env` in projects root. Also put the app base url in there.
+Put your connect uri in a file `.env.js` in projects root. Also put the app base url in there.
 
 Example:
 ```
-# .env
-BASE_URL=http://localhost:3000
-MONGOLAB_URI=mongodb://<dbuser>:<dbpassword>@ds013260.mlab.com:13260/<dbname>
+# .env.js
+
+module.exports = {
+  BASE_URL: 'http://localhost:3000',
+  MONGO_URI: 'mongodb://<dbuser>:<dbpassword>@ds013260.mlab.com:13260/<dbname>'
+};
 ```
 
 ## Express webserver
