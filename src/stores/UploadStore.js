@@ -23,27 +23,27 @@ class UploadStore extends BaseStore {
         break;
         
       case UPLOAD_IMAGES:
-        var files = action.files.map(function (file) {
+        let imageFiles = action.files.map(function (file) {
           file.store = true;
           return file;
         });
-        this.mergeByProperty(this._images, files, 'clearName');
-        this.mergeByProperty(this._files, files, 'clearName');
+        this.mergeByProperty(this._images, imageFiles, 'clearName');
+        this.mergeByProperty(this._files, imageFiles, 'clearName');
         this.emitChange();
         break;
 
       case UPLOAD_JSONS:
-        var files = action.files.map(function (file) {
+        let jsonFiles = action.files.map(function (file) {
           file.store = true;
           return file;
         });
-        this.mergeByProperty(this._jsons, files, 'clearName');
-        this.mergeByProperty(this._files, files, 'clearName');
+        this.mergeByProperty(this._jsons, jsonFiles, 'clearName');
+        this.mergeByProperty(this._files, jsonFiles, 'clearName');
         this.emitChange();
         break;
 
       case RENDER_METADATA:
-        var signature = this.extractValue(JSON.parse(action.response.responseHeader.params.json).params.q);
+        let signature = this.extractValue(JSON.parse(action.response.responseHeader.params.json).params.q);
         this._files.find(function(file) {
           return file.content.id == signature;
         }).metadata = action.response.response.docs[0];

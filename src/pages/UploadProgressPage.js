@@ -4,6 +4,8 @@ import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
 import ResultList from '../components/ResultList';
 import UploadStore from '../stores/UploadStore';
+import { browserHistory } from 'react-router';
+
 
 export default AuthenticatedComponent(class UploadProgressPage extends React.Component {
 
@@ -35,6 +37,9 @@ export default AuthenticatedComponent(class UploadProgressPage extends React.Com
 
   componentDidMount() {
     UploadStore.addChangeListener(this.onStoreChange);
+    if (this.state.responses.length === 0) {
+      browserHistory.push('/upload');
+    }
   }
   componentWillUnmount() {
     UploadStore.removeChangeListener(this.onStoreChange);

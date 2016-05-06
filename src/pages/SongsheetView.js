@@ -18,8 +18,6 @@ export default class SongsheetView extends React.Component {
     super(props);
 
     this.state = {
-      abc: null,
-      image: null,
       file: null,
       loading: true
     };
@@ -30,18 +28,21 @@ export default class SongsheetView extends React.Component {
   componentDidMount() {
     SongsheetStore.addChangeListener(this.onStoreChange);
 
-    let songsheet = SongsheetStore.songsheets.find(songsheet => {
-      return songsheet.signature === this.props.params.signature;
-    });
-    if (songsheet) {
-      this.setState({
-        abc: songsheet.abc,
-        image: songsheet.image,
-        loading: false
-      });
-    } else {
-      SongsheetService.loadItem(this.props.params.signature);
-    }
+    SongsheetService.loadItem(this.props.params.signature);
+
+    // let songsheet = SongsheetStore.songsheets.find(songsheet => {
+    //   return songsheet.signature === this.props.params.signature;
+    // });
+    // console.log(songsheet);
+    // if (songsheet) {
+    //   this.setState({
+    //     file: songsheet,
+    //     loading: false
+    //   });
+    // } else {
+    //   console.log(this.props);
+    //   SongsheetService.loadItem(this.props.params.signature);
+    // }
   }
 
   componentWillUnmount() {
@@ -49,20 +50,29 @@ export default class SongsheetView extends React.Component {
   }
 
   onStoreChange() {
-    console.log(SongsheetStore.songsheet);
     this.setState({
-      abc: SongsheetStore.songsheet.abc,
-      image: SongsheetStore.songsheet.image,
       file: SongsheetStore.songsheet,
       loading: false
     });
   }
 
-  _getAbcViewer(abc) {
-    if (abc !== null) {
-      return (
-        <AbcViewer abc={abc} itemKey={0} />
-      );
+  _getImageView(file) {
+    if (file !== null) {
+      if (typeof file.image !== 'undefined') {
+        return (
+          <ImageZoom itemKey={0} image={file.image} />
+        );
+      }
+    }
+  }
+
+  _getAbcViewer(file) {
+    if (file !== null) {
+      if (typeof file.abc !== 'undefined') {
+        return (
+          <AbcViewer abc={file.abc} itemKey={0}/>
+        );
+      }
     }
   }
 
@@ -98,10 +108,10 @@ export default class SongsheetView extends React.Component {
               <h1>Songsheet View</h1>
             </div>
             <div className="col-xs-12 col-sm-4">
-              <ImageZoom itemKey={0} image={this.state.image} />
+              { this._getImageView(this.state.file) }
             </div>
             <div className="col-xs-12 col-sm-8">
-              { this._getAbcViewer(this.state.abc) }
+              { this._getAbcViewer(this.state.file) }
               { this._getMetadataViewer(this.state.file) }
             </div>
           </div>

@@ -126,6 +126,7 @@ export default class UploadView extends React.Component {
               metadata: {},
               store: false,
               upload: true,
+              signature: JSON.parse(content).id,
               content: JSON.parse(content),
               abc: convert2Abc(content)
             }),
@@ -144,7 +145,7 @@ export default class UploadView extends React.Component {
     return props.files.filter(file => {
       return _.has(file, 'key') && _.has(file, 'name');
     }).map(file => {
-      let signature = _.has(file, 'metadata') ? file.metadata.signature + ' -' : file.content.id;
+      let signature = file.signature;
       let title = _.has(file, 'metadata') ? ' ' + file.metadata.title : '';
       return (
         <Collapse.Panel
