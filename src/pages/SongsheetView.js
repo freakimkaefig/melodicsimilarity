@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
+import { APP_NAME } from '../constants/AppConstants';
 import LoadingOverlay from '../components/LoadingOverlay';
 import SongsheetService from '../services/SongsheetService';
 import SongsheetStore from '../stores/SongsheetStore';
@@ -53,7 +54,7 @@ export default class SongsheetView extends React.Component {
 
   render() {
     return (
-      <DocumentTitle title={`Liedblatt // MusicIR`}>
+      <DocumentTitle title={`Liedblatt - ${this.props.params.signature} // ${APP_NAME}`}>
         <div>
           <LoadingOverlay loading={this.state.loading} />
           <div className="row">
