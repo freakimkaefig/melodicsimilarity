@@ -15,6 +15,7 @@ export default class AbcViewer extends React.Component {
 
   static propTypes = {
     abc: PropTypes.string,
+    file: PropTypes.object,
     itemKey: PropTypes.number
   };
 
@@ -50,11 +51,9 @@ export default class AbcViewer extends React.Component {
     this.onStopClick = () => this._onStopClick();
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.abc != '') {
-      this._renderAbc(nextProps.abc, nextProps.itemKey);
-      this._renderMidi(nextProps.abc, nextProps.itemKey);
-    }
+  componentDidMount() {
+    this._renderAbc(this.props.abc, this.props.itemKey);
+    this._renderMidi(this.props.abc, this.props.itemKey);
   }
 
   _renderAbc(abc, itemKey) {

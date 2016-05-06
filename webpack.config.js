@@ -17,7 +17,7 @@ var config = {
   module: {
     loaders: [
       {test: /\.js?/, loader: 'babel-loader', exclude: /(node_modules|lib)/ },
-      // {test: /\.less$/, loader: ['isomorphic-style-loader', 'css-loader?modules&localIdentName=[name]_[local]_[hash:base64:3]', 'postcss-loader']},
+      {test: /\.json$/, loader: 'json'},
       {test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader', 'css!less')},
       {test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css!sass')},
       {test: /\.png$/, loader: 'url?limit=10000&mimetype=image/png'},

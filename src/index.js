@@ -5,26 +5,33 @@ import LoginActions from './actions/LoginActions';
 import App from './App';
 import HomePage from './pages/HomePage';
 import ImprintPage from './pages/ImprintPage';
+import OverviewPage from './pages/OverviewPage';
+import SongsheetList from './pages/SongsheetList';
+import SongsheetView from './pages/SongsheetView';
+import SearchIndex from './pages/SearchIndex';
 import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
 import UploadPage from './pages/UploadPage';
-import UploadSuccessPage from './pages/UploadSuccessPage';
-import SongsheetList from './pages/SongsheetList';
-import SongsheetView from './pages/SongsheetView';
+import UploadProgressPage from './pages/UploadProgressPage';
+
 
 var router = (
   <Router history={browserHistory}>
     <Route name="home" path="/" component={App}>
       <IndexRoute component={HomePage} />
+
+      <Route name="overview" path="/overview" component={OverviewPage} />
+
+      <Route name="songsheets" path="/songsheets" component={SongsheetList} />
+      <Route name="songsheet" path="/songsheets/:signature" component={SongsheetView} />
+
+      <Route name="search" path="/search" component={SearchIndex} />
+
+      <Route name="login" path="/login" component={LoginPage} />
+      <Route name="logout" path="/logout" component={LogoutPage} />
       
-      <Route name="login" path="login" component={LoginPage} />
-      <Route name="logout" path="logout" component={LogoutPage} />
-      
-      <Route name="upload" path="upload" component={UploadPage} onEnter={UploadPage.willTransitionTo} />
-      <Route name="upload-success" path="upload/success" component={UploadSuccessPage} onEnter={UploadSuccessPage.willTransitionTo} />
-      
-      <Route name="songsheets" path="songsheets" component={SongsheetList} />
-      <Route name="songsheet" path="songsheets/:signature" component={SongsheetView} />
+      <Route name="upload" path="/upload" component={UploadPage} onEnter={UploadPage.willTransitionTo} />
+      <Route name="upload-progress" path="/upload/progress" component={UploadProgressPage} onEnter={UploadProgressPage.willTransitionTo} />
 
       <Route name="imprint" path="/imprint" component={ImprintPage} />
     </Route>

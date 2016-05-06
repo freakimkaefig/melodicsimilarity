@@ -8,7 +8,9 @@ require('!bootstrap-webpack!../config/bootstrap.config');
 require('font-awesome-webpack!../config/font-awesome.config');
 
 var headerLinks = [
-  { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false }
+  { path: '/overview', title: 'Übersicht', nav: true, auth: false},
+  { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false },
+  { path: '/search', title: 'Suche', nav: true, auth: false }
 ];
 
 var footerLinks = [

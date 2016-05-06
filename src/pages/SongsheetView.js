@@ -6,6 +6,10 @@ import SongsheetService from '../services/SongsheetService';
 import SongsheetStore from '../stores/SongsheetStore';
 import ImageZoom from '../components/ImageZoom';
 import AbcViewer from '../components/AbcViewer';
+import MetadataViewer from '../components/MetadataViewer';
+import { SONGSHEET_CONTEXT } from '../constants/SongsheetConstants';
+import { LinkContainer } from 'react-router-bootstrap';
+import { Breadcrumb } from 'react-bootstrap';
 
 
 export default class SongsheetView extends React.Component {
@@ -14,8 +18,9 @@ export default class SongsheetView extends React.Component {
     super(props);
 
     this.state = {
-      abc: '',
-      image: '',
+      abc: null,
+      image: null,
+      file: null,
       loading: true
     };
 
@@ -44,12 +49,29 @@ export default class SongsheetView extends React.Component {
   }
 
   onStoreChange() {
-    console.log(SongsheetStore.songsheet.abc);
+    console.log(SongsheetStore.songsheet);
     this.setState({
       abc: SongsheetStore.songsheet.abc,
       image: SongsheetStore.songsheet.image,
+      file: SongsheetStore.songsheet,
       loading: false
     });
+  }
+
+  _getAbcViewer(abc) {
+    if (abc !== null) {
+      return (
+        <AbcViewer abc={abc} itemKey={0} />
+      );
+    }
+  }
+
+  _getMetadataViewer(file) {
+    if (file !== null) {
+      return (
+        <MetadataViewer file={file} context={SONGSHEET_CONTEXT} />
+      );
+    }
   }
 
   render() {
@@ -59,14 +81,28 @@ export default class SongsheetView extends React.Component {
           <LoadingOverlay loading={this.state.loading} />
           <div className="row">
             <div className="col-xs-12">
+              <Breadcrumb>
+                <LinkContainer to="/songsheets" key={0}>
+                  <Breadcrumb.Item>
+                    Liedblätter
+                  </Breadcrumb.Item>
+                </LinkContainer>
+                <Breadcrumb.Item active>
+                  {this.props.params.signature}
+                </Breadcrumb.Item>
+              </Breadcrumb>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-12">
               <h1>Songsheet View</h1>
             </div>
-
             <div className="col-xs-12 col-sm-4">
-              <ImageZoom image={this.state.image} />
+              <ImageZoom itemKey={0} image={this.state.image} />
             </div>
             <div className="col-xs-12 col-sm-8">
-              <AbcViewer abc={this.state.abc} itemKey={0} />
+              { this._getAbcViewer(this.state.abc) }
+              { this._getMetadataViewer(this.state.file) }
             </div>
           </div>
         </div>

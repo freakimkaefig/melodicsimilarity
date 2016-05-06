@@ -12,6 +12,7 @@ import { Button } from 'react-bootstrap';
 import ImageZoom from './ImageZoom';
 import UploadService from '../services/UploadService';
 import { browserHistory } from 'react-router';
+import { UPLOAD_CONTEXT } from '../constants/UploadConstants';
 
 export default class UploadView extends React.Component {
 
@@ -40,6 +41,7 @@ export default class UploadView extends React.Component {
     this.saveJsonFiles = this.saveJsonFiles.bind(this);
 
     this.onFileListCheckboxClick = this.onFileListCheckboxClick.bind(this);
+    this.onFileListChange = this.onFileListChange.bind(this);
 
     this.countUploadFiles = this.countUploadFiles.bind(this);
     this.onUploadClick = this.onUploadClick.bind(this);
@@ -153,14 +155,14 @@ export default class UploadView extends React.Component {
           <div className="col-xs-5">
             <div className="row">
               <div className="col-xs-12 image">
-                <ImageZoom image={file.image} />
+                <ImageZoom itemKey={file.key} image={file.image} store={UploadStore} />
               </div>
               <div className="col-xs-12 text">{file.metadata.text}</div>
             </div>
           </div>
           <div className="col-xs-7">
             <AbcViewer itemKey={file.key} abc={file.abc} />
-            <MetadataViewer file={file} />
+            <MetadataViewer file={file} context={UPLOAD_CONTEXT} />
           </div>
         </Collapse.Panel>
       );
@@ -177,6 +179,10 @@ export default class UploadView extends React.Component {
       });
       this.setState({files: updatedFiles});
     }
+  }
+
+  onFileListChange(key) {
+    UploadActions.setListActive(key);
   }
 
   countUploadFiles() {
@@ -208,7 +214,7 @@ export default class UploadView extends React.Component {
 
     this.setState({uploadAllowed: false});
 
-    browserHistory.push('/upload/success');
+    browserHistory.push('/upload/progress');
   }
 
   onStoreChange() {
@@ -258,7 +264,7 @@ export default class UploadView extends React.Component {
         
         <div className="row">
           <div className="col-xs-12">
-            <FileList files={this.state.files} renderFunction={this.fileListRenderFunction} onCheckboxClick={this.onFileListCheckboxClick} />
+            <FileList files={this.state.files} renderFunction={this.fileListRenderFunction} onCheckboxClick={this.onFileListCheckboxClick} onChange={this.onFileListChange} />
           </div>
         </div>
         <div className="row">

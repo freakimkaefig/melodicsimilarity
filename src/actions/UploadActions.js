@@ -1,7 +1,14 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import { LIST_ACTIVE_CHANGE, UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
 
 export default {
+  setListActive: (key) => {
+    AppDispatcher.dispatch({
+      actionType: LIST_ACTIVE_CHANGE,
+      key: key
+    });
+  },
+
   saveImageFiles: (files) => {
     AppDispatcher.dispatch({
       actionType: UPLOAD_IMAGES,

@@ -6,14 +6,17 @@ import '../stylesheets/ImageZoom.less';
 export default class ImageZoom extends React.Component {
 
   static propTypes = {
+    itemKey: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
-    scale: PropTypes.number
+    scale: PropTypes.number,
+    store: PropTypes.object
   };
 
   static defaultProps = {
     ...React.Component.defaultProps,
     image: '',
-    scale: 2.4
+    scale: 2.4,
+    store: null
   };
 
   constructor(props) {
@@ -22,14 +25,31 @@ export default class ImageZoom extends React.Component {
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
+
+    this.onStoreChange = this.onStoreChange.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.store !== null) {
+      this.props.store.addChangeListener(this.onStoreChange);
+    }
+  }
+  componentWillUnmount() {
+    if (this.props.store !== null) {
+      this.props.store.removeChangeListener(this.onStoreChange);
+    }
+  }
+
+  onStoreChange() {
+    this.updateWrapper();
   }
 
   componentDidUpdate() {
-    if (this.props.image != '') {
-      $('.image-zoom-wrapper').css({
-        'height': (IMAGE_HEIGHT / IMAGE_WIDTH) * $('.image-zoom-wrapper').width()
-      });
-    }
+    this.updateWrapper();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateWrapper();
   }
 
   onMouseOver(e) {
@@ -51,13 +71,22 @@ export default class ImageZoom extends React.Component {
     });
   }
 
+  updateWrapper() {
+    if (this.props.image != '') {
+      let $imageZoomWrapper = $('#image-zoom-wrapper-' + this.props.itemKey);
+      $imageZoomWrapper.css({
+        'height': (IMAGE_HEIGHT / IMAGE_WIDTH) * $imageZoomWrapper.width()
+      });
+    }
+  }
+
   render() {
     let imageStyle = {
       backgroundImage: 'url(' + this.props.image + ')'
     };
 
     return (
-      <div className="image-zoom-wrapper">
+      <div id={`image-zoom-wrapper-${this.props.itemKey}`} className="image-zoom-wrapper">
         <div className="image-zoom-container" onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseMove={this.onMouseMove}>
           <div className="image-zoom" style={imageStyle} data-scale={this.props.scale}></div>
         </div>

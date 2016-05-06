@@ -1,10 +1,11 @@
 import React from 'react';
 import AuthenticatedComponent from '../components/AuthenticatedComponent';
 import DocumentTitle from 'react-document-title';
+import { APP_NAME } from '../constants/AppConstants';
 import ResultList from '../components/ResultList';
 import UploadStore from '../stores/UploadStore';
 
-export default AuthenticatedComponent(class UploadSuccessPage extends React.Component {
+export default AuthenticatedComponent(class UploadProgressPage extends React.Component {
 
   constructor(props) {
     super(props);
@@ -57,9 +58,9 @@ export default AuthenticatedComponent(class UploadSuccessPage extends React.Comp
 
   render() {
     return (
-      <DocumentTitle title="Admin // MusicIR">
+      <DocumentTitle title={`Upload // ${APP_NAME}`}>
         <div>
-          <h1>Hello Upload Success Page!</h1>
+          <h1>Upload wird ausgeführt ...</h1>
           <ResultList responses={this.state.responses} />
         </div>
       </DocumentTitle>

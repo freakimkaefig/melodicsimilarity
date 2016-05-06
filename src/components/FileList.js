@@ -8,7 +8,8 @@ export default class FileList extends React.Component {
   static propTypes = {
     files: PropTypes.arrayOf(PropTypes.object).isRequired,
     renderFunction: PropTypes.func.isRequired,
-    onCheckboxClick: PropTypes.func
+    onCheckboxClick: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   constructor(props) {
@@ -17,7 +18,7 @@ export default class FileList extends React.Component {
 
   render() {
     return (
-      <Collapse accordion={true}>
+      <Collapse accordion={true} onChange={this.props.onChange}>
         { this.props.renderFunction(this.props) }
       </Collapse>
     );

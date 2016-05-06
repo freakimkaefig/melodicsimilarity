@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
 import LoginStore from '../stores/LoginStore';
-import { RouterContext } from 'react-router';
 
 require('../stylesheets/NavBar.less');
 

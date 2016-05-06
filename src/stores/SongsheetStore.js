@@ -1,5 +1,5 @@
 import BaseStore from './BaseStore';
-import { LOAD_LIST, LOAD_ITEM } from '../constants/SongsheetConstants';
+import { LOAD_LIST, LOAD_ITEM, RENDER_METADATA } from '../constants/SongsheetConstants';
 
 class SongsheetStore extends BaseStore {
 
@@ -20,6 +20,11 @@ class SongsheetStore extends BaseStore {
       case LOAD_ITEM:
         this._songsheet = action.songsheet;
         this.emitChange();
+        break;
+      case RENDER_METADATA:
+        this._songsheet.metadata = action.response.response.docs[0];
+        this.emitChange();
+        break;
       default:
         break;
     }
@@ -31,6 +36,16 @@ class SongsheetStore extends BaseStore {
 
   get songsheet() {
     return this._songsheet;
+  }
+
+  extractValue(str) {
+    var ret = "";
+    if (/"/.test(str)) {
+      ret = str.match(/"(.*?)"/)[1];
+    } else {
+      ret = str;
+    }
+    return ret;
   }
 }
 
