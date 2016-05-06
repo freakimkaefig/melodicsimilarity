@@ -14,7 +14,8 @@ var headerLinks = [
 var footerLinks = [
   { path: '/upload', title: 'Upload', nav: true, auth: true },
   { path: '/login', title: 'Login', nav: false, auth: false },
-  { path: '/logout', title: 'Logout', nav: true, auth: true }
+  { path: '/logout', title: 'Logout', nav: true, auth: true },
+  { path: '/imprint', title: 'Impressum', nav: true, auth: false }
 ];
 
 

@@ -4,6 +4,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import LoginActions from './actions/LoginActions';
 import App from './App';
 import HomePage from './pages/HomePage';
+import ImprintPage from './pages/ImprintPage';
 import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
 import UploadPage from './pages/UploadPage';
@@ -24,6 +25,8 @@ var router = (
       
       <Route name="songsheets" path="songsheets" component={SongsheetList} />
       <Route name="songsheet" path="songsheets/:signature" component={SongsheetView} />
+
+      <Route name="imprint" path="/imprint" component={ImprintPage} />
     </Route>
   </Router>
 );
