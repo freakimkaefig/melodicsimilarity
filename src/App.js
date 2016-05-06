@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import LoginStore from './stores/LoginStore';
 import Navbar from './components/Navbar';
+import MidiService from './services/MidiService';
 
 require('expose?$!expose?jQuery!jquery');
 require('!bootstrap-webpack!../config/bootstrap.config');
@@ -40,6 +41,8 @@ export default class App extends React.Component {
   componentDidMount() {
     this.changeListener = this._onChange.bind(this);
     LoginStore.addChangeListener(this.changeListener);
+
+    MidiService.loadPlugin();
   }
 
   componentWillUnmount() {

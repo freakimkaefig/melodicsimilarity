@@ -1,12 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
-import 'expose?Base64Binary!exports?Base64Binary!../../node_modules/midi/inc/base64binary.js';
-import 'expose?atob&btoa!exports?atob&btoa!../../node_modules/midi/inc/Base64.js';
-import 'expose?Stream!exports?Stream!../../node_modules/midi/inc/jasmid/stream.js';
-import 'expose?MidiFile!exports?MidiFile!../../node_modules/midi/inc/jasmid/midifile.js';
-import 'expose?Replayer!exports?Replayer!../../node_modules/midi/inc/jasmid/replayer.js';
-import MIDI from 'exports?MIDI!script!../../node_modules/midi/build/MIDI';
-import {SOUNDFONT_URL} from '../constants/MidiConstants';
+import MidiStore from '../stores/MidiStore';
+import MidiService from '../services/MidiService';
 import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js';
 import '../stylesheets/AbcViewer.less';
 
@@ -23,7 +18,7 @@ export default class AbcViewer extends React.Component {
     super(props);
     this.state = {
       midiLoaded: false,
-      player: {},
+      player: null,
       playerProgress: 0,
       playing: false,
       parserParams: {},
@@ -40,20 +35,35 @@ export default class AbcViewer extends React.Component {
           modelChanged: this._modelChanged
         }
       },
-      midiParams: {},
-      midiPluginConf: {
-        soundfontUrl: '/build/soundfont/',
-        instrument: 'acoustic_grand_piano',
-        callback: this._midiPluginLoaded
-      }
+      midiParams: {}
     };
     this.onPlayClick = () => this._onPlayClick();
     this.onStopClick = () => this._onStopClick();
+    this.onStoreChange = this.onStoreChange.bind(this);
   }
 
   componentDidMount() {
     this._renderAbc(this.props.abc, this.props.itemKey);
     this._renderMidi(this.props.abc, this.props.itemKey);
+
+    let player = MidiStore.midiPlayer;
+    if (player !== null) {
+      this.setState({player: player});
+      this._midiPluginLoaded(player);
+    } else {
+      MidiService.loadPlugin();
+    }
+  }
+
+  onStoreChange() {
+    let player = MidiStore.midiPlayer;
+    this.setState({
+      player: player
+    });
+
+    if (player !== null) {
+      this._midiPluginLoaded(player);
+    }
   }
 
   _renderAbc(abc, itemKey) {
@@ -62,13 +72,9 @@ export default class AbcViewer extends React.Component {
 
   _renderMidi(abc, itemKey) {
     ABCJS.renderMidi('midi-' + itemKey, abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
-
-    let conf = this.state.midiPluginConf;
-    MIDI.loadPlugin(conf);
   }
 
-  _midiPluginLoaded = () => {
-    let player = MIDI.Player;
+  _midiPluginLoaded = (player) => {
     let midi = document.getElementById('midi-' + this.props.itemKey);
     let song = midi.getElementsByTagName('a')[0].href;
     player.loadFile(song, function() {
@@ -108,14 +114,14 @@ export default class AbcViewer extends React.Component {
 
   render() {
     let key = this.props.itemKey;
-    let playClass = this.state.player.playing ? 'pause' : 'play';
+    let playClass = this.state.playing ? 'pause' : 'play';
 
     return (
       <div>
         <div id={`notation-${key}`} className="notation"></div>
         <div id={`midi-player-${key}`}>
           <div id={`player-${key}`} className="player-container">
-            {this.state.player.playing}
+            {this.state.playing}
             <div className="progress">
               <div className="progress-bar" style={{width: this.state.playerProgress + '%'}}></div>
             </div>
