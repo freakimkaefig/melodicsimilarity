@@ -82,7 +82,9 @@ export default class UploadView extends React.Component {
           this.setState({
             imageFiles: this.state.imageFiles.concat({
               clearName: theFile.name.replace(/\.[^/.]+$/, ''),
-              image: content
+              image: content,
+              imageName: theFile.name,
+              imageType: theFile.type
             }),
             imageCounter: this.state.imageCounter + 1,
             imageMessage: 'Dateien hinzugefügt',
@@ -99,7 +101,6 @@ export default class UploadView extends React.Component {
     this.saveJsonFiles(files);
   }
   onJsonDropzoneDrop(files) {
-    
     this.saveJsonFiles(files);
   }
   saveJsonFiles(files) {
@@ -210,6 +211,8 @@ export default class UploadView extends React.Component {
       uploadFile.signature = f.metadata.signature;
       uploadFile.title = f.metadata.title;
       uploadFile.image = f.image;
+      uploadFile.imageName = f.imageName;
+      uploadFile.imageType = f.imageType;
       UploadService.upload(uploadFile);
     });
 
@@ -219,6 +222,10 @@ export default class UploadView extends React.Component {
   }
 
   onStoreChange() {
+    // TODO: remove logs
+    console.log("Images", UploadStore.images);
+    console.log("Jsons", UploadStore.jsons);
+    console.log("Files", UploadStore.files);
     this.setState({
       imageFiles: UploadStore.images,
       jsonFiles: UploadStore.jsons,

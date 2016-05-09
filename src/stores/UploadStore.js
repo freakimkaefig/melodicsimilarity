@@ -51,6 +51,9 @@ class UploadStore extends BaseStore {
         break;
 
       case UPLOAD_FINISHED:
+        this._files = [];
+        this._jsons = [];
+        this._images = [];
         this._responses.push(action.response);
         this.emitChange();
         break;
