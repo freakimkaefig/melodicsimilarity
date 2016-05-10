@@ -8,7 +8,7 @@ var postUpload = function(req, res) {
   }
 
   var file = req.body;
-  storageService.uploadToS3(file.image, file.imageName, file.imageType, function(err, data) {
+  storageService.upload(file.image, file.imageName, file.imageType, function(err, data) {
     if (err) {
       console.log(err);
       return res.json(err);

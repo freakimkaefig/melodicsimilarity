@@ -27,6 +27,7 @@
     "flux": "^2.1.1",
     "font-awesome": "^4.5.0",
     "font-awesome-webpack": "0.0.4",
+    "fs": "0.0.2",
     "history": "^2.0.1",
     "jade": "^1.11.0",
     "jquery": "^2.2.3",
@@ -52,6 +53,7 @@
     "react-router": "^2.0.1",
     "react-router-bootstrap": "^0.20.1",
     "reqwest": "^2.0.5",
+    "url-join": "^1.1.0",
     "webpack": "^1.12.14",
     "webpack-cleanup-plugin": "^0.2.0",
     "when": "^3.7.7"

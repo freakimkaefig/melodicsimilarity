@@ -1,3 +1,19 @@
 {
-  "version": "1.0.0"
+  "version": "1.0.0",
+  "uploads": {
+    "driver": "disk",
+    "connections": {
+      "s3": {
+        "driver": "s3",
+        "bucketName": "melodicsimilarity"
+      },
+      "disk": {
+        "driver": "disk",
+        "path": "uploads/"
+      },
+      "mongo": {
+        "driver": "mongo"
+      }
+    }
+  }
 }

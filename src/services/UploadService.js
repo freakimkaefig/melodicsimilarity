@@ -8,14 +8,14 @@ class UploadService {
 
   upload(file) {
     if (typeof file.image !== 'undefined') {
-      this.uploadScanToS3(file);
+      this.uploadScan(file);
     } else {
       this.uploadSongsheet(file);
     }
 
   }
   
-  uploadScanToS3(file) {
+  uploadScan(file) {
     return this.handleUploadScanResponse(when(request({
       url: UPLOAD_SCAN_URL,
       method: 'POST',

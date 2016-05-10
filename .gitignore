@@ -9,4 +9,5 @@ vendor/
 *.log
 
 public/build/
+public/uploads/
 .env.js
