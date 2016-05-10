@@ -1,7 +1,9 @@
 var dotenv = require('dotenv');
-var env = dotenv.config({silent: true});
+var env = require('../.env');
 var should = require('should');
 
+process.env.BASE_URL = env.BASE_URL;
+process.env.MONGO_URI = env.MONGO_URI;
 
 require('../bin/www');
 

@@ -95,7 +95,7 @@ describe('Authentication', function() {
   });
 
   after(function(done) {
-    MongoClient.connect(process.env.MONGOLAB_URI, function(err, db) {
+    MongoClient.connect(process.env.MONGO_URI, function(err, db) {
       if (err) {
         throw err;
       }
