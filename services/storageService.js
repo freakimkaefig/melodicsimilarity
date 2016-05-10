@@ -1,8 +1,13 @@
 var AWS = require('aws-sdk');
+var env = require('../.env');
 
 var that = {};
 
-AWS.config.loadFromPath('./config/aws-config.json');
+AWS.config.update({
+  accessKeyId: env.AWS_CONFIG.ACCESS_KEY_ID,
+  secretAccessKey: env.AWS_CONFIG.SECRET_ACCESS_KEY,
+  region: env.AWS_CONFIG.REGION
+});
 
 var bucket = new AWS.S3();
 
