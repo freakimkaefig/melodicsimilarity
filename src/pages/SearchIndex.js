@@ -1,14 +1,17 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
+import { FIELDS } from '../constants/SolrConstants';
+import MetadataSearchbox from '../components/MetadataSearchbox';
 
 export default class SearchIndex extends React.Component {
-  static propTypes = {};
-
   render() {
     return (
       <DocumentTitle title={`Suche // ${APP_NAME}`}>
-        <h1>Suche</h1>
+        <div>
+          <h1>Suche</h1>
+          <MetadataSearchbox fields={FIELDS} />
+        </div>
       </DocumentTitle>
     )
   }

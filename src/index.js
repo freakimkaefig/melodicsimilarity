@@ -9,6 +9,7 @@ import OverviewPage from './pages/OverviewPage';
 import SongsheetList from './pages/SongsheetList';
 import SongsheetView from './pages/SongsheetView';
 import SearchIndex from './pages/SearchIndex';
+import ResultList from './pages/ResultList';
 import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
 import UploadPage from './pages/UploadPage';
@@ -26,6 +27,7 @@ var router = (
       <Route name="songsheet" path="/songsheets/:signature" component={SongsheetView} />
 
       <Route name="search" path="/search" component={SearchIndex} />
+      <Route name="search-results" path="/search/result" component={ResultList} />
 
       <Route name="login" path="/login" component={LoginPage} />
       <Route name="logout" path="/logout" component={LogoutPage} />
