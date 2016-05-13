@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react';
 import Collapse from './Accordion/index';
 
-import '../stylesheets/FileList.less';
+import '../stylesheets/Accordion.less';
 
-export default class FileList extends React.Component {
+export default class FileAccordion extends React.Component {
 
   static propTypes = {
     files: PropTypes.arrayOf(PropTypes.object).isRequired,

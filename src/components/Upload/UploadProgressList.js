@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 
-import '../stylesheets/FileList.less';
+import '../../stylesheets/Accordion.less';
 
-export default class FileList extends React.Component {
+export default class UploadProgressList extends React.Component {
 
   static propTypes = {
     responses: PropTypes.arrayOf(PropTypes.object).isRequired
@@ -12,7 +12,7 @@ export default class FileList extends React.Component {
     super(props);
   }
 
-  getResultList(responses) {
+  _getList(responses) {
     return responses.map((response, index) => {
       let statusClass = ''
       switch (response.ok) {
@@ -41,7 +41,7 @@ export default class FileList extends React.Component {
   render() {
     return (
       <div className="rc-collapse">
-        { this.getResultList(this.props.responses) }
+        { this._getList(this.props.responses) }
       </div>
     );
   }

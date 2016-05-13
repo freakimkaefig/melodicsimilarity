@@ -3,6 +3,7 @@ import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
 import SongsheetService from '../services/SongsheetService';
 import SongsheetStore from '../stores/SongsheetStore';
+import LoadingOverlay from '../components/LoadingOverlay';
 import FileGrid from '../components/FileGrid';
 
 
@@ -18,12 +19,10 @@ export default class SongsheetList extends React.Component {
   }
 
   componentWillMount() {
+    SongsheetStore.addChangeListener(this.onStoreChange);
     SongsheetService.loadList();
   }
-
-  componentDidMount() {
-    SongsheetStore.addChangeListener(this.onStoreChange);
-  }
+  
   componentWillUnmount() {
     SongsheetStore.removeChangeListener(this.onStoreChange);
   }
@@ -36,7 +35,8 @@ export default class SongsheetList extends React.Component {
     return (
       <DocumentTitle title={`Liedblätter // ${APP_NAME}`}>
         <div>
-          <h1>Songsheet List</h1>
+          <h1>Liedblätter</h1>
+          <LoadingOverlay loading={this.state.songsheets <= 0} />
           <FileGrid files={this.state.songsheets} />
         </div>
       </DocumentTitle>

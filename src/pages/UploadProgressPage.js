@@ -2,7 +2,7 @@ import React from 'react';
 import AuthenticatedComponent from '../components/AuthenticatedComponent';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
-import ResultList from '../components/ResultList';
+import ResultList from '../components/Upload/UploadProgressList';
 import UploadStore from '../stores/UploadStore';
 import { browserHistory } from 'react-router';
 

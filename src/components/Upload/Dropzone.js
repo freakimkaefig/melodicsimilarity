@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import '../stylesheets/Dropzone.less';
+import '../../stylesheets/Dropzone.less';
 
 export default class Dropzone extends React.Component {
   static propTypes = {

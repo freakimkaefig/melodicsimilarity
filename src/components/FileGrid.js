@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react';
-import LoadingOverlay from './LoadingOverlay';
 import {Link} from 'react-router';
 import '../stylesheets/FileGrid.less';
 
@@ -11,9 +10,9 @@ export default class FileGrid extends React.Component {
       abc: PropTypes.string,
       json: PropTypes.object,
       name: PropTypes.string,
-      signature: PropTypes.string,
-      title: PropTypes.string,
-      image: PropTypes.image,
+      signature: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      image: PropTypes.string.isRequired
     })).isRequired
   };
 
@@ -21,30 +20,26 @@ export default class FileGrid extends React.Component {
     super(props);
   }
 
-  renderSongsheetGrid(songsheets) {
-    if (songsheets.length > 0) {
-      return songsheets.map((songsheet, index) => {
+  renderFileGrid(files) {
+    if (files.length > 0) {
+      return files.map((file, index) => {
         return (
-          <div className="col-xs-6 col-sm-4 text-center" key={index}>
-            <Link to={`/songsheets/${songsheet.signature}`}>
-              <img className="img-responsive" src={songsheet.image}/>
-              <h4>{songsheet.signature}</h4>
-              <h5>{songsheet.title}</h5>
+          <div className="col-xs-6 col-sm-3 text-center" key={index}>
+            <Link to={`/songsheets/${file.signature}`}>
+              <img className="img-responsive" src={file.image}/>
+              <h4>{file.signature}</h4>
+              <h5>{file.title}</h5>
             </Link>
           </div>
         );
       });
-    } else {
-      return (
-        <LoadingOverlay loading={true} />
-      );
     }
   }
 
   render() {
     return (
       <div className="row">
-        { this.renderSongsheetGrid(this.props.files) }
+        { this.renderFileGrid(this.props.files) }
       </div>
     );
   }

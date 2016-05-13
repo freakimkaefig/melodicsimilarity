@@ -1,18 +1,18 @@
 import React, { PropTypes } from 'react';
 import Dropzone from './Dropzone';
-import Collapse from './Accordion/index';
-import AbcViewer from './AbcViewer';
-import MetadataViewer from './MetadataViewer';
+import Collapse from '../Accordion/index';
+import AbcViewer from '../AbcViewer';
+import MetadataViewer from '../MetadataViewer';
 import _ from 'lodash';
 import { convert2Abc } from 'musicjson2abc';
-import UploadActions from '../actions/UploadActions';
-import UploadStore from '../stores/UploadStore';
-import FileList from './FileList';
+import UploadActions from '../../actions/UploadActions';
+import UploadStore from '../../stores/UploadStore';
+import FileList from '../FileAccordion';
 import { Button } from 'react-bootstrap';
-import ImageZoom from './ImageZoom';
-import UploadService from '../services/UploadService';
+import ImageZoom from '../ImageZoom';
+import UploadService from '../../services/UploadService';
 import { browserHistory } from 'react-router';
-import { UPLOAD_CONTEXT } from '../constants/UploadConstants';
+import { UPLOAD_CONTEXT } from '../../constants/UploadConstants';
 
 export default class UploadView extends React.Component {
 

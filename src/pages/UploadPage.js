@@ -2,7 +2,7 @@ import React from 'react';
 import AuthenticatedComponent from '../components/AuthenticatedComponent';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
-import UploadView from '../components/UploadView';
+import UploadView from '../components/Upload/UploadView';
 
 export default AuthenticatedComponent(class UploadPage extends React.Component {
 
