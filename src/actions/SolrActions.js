@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
 import { browserHistory } from 'react-router';
-import { UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS } from '../constants/SolrConstants';
+import { UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
 
 export default {
   updateFacets: (field, facets) => {
@@ -25,6 +25,14 @@ export default {
       actionType: UPDATE_RESULTS,
       results: results,
       highlighting: highlighting
+    });
+  },
+
+  updateResultImage: (songsheet) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_RESULT_IMAGE,
+      signature: songsheet.signature,
+      image: songsheet.image,
     });
   }
 }

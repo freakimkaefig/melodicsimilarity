@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { Router, Route, IndexRoute, Redirect, browserHistory } from 'react-router';
 import LoginActions from './actions/LoginActions';
 import App from './App';
 import HomePage from './pages/HomePage';
@@ -28,6 +28,7 @@ var router = (
 
       <Route name="search" path="/search" component={SearchIndex} />
       <Route name="search-results" path="/search/result" component={ResultList} />
+      <Redirect from="/songsheets/search" to="/search" />
 
       <Route name="login" path="/login" component={LoginPage} />
       <Route name="logout" path="/logout" component={LogoutPage} />

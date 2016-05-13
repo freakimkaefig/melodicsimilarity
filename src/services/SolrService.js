@@ -3,6 +3,7 @@ import when from 'when';
 import { UPLOAD_CONTEXT } from '../constants/UploadConstants';
 import { SONGSHEET_CONTEXT } from '../constants/SongsheetConstants';
 import { SEARCH_CONTEXT, QUERY_URL, FIELDS } from '../constants/SolrConstants';
+import { ITEM_URL } from '../constants/SongsheetConstants';
 import UploadActions from '../actions/UploadActions';
 import SongsheetActions from '../actions/SongsheetActions';
 import SolrActions from '../actions/SolrActions';
@@ -73,6 +74,7 @@ class SolrService {
     switch (field) {
       case 'landscapeArchive':
         facetsArray = [
+          'Schleswig-Holstein', 500000,
           'Hessisches Archiv, Hessen', 9978,
           'Schlesien / Polen', 1904,
           'Münchner Archiv, Bayern', 1400,
@@ -138,7 +140,11 @@ class SolrService {
         continue;
       }
 
-      switch (FIELDS[queryFields[i].name].input) {
+      let fieldProperties = FIELDS.find(field => {
+        return field.name === queryFields[i].name;
+      });
+
+      switch (fieldProperties.input) {
         case 'text':
           query.addQueryField(queryFields[i].name, queryFields[i].value);
           break;
@@ -160,12 +166,28 @@ class SolrService {
     return this.handleSearchResponse(when(requestObject));
   }
 
+  findSongsheet(signature) {
+    return this.handleSearchSongsheetResponse(when(request({
+      url: ITEM_URL + signature,
+      method: 'GET',
+      crossOrigin: true
+    })));
+  }
+
   handleSearchResponse(searchPremise) {
     return searchPremise
       .then(function(response) {
-        console.log(response);
+        for (var i = 0; i < response.response.docs.length; i++) {
+          this.findSongsheet(response.response.docs[i].signature);
+        }
         SolrActions.updateResults(response.response.docs, response.highlighting);
-        return true;
+      }.bind(this));
+  }
+
+  handleSearchSongsheetResponse(searchPremise) {
+    return searchPremise
+      .then(function(response) {
+        SolrActions.updateResultImage(response);
       });
   }
 }

@@ -4,6 +4,7 @@ export const SELECT_URL = BASE_URL + 'solr/searchableDocs/select';
 export const UPDATE_FACETS = 'UPDATE_FACETS';
 export const UPDATE_QUERY = 'UPDATE_QUERY';
 export const UPDATE_RESULTS = 'UPDATE_RESULTS';
+export const UPDATE_RESULT_IMAGE = 'UPDATE_RESULT_IMAGE';
 export const FIELDS = [
   {
     "sort": 1,

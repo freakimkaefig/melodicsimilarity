@@ -16,8 +16,8 @@ export default class ResultList extends React.Component {
 
     this.state = {
       query: SolrStore.query,
-      results: [],
-      highlighting: {}
+      results: SolrStore.results,
+      highlighting: SolrStore.highlighting
     };
 
     this.onStoreChange = this.onStoreChange.bind(this);

@@ -1,4 +1,4 @@
-import { UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS } from '../constants/SolrConstants';
+import { UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
 import BaseStore from './BaseStore';
 
 class SolrStore extends BaseStore {
@@ -9,7 +9,7 @@ class SolrStore extends BaseStore {
     this._facets = {};
     this._query = [];
     this._results = [];
-    this._highlighting = [];
+    this._highlighting = {};
   }
   
   _registerToActions(action) {
@@ -23,8 +23,26 @@ class SolrStore extends BaseStore {
         this.emitChange();
         break;
       case UPDATE_RESULTS:
-        this._results = action.results;
-        this._highlighting = action.highlighting;
+        if (action.results.length > 0) {
+          this._results = action.results;
+          this._highlighting = action.highlighting;
+        } else {
+          this._results.push({
+            id: 'not-found',
+            signature: 'Sorry',
+            title: 'Für deine Suchanfrage konnten keine Ergbnisse gefunden werden.',
+            text: ''
+          });
+          this._highlighting = {
+            'not-found': []
+          };
+        }
+        this.emitChange();
+        break;
+      case UPDATE_RESULT_IMAGE:
+        this._results.find(result => {
+          return result.signature === action.signature;
+        }).image = action.image;
         this.emitChange();
         break;
       default:

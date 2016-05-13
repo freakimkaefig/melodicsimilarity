@@ -62,7 +62,7 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar className={this.props.header ? 'header' : 'footer'}>
+        <Navbar fluid={true} fixedTop={this.props.header} fixedBottom={!this.props.header} className={this.props.header ? 'header' : 'footer'}>
           {this.getNavbarHeader()}
           <Navbar.Collapse>
             <Nav pullRight>

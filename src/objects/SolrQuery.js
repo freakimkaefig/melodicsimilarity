@@ -45,7 +45,7 @@ export default class SolrQuery {
     if (this._q.length > 0) {
       return '&q=' + this._q.join(' ' + this._glue + ' ');
     } else {
-      return '';
+      return '&q=*';
     }
   }
 

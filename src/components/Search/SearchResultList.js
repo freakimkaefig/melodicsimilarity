@@ -15,27 +15,50 @@ export default class SearchResultList extends React.Component {
     super(props);
   }
 
+  _getResultHighlight(result, highlighting) {
+    let highlightItem = highlighting[result.id];
+    if (Object.keys(highlightItem).length === 0 && highlightItem.constructor === Object) {
+      return (
+        <div>{result.text}</div>
+      );
+    } else {
+      var array = [];
+      for (var field in highlightItem) {
+        if (!highlightItem.hasOwnProperty(field)) continue;
+        console.log(field, highlightItem[field]);
+        array.push(highlightItem[field]);
+      }
+
+      return array.map((field, index) => {
+        return(
+          <div key={index} dangerouslySetInnerHTML={{__html: field}} />
+        );
+      });
+    }
+  }
+
   _getList(results) {
     return results.map((result, index) => {
-      let highlighting = typeof this.props.highlighting[result.id] !== 'undefined'
-        ? this.props.highlighting[result.id].text[0]
-        : 'Kein Ausschnitt gefunden';
       return (
         <div className="rc-collapse-item search-result-item" key={index}>
           <div className="rc-collapse-header">
             <div className="header">
               <Link to={`/songsheets/${result.signature}`}>
-                <div className="col-xs-3">Image</div>
-                <div className="col-xs-9">
+                <div className="hidden-xs col-sm-3 col-md-2">
+                  <img src={ result.image } className="img-responsive" />
+                </div>
+                <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
                   <h3>{result.signature} - {result.title}</h3>
-                  <div className="highlighting" dangerouslySetInnerHTML={{__html: highlighting}} />
+                  <div className="highlighting">
+                    { this._getResultHighlight(result, this.props.highlighting) }
+                  </div>
                 </div>
               </Link>
             </div>
           </div>
         </div>
       )
-    })
+    });
   }
 
   render() {

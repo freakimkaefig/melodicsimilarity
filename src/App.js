@@ -66,7 +66,7 @@ export default class App extends React.Component {
       <DocumentTitle title="MusicIR App">
         <div className="App">
           <Navbar header={true} links={headerLinks} route={this.props.location.pathname} />
-          <div className="container" id="app">
+          <div className="container-fluid" id="app">
             {this.props.children}
           </div>
           <Navbar header={false} links={footerLinks} route={this.props.location.pathname} />

@@ -24,7 +24,7 @@ export default class FileGrid extends React.Component {
     if (files.length > 0) {
       return files.map((file, index) => {
         return (
-          <div className="col-xs-6 col-sm-3 text-center" key={index}>
+          <div className="col-xs-6 col-sm-3 col-lg-2 text-center" key={index}>
             <Link to={`/songsheets/${file.signature}`}>
               <img className="img-responsive" src={file.image}/>
               <h4>{file.signature}</h4>
