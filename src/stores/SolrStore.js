@@ -20,6 +20,8 @@ class SolrStore extends BaseStore {
         break;
       case UPDATE_QUERY:
         this._query = action.fields;
+        this._results = [];
+        this._highlighting = {};
         this.emitChange();
         break;
       case UPDATE_RESULTS:
@@ -27,15 +29,8 @@ class SolrStore extends BaseStore {
           this._results = action.results;
           this._highlighting = action.highlighting;
         } else {
-          this._results.push({
-            id: 'not-found',
-            signature: 'Sorry',
-            title: 'Für deine Suchanfrage konnten keine Ergbnisse gefunden werden.',
-            text: ''
-          });
-          this._highlighting = {
-            'not-found': []
-          };
+          this._results.push(false);
+          this._highlighting = {};
         }
         this.emitChange();
         break;

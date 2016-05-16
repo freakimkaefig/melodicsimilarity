@@ -177,10 +177,15 @@ class SolrService {
   handleSearchResponse(searchPremise) {
     return searchPremise
       .then(function(response) {
-        for (var i = 0; i < response.response.docs.length; i++) {
-          this.findSongsheet(response.response.docs[i].signature);
+        // let docs = response.response.docs.filter(doc => {
+        //   return typeof doc.signature !== 'undefined';
+        // });
+        // console.log(docs);
+        let docs = response.response.docs;
+        for (var i = 0; i < docs.length; i++) {
+          this.findSongsheet(docs[i].signature);
         }
-        SolrActions.updateResults(response.response.docs, response.highlighting);
+        SolrActions.updateResults(docs, response.highlighting);
       }.bind(this));
   }
 
