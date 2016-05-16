@@ -1,5 +1,7 @@
 import BaseStore from './BaseStore';
-import { LOAD_LIST, LOAD_ITEM, RENDER_METADATA } from '../constants/SongsheetConstants';
+import ArrayHelper from '../helpers/ArrayHelper';
+import { LOAD_LIST, LOAD_ITEM } from '../constants/SongsheetConstants';
+import { UPDATE_METADATA, METADATA_PLACEHOLDER_IMAGE, METADATA_PLACEHOLDER_TITLE, METADATA_PLACEHOLDER_TEXT } from '../constants/SolrConstants';
 
 class SongsheetStore extends BaseStore {
 
@@ -7,6 +9,7 @@ class SongsheetStore extends BaseStore {
     super();
     this.subscribe(() => this._registerToActions.bind(this));
     this._songsheets = [];
+    this._metadata = [];
     this._songsheet = {};
   }
 
@@ -15,16 +18,30 @@ class SongsheetStore extends BaseStore {
     switch (action.actionType) {
       case LOAD_LIST:
         this._songsheets = action.songsheets;
+        for (var i = 0; i < this._songsheets.length; i++) {
+          let tempMetadata = {
+            signature: this._songsheets[i].signature,
+            title: METADATA_PLACEHOLDER_TITLE,
+            imagename: METADATA_PLACEHOLDER_IMAGE,
+            text: METADATA_PLACEHOLDER_TEXT
+          };
+          ArrayHelper.mergeByProperty(this._metadata, [tempMetadata], 'signature');
+        }
         this.emitChange();
         break;
+
       case LOAD_ITEM:
         this._songsheet = action.songsheet;
         this.emitChange();
         break;
-      case RENDER_METADATA:
-        this._songsheet.metadata = action.response.response.docs[0];
-        this.emitChange();
+
+      case UPDATE_METADATA:
+        if (action.response.response.numFound > 0) {
+          ArrayHelper.mergeByProperty(this._metadata, action.response.response.docs, 'signature');
+          this.emitChange();
+        }
         break;
+
       default:
         break;
     }
@@ -34,18 +51,12 @@ class SongsheetStore extends BaseStore {
     return this._songsheets;
   }
 
-  get songsheet() {
-    return this._songsheet;
+  get metadata() {
+    return this._metadata;
   }
 
-  extractValue(str) {
-    var ret = "";
-    if (/"/.test(str)) {
-      ret = str.match(/"(.*?)"/)[1];
-    } else {
-      ret = str;
-    }
-    return ret;
+  get songsheet() {
+    return this._songsheet;
   }
 }
 

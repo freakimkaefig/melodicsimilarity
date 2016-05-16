@@ -7,6 +7,7 @@ export default class FileAccordion extends React.Component {
 
   static propTypes = {
     files: PropTypes.arrayOf(PropTypes.object).isRequired,
+    metadata: PropTypes.array,
     renderFunction: PropTypes.func.isRequired,
     onCheckboxClick: PropTypes.func,
     onChange: PropTypes.func

@@ -1,8 +1,16 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
 import { browserHistory } from 'react-router';
-import { UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
+import { UPDATE_METADATA, UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
 
 export default {
+
+  updateMetadata: (response) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_METADATA,
+      response: response
+    });
+  },
+
   updateFacets: (field, facets) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_FACETS,

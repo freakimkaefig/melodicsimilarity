@@ -13,6 +13,9 @@ import ImageZoom from '../ImageZoom';
 import UploadService from '../../services/UploadService';
 import { browserHistory } from 'react-router';
 import { UPLOAD_CONTEXT } from '../../constants/UploadConstants';
+import { METADATA_IMAGE_BASE_URL, METADATA_PLACEHOLDER_IMAGE, METADATA_PLACEHOLDER_TITLE, METADATA_PLACEHOLDER_TEXT } from '../../constants/SolrConstants';
+import '../../stylesheets/UploadView.less';
+import SolrService from '../../services/SolrService';
 
 export default class UploadView extends React.Component {
 
@@ -21,20 +24,12 @@ export default class UploadView extends React.Component {
 
     this.state = {
       files: [],
-      imageFiles: [],
-      imageCounter: 0,
-      imageMessage: 'Dateien hierher ziehen oder klicken zum auswählen.',
-      imageStatus: 'muted',
-      jsonFiles: [],
-      jsonCounter: 0,
-      jsonMessage: 'Dateien hierher ziehen oder klicken zum auswählen.',
-      jsonStatus: 'muted',
+      metadata: [],
+      counter: 0,
+      message: 'Dateien hierher ziehen oder klicken zum auswählen.',
+      status: 'muted',
       uploadAllowed: true
     };
-
-    this.onImageInputChange = this.onImageInputChange.bind(this);
-    this.onImageDropzoneDrop = this.onImageDropzoneDrop.bind(this);
-    this.saveImageFiles = this.saveImageFiles.bind(this);
 
     this.onJsonInputChange = this.onJsonInputChange.bind(this);
     this.onJsonDropzoneDrop = this.onJsonDropzoneDrop.bind(this);
@@ -56,47 +51,6 @@ export default class UploadView extends React.Component {
     UploadStore.removeChangeListener(this.onStoreChange);
   }
 
-  onImageInputChange(files) {
-    this.saveImageFiles(files);
-  }
-  onImageDropzoneDrop(files) {
-    this.saveImageFiles(files);
-  }
-  saveImageFiles(files) {
-    for (var i = 0, f; f = files[i]; i++) {
-      var reader = new FileReader();
-
-      if (f.name.split('.').pop() !== 'png' && f.name.split('.').pop() !== 'jpg') {
-        this.setState({
-          imageMessage: 'Hier können nur png oder jpg Dateien hochgeladen werden.',
-          imageStatus: 'warning'
-        });
-        continue;
-      }
-
-      reader.readAsDataURL(f);
-      reader.onload = (function(theFile) {
-        return function(e) {
-          var content = e.target.result;
-
-          this.setState({
-            imageFiles: this.state.imageFiles.concat({
-              clearName: theFile.name.replace(/\.[^/.]+$/, ''),
-              image: content,
-              imageName: theFile.name,
-              imageType: theFile.type
-            }),
-            imageCounter: this.state.imageCounter + 1,
-            imageMessage: 'Dateien hinzugefügt',
-            imageStatus: 'success'
-          });
-
-          UploadActions.saveImageFiles(this.state.imageFiles);
-        }
-      })(f).bind(this);
-    }
-  }
-
   onJsonInputChange(files) {
     this.saveJsonFiles(files);
   }
@@ -109,8 +63,8 @@ export default class UploadView extends React.Component {
 
       if (f.name.split('.').pop() !== 'json') {
         this.setState({
-          jsonMessage: 'Hier können nur JSON Dateien hochgeladen werden.',
-          jsonStatus: 'warning'
+          message: 'Hier können nur JSON Dateien hochgeladen werden.',
+          status: 'warning'
         });
         continue;
       }
@@ -118,25 +72,29 @@ export default class UploadView extends React.Component {
       reader.onload = (function(theFile) {
         return function(e) {
           var content = e.target.result;
+          var abc = convert2Abc(content);
+          var json = JSON.parse(content);
+          var updatedFiles = this.state.files.concat({
+            key: this.state.counter + 1,
+            name: theFile.name,
+            store: false,
+            upload: true,
+            metadata: {
 
-          this.setState({
-            jsonFiles: this.state.jsonFiles.concat({
-              key: this.state.jsonCounter + 1,
-              name: theFile.name,
-              clearName: theFile.name.replace(/\.[^/.]+$/, ''),
-              metadata: {},
-              store: false,
-              upload: true,
-              signature: JSON.parse(content).id,
-              content: JSON.parse(content),
-              abc: convert2Abc(content)
-            }),
-            jsonCounter: this.state.jsonCounter + 1,
-            jsonMessage: 'Dateien hinzugefügt',
-            jsonStatus: 'success'
+            },
+            signature: json.id,
+            json: json,
+            abc: abc
           });
 
-          UploadActions.saveJsonFiles(this.state.jsonFiles);
+          var updatedMetadata = this.state.metadata.concat({
+            signature: json.id,
+            imagename: METADATA_PLACEHOLDER_IMAGE,
+            title: METADATA_PLACEHOLDER_TITLE,
+            text: METADATA_PLACEHOLDER_TEXT
+          });
+
+          UploadActions.saveFiles(updatedFiles, updatedMetadata);
         }
       })(f).bind(this);
     }
@@ -147,24 +105,39 @@ export default class UploadView extends React.Component {
       return _.has(file, 'key') && _.has(file, 'name');
     }).map(file => {
       let signature = file.signature;
-      let title = _.has(file, 'metadata') ? ' ' + file.metadata.title : '';
+
+      console.log("Metadata", UploadStore.metadata);
+      let metadata = props.metadata.find(data => {
+        return data.signature == signature;
+      });
+
+      let title = 'Kein Incipit vorhanden';
+      let text = 'Kein Text vorhanden';
+      if (typeof metadata !== 'undefined') {
+        if (typeof metadata.title !== 'undefined') title = metadata.title;
+        if (typeof metadata.text !== 'undefined') text = metadata.text;
+      } else {
+        SolrService.findDoc(signature, UPLOAD_CONTEXT);
+      }
+
+
       return (
         <Collapse.Panel
           key={file.key}
-          header={`${signature}${title} (${file.clearName})`}
+          header={`${signature} ${title} (${file.name})`}
           checkbox={file.upload}
           onCheckboxClick={props.onCheckboxClick}>
           <div className="col-xs-5">
             <div className="row">
               <div className="col-xs-12 image">
-                <ImageZoom itemKey={file.key} image={file.image} store={UploadStore} />
+                <ImageZoom itemKey={file.key} image={METADATA_IMAGE_BASE_URL + metadata.imagename} store={UploadStore} />
               </div>
-              <div className="col-xs-12 text">{file.metadata.text}</div>
+              <div className="col-xs-12 text">{text}</div>
             </div>
           </div>
           <div className="col-xs-7">
             <AbcViewer itemKey={file.key} abc={file.abc} />
-            <MetadataViewer file={file} context={UPLOAD_CONTEXT} />
+            <MetadataViewer metadata={metadata} />
           </div>
         </Collapse.Panel>
       );
@@ -200,19 +173,15 @@ export default class UploadView extends React.Component {
 
     uploadFiles.forEach(f => {
       let uploadFile = {};
-      uploadFile.abc = f.abc;
-      uploadFile.json = f.content;
+      uploadFile.signature = f.signature;
+      uploadFile.json = f.json;
       uploadFile.json.measures.forEach(m => {
         m.notes.forEach(n => {
           delete n.$$hashKey;
         });
       });
+      uploadFile.abc = f.abc;
       uploadFile.name = f.name;
-      uploadFile.signature = f.metadata.signature;
-      uploadFile.title = f.metadata.title;
-      uploadFile.image = f.image;
-      uploadFile.imageName = f.imageName;
-      uploadFile.imageType = f.imageType;
       UploadService.upload(uploadFile);
     });
 
@@ -223,13 +192,15 @@ export default class UploadView extends React.Component {
 
   onStoreChange() {
     // TODO: remove logs
-    console.log("Images", UploadStore.images);
-    console.log("Jsons", UploadStore.jsons);
     console.log("Files", UploadStore.files);
+    console.log("Metadata", UploadStore.metadata);
+
     this.setState({
-      imageFiles: UploadStore.images,
-      jsonFiles: UploadStore.jsons,
-      files: UploadStore.files
+      files: UploadStore.files,
+      metadata: UploadStore.metadata,
+      counter: UploadStore.files.length,
+      message: 'Dateien hinzugefügt',
+      status: 'success'
     });
   }
 
@@ -243,41 +214,26 @@ export default class UploadView extends React.Component {
           </div>
         </div>
         <div className="row">
-          <div className="col-xs-12 col-sm-6">
-            <h3>Schritt 1: Transkribierte Liedblatt-Dateien</h3>
-            <div className="hidden"><span>Counter: </span><span>{ this.state.jsonCounter }</span></div>
+          <div className="col-xs-12">
             <Dropzone
               id="json-files"
               onInputChange={this.onJsonInputChange}
               onDropzoneDrop={this.onJsonDropzoneDrop}
-              files={this.state.jsonFiles}
-              message={this.state.jsonMessage}
-              status={this.state.jsonStatus}
-            />
-          </div>
-
-          <div className="col-xs-12 col-sm-6">
-            <h3>Schritt 2: Gescannte Liedblatt-Dateien</h3>
-            <div className="hidden"><span>Counter: </span><span>{ this.state.imageCounter }</span></div>
-            <Dropzone
-              id="image-files"
-              onInputChange={this.onImageInputChange}
-              onDropzoneDrop={this.onImageDropzoneDrop}
-              files={this.state.imageFiles}
-              message={this.state.imageMessage}
-              status={this.state.imageStatus}
+              files={this.state.files}
+              message={this.state.message}
+              status={this.state.status}
             />
           </div>
         </div>
         
-        <div className="row">
+        <div className="row" id="upload-file-list">
           <div className="col-xs-12">
-            <FileList files={this.state.files} renderFunction={this.fileListRenderFunction} onCheckboxClick={this.onFileListCheckboxClick} onChange={this.onFileListChange} />
+            <FileList files={this.state.files} metadata={this.state.metadata} renderFunction={this.fileListRenderFunction} onCheckboxClick={this.onFileListCheckboxClick} onChange={this.onFileListChange} />
           </div>
         </div>
-        <div className="row">
-          <div className="col-xs-12">
-            <Button bsStyle="success" disabled={!this.countUploadFiles() || !this.state.uploadAllowed} onClick={this.onUploadClick}>
+        <div className="row" id="upload-button">
+          <div className="col-xs-12 text-right">
+            <Button bsStyle="default" disabled={!this.countUploadFiles() || !this.state.uploadAllowed} onClick={this.onUploadClick}>
               <span>Upload</span>
             </Button>
           </div>

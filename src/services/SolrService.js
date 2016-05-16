@@ -2,19 +2,18 @@ import request from 'reqwest';
 import when from 'when';
 import { UPLOAD_CONTEXT } from '../constants/UploadConstants';
 import { SONGSHEET_CONTEXT } from '../constants/SongsheetConstants';
-import { SEARCH_CONTEXT, QUERY_URL, FIELDS } from '../constants/SolrConstants';
+import { SEARCH_CONTEXT, METADATA_QUERY_URL, SEARCH_QUERY_URL, FIELDS } from '../constants/SolrConstants';
 import { ITEM_URL } from '../constants/SongsheetConstants';
 import UploadActions from '../actions/UploadActions';
 import SongsheetActions from '../actions/SongsheetActions';
 import SolrActions from '../actions/SolrActions';
 import SolrQuery from '../objects/SolrQuery';
-import SolrStore from '../stores/SolrStore';
 
 class SolrService {
 
-  findDoc(signature, context) {
+  findDoc(signature) {
     let requestObject = request({
-      url: QUERY_URL,
+      url: SEARCH_QUERY_URL,  // TODO: Change to "SEARCH_QUERY_URL"
       method: 'POST',
       crossOrigin: true,
       type: 'json',
@@ -25,29 +24,13 @@ class SolrService {
         }
       })
     });
-    
-    switch (context) {
-      case UPLOAD_CONTEXT:
-        return this.handleUploadFindResponse(when(requestObject));
-
-      case SONGSHEET_CONTEXT:
-        return this.handleSongsheetFindResponse(when(requestObject));
-    }
-
+    return this.handleFindResponse(when(requestObject));
   }
 
-  handleUploadFindResponse(findPremise) {
+  handleFindResponse(findPremise) {
     return findPremise
       .then(function(response) {
-        UploadActions.renderMetadata(response);
-        return true;
-      });
-  }
-
-  handleSongsheetFindResponse(findPremise) {
-    return findPremise
-      .then(function(response) {
-        SongsheetActions.renderMetadata(response);
+        SolrActions.updateMetadata(response);
         return true;
       });
   }
@@ -131,7 +114,7 @@ class SolrService {
     console.log(queryFields);
     SolrActions.updateQuery(queryFields);
 
-    let query = new SolrQuery(QUERY_URL);
+    let query = new SolrQuery(SEARCH_QUERY_URL);
     query.setHighlighting(true, 'em', 300, 3);
     query.setOperator('OR');
     for (var i = 0; i < queryFields.length; i++) {

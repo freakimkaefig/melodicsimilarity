@@ -1,3 +1,4 @@
+var path = require('path');
 var databaseService = require('../services/databaseService');
 var databaseConfig = require('../config/database.config.json');
 
@@ -21,9 +22,18 @@ var getSongsheetBySignature = function(req, res) {
   });
 };
 
+var getImageByName = function(req, res) {
+  if (req.params.name == 'placeholder.jpg') {
+    res.sendFile(path.join(__dirname, '../public/uploads/placeholder.jpg'));
+  } else {
+    res.redirect('http://localhost:8080/SolrInteractionServer/FrontEnd/img/jpegs/' + req.params.name);
+  }
+};
+
 
 that.handleUpload = handleUpload;
 that.getUploads = getUploads;
 that.getSongsheetBySignature = getSongsheetBySignature;
+that.getImageByName = getImageByName;
 
 module.exports = that;

@@ -15,7 +15,7 @@ export default class Dropzone extends React.Component {
       return files.map((file, index) => {
         let stored = file.store === true ? 'success' : 'primary';
         return (
-          <span className={`item label label-${stored}`} key={index}>{file.clearName}</span>
+          <span className={`item label label-${stored}`} key={index}>{file.name}</span>
         );
       });
     } else {

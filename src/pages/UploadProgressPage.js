@@ -26,10 +26,9 @@ export default AuthenticatedComponent(class UploadProgressPage extends React.Com
       return {
         value: {
           name: file.name,
-          signature: file.metadata.signature,
-          title: file.metadata.title
+          signature: file.signature
         },
-        signature: file.metadata.signature,
+        signature: file.signature,
         ok: 2
       };
     });

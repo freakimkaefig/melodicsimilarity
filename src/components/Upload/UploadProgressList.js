@@ -27,11 +27,17 @@ export default class UploadProgressList extends React.Component {
           break;
       }
       let file = response.value;
+      let title = 'Kein Incipit vorhanden';
+      if (typeof file.metadata !== 'undefined') {
+        if (typeof file.metadata.title !== 'undefined') {
+          title = file.metadata.title;
+        }
+      }
       return (
         <div className="rc-collapse-item" key={index}>
           <div className="rc-collapse-header">
             <i className={`fa fa-${statusClass}`}></i>
-            <div className="header">{file.signature} - {file.title} ({file.name})</div>
+            <div className="header">{file.signature} - {title} ({file.name})</div>
           </div>
         </div>
       )

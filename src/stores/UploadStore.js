@@ -1,6 +1,7 @@
 import BaseStore from './BaseStore';
-import _ from 'lodash';
-import { LIST_ACTIVE_CHANGE, UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import ArrayHelper from '../helpers/ArrayHelper';
+import { LIST_ACTIVE_CHANGE, SAVE_FILES_TO_UPLOAD, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import { UPDATE_METADATA } from '../constants/SolrConstants';
 
 class UploadStore extends BaseStore {
 
@@ -8,9 +9,8 @@ class UploadStore extends BaseStore {
     super();
     this.subscribe(() => this._registerToActions.bind(this));
     this._listActive = null;
-    this._images = [];
-    this._jsons = [];
     this._files = [];
+    this._metadata = [];
     this._responses = [];
   }
 
@@ -21,39 +21,27 @@ class UploadStore extends BaseStore {
         this._listActive = action.key;
         this.emitChange();
         break;
-        
-      case UPLOAD_IMAGES:
-        let imageFiles = action.files.map(function (file) {
+
+      case SAVE_FILES_TO_UPLOAD:
+        let uploadFiles = action.files.map(function (file) {
           file.store = true;
           return file;
         });
-        this.mergeByProperty(this._images, imageFiles, 'clearName');
-        this.mergeByProperty(this._files, imageFiles, 'clearName');
+        this._files = uploadFiles;
+        this._metadata = action.metadata;
         this.emitChange();
         break;
 
-      case UPLOAD_JSONS:
-        let jsonFiles = action.files.map(function (file) {
-          file.store = true;
-          return file;
-        });
-        this.mergeByProperty(this._jsons, jsonFiles, 'clearName');
-        this.mergeByProperty(this._files, jsonFiles, 'clearName');
-        this.emitChange();
-        break;
-
-      case RENDER_METADATA:
-        let signature = this.extractValue(JSON.parse(action.response.responseHeader.params.json).params.q);
-        this._files.find(function(file) {
-          return file.content.id == signature;
-        }).metadata = action.response.response.docs[0];
-        this.emitChange();
+      case UPDATE_METADATA:
+        if (action.response.response.numFound > 0) {
+          ArrayHelper.mergeByProperty(this._metadata, action.response.response.docs, 'signature');
+          this.emitChange();
+        }
         break;
 
       case UPLOAD_FINISHED:
+        console.log(action.response);
         this._files = [];
-        this._jsons = [];
-        this._images = [];
         this._responses.push(action.response);
         this.emitChange();
         break;
@@ -66,41 +54,17 @@ class UploadStore extends BaseStore {
   get listActive() {
     return this._listActive;
   }
-
-  get images() {
-    return this._images;
-  }
-
-  get jsons() {
-    return this._jsons;
-  }
   
   get files() {
     return this._files;
   }
 
+  get metadata() {
+    return this._metadata;
+  }
+
   get responses() {
     return this._responses;
-  }
-
-  mergeByProperty(arr1, arr2, prop) {
-    _.each(arr2, function (arr2obj) {
-      var arr1obj = _.find(arr1, function (arr1obj) {
-        return arr1obj[prop] === arr2obj[prop];
-      });
-
-      arr1obj ? _.extend(arr1obj, arr2obj) : arr1.push(arr2obj);
-    });
-  }
-
-  extractValue(str) {
-    var ret = "";
-    if (/"/.test(str)) {
-      ret = str.match(/"(.*?)"/)[1];
-    } else {
-      ret = str;
-    }
-    return ret;
   }
 }
 

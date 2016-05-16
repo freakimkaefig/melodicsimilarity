@@ -12,7 +12,8 @@ export default class SongsheetList extends React.Component {
     super(props);
 
     this.state = {
-      songsheets: SongsheetStore.songsheets
+      songsheets: SongsheetStore.songsheets,
+      metadata: SongsheetStore.metadata
     };
 
     this.onStoreChange = this.onStoreChange.bind(this);
@@ -28,7 +29,10 @@ export default class SongsheetList extends React.Component {
   }
 
   onStoreChange() {
-    this.setState({songsheets: SongsheetStore.songsheets});
+    this.setState({
+      songsheets: SongsheetStore.songsheets,
+      metadata: SongsheetStore.metadata
+    });
   }
 
   render() {
@@ -37,7 +41,7 @@ export default class SongsheetList extends React.Component {
         <div>
           <h1>Liedblätter</h1>
           <LoadingOverlay loading={this.state.songsheets <= 0} />
-          <FileGrid files={this.state.songsheets} />
+          <FileGrid files={this.state.songsheets} metadata={this.state.metadata} />
         </div>
       </DocumentTitle>
     )

@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { LIST_ACTIVE_CHANGE, UPLOAD_IMAGES, UPLOAD_JSONS, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import { LIST_ACTIVE_CHANGE, SAVE_FILES_TO_UPLOAD, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
 
 export default {
   setListActive: (key) => {
@@ -9,17 +9,11 @@ export default {
     });
   },
 
-  saveImageFiles: (files) => {
+  saveFiles: (files, metadata) => {
     AppDispatcher.dispatch({
-      actionType: UPLOAD_IMAGES,
-      files: files
-    });
-  },
-
-  saveJsonFiles: (files) => {
-    AppDispatcher.dispatch({
-      actionType: UPLOAD_JSONS,
-      files: files
+      actionType: SAVE_FILES_TO_UPLOAD,
+      files: files,
+      metadata: metadata
     });
   },
 

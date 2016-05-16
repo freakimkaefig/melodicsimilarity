@@ -2,6 +2,7 @@ import request from 'reqwest';
 import when from 'when';
 import SongsheetActions from '../actions/SongsheetActions';
 import { LIST_URL, ITEM_URL } from '../constants/SongsheetConstants';
+import SolrService from './SolrService';
 
 class SongsheetService {
 
@@ -24,6 +25,10 @@ class SongsheetService {
   handleListResponse(listPremise) {
     return listPremise
       .then(function(response) {
+        console.log(response);
+        for (var i = 0; i < response.length; i++) {
+          SolrService.findDoc(response[i].signature);
+        }
         SongsheetActions.renderList(response);
       });
   }

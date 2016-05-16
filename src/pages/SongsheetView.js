@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
+import { METADATA_IMAGE_BASE_URL } from '../constants/SolrConstants';
 import LoadingOverlay from '../components/LoadingOverlay';
 import SongsheetService from '../services/SongsheetService';
 import SongsheetStore from '../stores/SongsheetStore';
 import ImageZoom from '../components/ImageZoom';
 import AbcViewer from '../components/AbcViewer';
 import MetadataViewer from '../components/MetadataViewer';
-import { SONGSHEET_CONTEXT } from '../constants/SongsheetConstants';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Breadcrumb } from 'react-bootstrap';
 
@@ -18,8 +18,13 @@ export default class SongsheetView extends React.Component {
     super(props);
 
     this.state = {
-      file: null,
-      loading: true
+      file: SongsheetStore.songsheets.find(item => {
+        return item.signature === props.params.signature;
+      }),
+      metadata: SongsheetStore.metadata.find(item => {
+        return item.signature === props.params.signature;
+      }),
+      loading: false
     };
 
     this.onStoreChange = this.onStoreChange.bind(this);
@@ -28,21 +33,9 @@ export default class SongsheetView extends React.Component {
   componentDidMount() {
     SongsheetStore.addChangeListener(this.onStoreChange);
 
-    SongsheetService.loadItem(this.props.params.signature);
-
-    // let songsheet = SongsheetStore.songsheets.find(songsheet => {
-    //   return songsheet.signature === this.props.params.signature;
-    // });
-    // console.log(songsheet);
-    // if (songsheet) {
-    //   this.setState({
-    //     file: songsheet,
-    //     loading: false
-    //   });
-    // } else {
-    //   console.log(this.props);
-    //   SongsheetService.loadItem(this.props.params.signature);
-    // }
+    if (!this.state.file) {
+      SongsheetService.loadList();
+    }
   }
 
   componentWillUnmount() {
@@ -51,23 +44,27 @@ export default class SongsheetView extends React.Component {
 
   onStoreChange() {
     this.setState({
-      file: SongsheetStore.songsheet,
-      loading: false
+      file: SongsheetStore.songsheets.find(item => {
+        return item.signature === this.props.params.signature;
+      }),
+      metadata: SongsheetStore.metadata.find(item => {
+        return item.signature === this.props.params.signature;
+      })
     });
   }
 
-  _getImageView(file) {
-    if (file !== null) {
-      if (typeof file.image !== 'undefined') {
+  _getImageView(metadata) {
+    if (typeof metadata !== 'undefined') {
+      if (typeof metadata.imagename !== 'undefined') {
         return (
-          <ImageZoom itemKey={0} image={file.image} />
+          <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
         );
       }
     }
   }
 
   _getAbcViewer(file) {
-    if (file !== null) {
+    if (typeof file !== 'undefined') {
       if (typeof file.abc !== 'undefined') {
         return (
           <AbcViewer abc={file.abc} itemKey={0}/>
@@ -76,10 +73,10 @@ export default class SongsheetView extends React.Component {
     }
   }
 
-  _getMetadataViewer(file) {
-    if (file !== null) {
+  _getMetadataViewer(metadata) {
+    if (typeof metadata !== 'undefined') {
       return (
-        <MetadataViewer file={file} context={SONGSHEET_CONTEXT} />
+        <MetadataViewer metadata={metadata} />
       );
     }
   }
@@ -108,11 +105,11 @@ export default class SongsheetView extends React.Component {
               <h1>Songsheet View</h1>
             </div>
             <div className="col-xs-12 col-sm-4">
-              { this._getImageView(this.state.file) }
+              { this._getImageView(this.state.metadata) }
             </div>
             <div className="col-xs-12 col-sm-8">
               { this._getAbcViewer(this.state.file) }
-              { this._getMetadataViewer(this.state.file) }
+              { this._getMetadataViewer(this.state.metadata) }
             </div>
           </div>
         </div>

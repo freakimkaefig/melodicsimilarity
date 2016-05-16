@@ -1,10 +1,18 @@
 export const BASE_URL = 'http://localhost:8983/';
-export const QUERY_URL = BASE_URL + 'solr/searchableDocs/query';
-export const SELECT_URL = BASE_URL + 'solr/searchableDocs/select';
+export const SEARCH_QUERY_URL = BASE_URL + 'solr/searchableDocs/query';
+export const METADATA_QUERY_URL = BASE_URL + 'solr/metaData/query';
+
+export const METADATA_IMAGE_BASE_URL = 'http://localhost:3000/api/image/';
+export const METADATA_PLACEHOLDER_IMAGE = 'placeholder.jpg';
+export const METADATA_PLACEHOLDER_TITLE = 'Kein Incipit vorhanden';
+export const METADATA_PLACEHOLDER_TEXT = 'Kein Liedtext vorhanden';
+
+export const UPDATE_METADATA = 'UPDATE_METADATA';
 export const UPDATE_FACETS = 'UPDATE_FACETS';
 export const UPDATE_QUERY = 'UPDATE_QUERY';
 export const UPDATE_RESULTS = 'UPDATE_RESULTS';
 export const UPDATE_RESULT_IMAGE = 'UPDATE_RESULT_IMAGE';
+
 export const FIELDS = [
   {
     "sort": 1,

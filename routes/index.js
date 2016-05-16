@@ -18,6 +18,7 @@ router.get('/api', apiController.getStats);
 /* Songsheets */
 router.get('/api/songsheets', songsheetController.getUploads);
 router.get('/api/songsheets/:signature', songsheetController.getSongsheetBySignature);
+router.get('/api/image/:name', songsheetController.getImageByName);
 router.post('/api/protected/songsheet/add', songsheetController.handleUpload);
 router.post('/api/protected/scan/add', upload.any(), uploadController.postUpload);
 
