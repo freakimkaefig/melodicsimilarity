@@ -13,7 +13,7 @@ class SolrService {
 
   findDoc(signature) {
     let requestObject = request({
-      url: SEARCH_QUERY_URL,  // TODO: Change to "SEARCH_QUERY_URL"
+      url: SEARCH_QUERY_URL,
       method: 'POST',
       crossOrigin: true,
       type: 'json',

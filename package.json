@@ -40,7 +40,7 @@
     "midi": "git://github.com/panarch/MIDI.js",
     "mongodb": "^2.1.16",
     "multer": "^1.1.0",
-    "musicjson2abc": "^0.4.1",
+    "musicjson2abc": "^0.4.2",
     "node-sass": "^3.4.2",
     "path": "^0.12.7",
     "pwd": "^1.0.0",
