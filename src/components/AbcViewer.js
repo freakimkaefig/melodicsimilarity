@@ -118,7 +118,9 @@ export default class AbcViewer extends React.Component {
 
     return (
       <div>
-        <div id={`notation-${key}`} className="notation"></div>
+        <div className="scroll-x-container">
+          <div id={`notation-${key}`} className="notation"></div>
+        </div>
         <div id={`midi-player-${key}`}>
           <div id={`player-${key}`} className="player-container">
             {this.state.playing}

@@ -25,7 +25,7 @@ var config = {
     "scaffolding": true,
     "type": true,
     "code": true,
-    "grid": true,
+    "grid": false,
     "tables": true,
     "forms": true,
     "buttons": true,

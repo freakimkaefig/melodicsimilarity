@@ -57,8 +57,20 @@ export default class SongsheetView extends React.Component {
     if (typeof metadata !== 'undefined') {
       if (typeof metadata.imagename !== 'undefined') {
         return (
-          <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
+          <div className="col-xs-12">
+            <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
+          </div>
         );
+      }
+    }
+  }
+
+  _getMetadataText(metadata) {
+    if (typeof metadata !== 'undefined') {
+      if (typeof metadata.text !== 'undefined') {
+        return (
+          <div className="col-xs-12 text">{metadata.text}</div>
+        )
       }
     }
   }
@@ -104,10 +116,13 @@ export default class SongsheetView extends React.Component {
             <div className="col-xs-12">
               <h1>Songsheet View</h1>
             </div>
-            <div className="col-xs-12 col-sm-4">
-              { this._getImageView(this.state.metadata) }
+            <div className="col-xs-12 col-md-4">
+              <div className="row">
+                { this._getImageView(this.state.metadata) }
+                { this._getMetadataText(this.state.metadata) }
+              </div>
             </div>
-            <div className="col-xs-12 col-sm-8">
+            <div className="col-xs-12 col-md-7 col-md-offset-1">
               { this._getAbcViewer(this.state.file) }
               { this._getMetadataViewer(this.state.metadata) }
             </div>

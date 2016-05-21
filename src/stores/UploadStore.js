@@ -34,6 +34,9 @@ class UploadStore extends BaseStore {
 
       case UPDATE_METADATA:
         if (action.response.response.numFound > 0) {
+          let responseDocs = action.response.response.docs.forEach(item => {
+            item.loaded = true;
+          });
           ArrayHelper.mergeByProperty(this._metadata, action.response.response.docs, 'signature');
           this.emitChange();
         }

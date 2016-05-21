@@ -20,6 +20,7 @@ var config = {
       {test: /\.json$/, loader: 'json'},
       {test: /\.less$/, loader: ExtractTextPlugin.extract('style-loader', 'css!less')},
       {test: /\.scss$/, loader: ExtractTextPlugin.extract('style-loader', 'css!sass')},
+      {test: /\.css$/, loader: ExtractTextPlugin.extract('style-loader', 'css')},
       {test: /\.png$/, loader: 'url?limit=10000&mimetype=image/png'},
       {test: /\.(woff|woff2)$/, loader: 'url?limit=10000&mimetype=application/font-woff'},
       {test: /\.ttf$/, loader: 'url?limit=10000&mimetype=application/octet-stream'},

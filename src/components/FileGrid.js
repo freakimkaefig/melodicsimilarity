@@ -23,12 +23,11 @@ export default class FileGrid extends React.Component {
   renderFileGrid(files, metadata) {
     if (files.length > 0) {
       return files.map((file, index) => {
-        console.log(metadata);
         let data = metadata.find(item => {
           return item.signature == file.signature;
         });
         return (
-          <div className="col-xs-6 col-sm-3 col-lg-2 text-center" key={index}>
+          <div className="item col-xs-6 col-sm-3 col-lg-2 text-center" key={index}>
             <Link to={`/songsheets/${file.signature}`}>
               <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + data.imagename}/>
               <h4>{file.signature}</h4>
@@ -42,7 +41,7 @@ export default class FileGrid extends React.Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="grid row start-xs">
         { this.renderFileGrid(this.props.files, this.props.metadata) }
       </div>
     );

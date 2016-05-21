@@ -91,7 +91,8 @@ export default class UploadView extends React.Component {
             signature: json.id,
             imagename: METADATA_PLACEHOLDER_IMAGE,
             title: METADATA_PLACEHOLDER_TITLE,
-            text: METADATA_PLACEHOLDER_TEXT
+            text: METADATA_PLACEHOLDER_TEXT,
+            loaded: false
           });
 
           UploadActions.saveFiles(updatedFiles, updatedMetadata);
@@ -106,20 +107,20 @@ export default class UploadView extends React.Component {
     }).map(file => {
       let signature = file.signature;
 
-      console.log("Metadata", UploadStore.metadata);
       let metadata = props.metadata.find(data => {
         return data.signature == signature;
       });
+
+      if (!metadata.loaded) {
+        SolrService.findDoc(signature, UPLOAD_CONTEXT);
+      }
 
       let title = 'Kein Incipit vorhanden';
       let text = 'Kein Text vorhanden';
       if (typeof metadata !== 'undefined') {
         if (typeof metadata.title !== 'undefined') title = metadata.title;
         if (typeof metadata.text !== 'undefined') text = metadata.text;
-      } else {
-        SolrService.findDoc(signature, UPLOAD_CONTEXT);
       }
-
 
       return (
         <Collapse.Panel
@@ -127,17 +128,19 @@ export default class UploadView extends React.Component {
           header={`${signature} ${title} (${file.name})`}
           checkbox={file.upload}
           onCheckboxClick={props.onCheckboxClick}>
-          <div className="col-xs-5">
-            <div className="row">
-              <div className="col-xs-12 image">
-                <ImageZoom itemKey={file.key} image={METADATA_IMAGE_BASE_URL + metadata.imagename} store={UploadStore} />
+          <div className="row">
+            <div className="col-xs-12 col-md-4">
+              <div className="row">
+                <div className="col-xs-12 image">
+                  <ImageZoom itemKey={file.key} image={METADATA_IMAGE_BASE_URL + metadata.imagename} store={UploadStore} />
+                </div>
+                <div className="col-xs-12 text">{text}</div>
               </div>
-              <div className="col-xs-12 text">{text}</div>
             </div>
-          </div>
-          <div className="col-xs-7">
-            <AbcViewer itemKey={file.key} abc={file.abc} />
-            <MetadataViewer metadata={metadata} />
+            <div className="col-xs-12 col-md-7 col-md-offset-1">
+              <AbcViewer itemKey={file.key} abc={file.abc} />
+              <MetadataViewer metadata={metadata} />
+            </div>
           </div>
         </Collapse.Panel>
       );

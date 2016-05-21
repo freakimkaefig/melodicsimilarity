@@ -3,10 +3,10 @@ import DocumentTitle from 'react-document-title';
 import LoginStore from './stores/LoginStore';
 import Navbar from './components/Navbar';
 import MidiService from './services/MidiService';
-
-require('expose?$!expose?jQuery!jquery');
-require('!bootstrap-webpack!../config/bootstrap.config');
-require('font-awesome-webpack!../config/font-awesome.config');
+import 'expose?$!expose?jQuery!jquery';
+import '!bootstrap-webpack!../config/bootstrap.config';
+import 'flexboxgrid';
+import 'font-awesome-webpack!../config/font-awesome.config';
 
 var headerLinks = [
   { path: '/overview', title: 'Übersicht', nav: true, auth: false},
