@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import MidiStore from '../stores/MidiStore';
-import MidiService from '../services/MidiService';
 import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js';
 import '../stylesheets/AbcViewer.less';
 
@@ -18,6 +17,8 @@ export default class AbcViewer extends React.Component {
     super(props);
     this.state = {
       midiLoaded: false,
+      abcRendered: false,
+      midiRendered: false,
       player: null,
       playerProgress: 0,
       playing: false,
@@ -43,16 +44,26 @@ export default class AbcViewer extends React.Component {
   }
 
   componentDidMount() {
-    this._renderAbc(this.props.abc, this.props.itemKey);
-    this._renderMidi(this.props.abc, this.props.itemKey);
+    MidiStore.addChangeListener(this.onStoreChange);
 
     let player = MidiStore.midiPlayer;
     if (player !== null) {
       this.setState({player: player});
+
+      if (!this.state.abcRendered) {
+        this._renderAbc(this.props.abc, this.props.itemKey);
+      }
+
+      if (!this.state.midiRendered) {
+        this._renderMidi(this.props.abc, this.props.itemKey);
+      }
+
       this._midiPluginLoaded(player);
-    } else {
-      MidiService.loadPlugin();
     }
+  }
+
+  componentWillUnmount() {
+    MidiStore.removeChangeListener(this.onStoreChange);
   }
 
   onStoreChange() {
@@ -62,16 +73,26 @@ export default class AbcViewer extends React.Component {
     });
 
     if (player !== null) {
+      if (!this.state.abcRendered) {
+        this._renderAbc(this.props.abc, this.props.itemKey);
+      }
+
+      if (!this.state.midiRendered) {
+        this._renderMidi(this.props.abc, this.props.itemKey);
+      }
+
       this._midiPluginLoaded(player);
     }
   }
 
   _renderAbc(abc, itemKey) {
     ABCJS.renderAbc('notation-' + itemKey, abc, this.state.parserParams, this.state.engraverParams, this.state.renderParams);
+    this.setState({abcRendered: true});
   }
 
   _renderMidi(abc, itemKey) {
     ABCJS.renderMidi('midi-' + itemKey, abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
+    this.setState({midiRendered: true});
   }
 
   _midiPluginLoaded = (player) => {

@@ -132,7 +132,7 @@ export default class UploadView extends React.Component {
             <div className="col-xs-12 col-md-4">
               <div className="row">
                 <div className="col-xs-12 image">
-                  <ImageZoom itemKey={file.key} image={METADATA_IMAGE_BASE_URL + metadata.imagename} store={UploadStore} />
+                  <ImageZoom itemKey={file.key} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
                 </div>
                 <div className="col-xs-12 text">{text}</div>
               </div>

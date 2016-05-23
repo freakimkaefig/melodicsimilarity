@@ -1,13 +1,10 @@
 import request from 'reqwest';
 import when from 'when';
-import { UPLOAD_CONTEXT } from '../constants/UploadConstants';
-import { SONGSHEET_CONTEXT } from '../constants/SongsheetConstants';
-import { SEARCH_CONTEXT, METADATA_QUERY_URL, SEARCH_QUERY_URL, FIELDS } from '../constants/SolrConstants';
+import { SEARCH_QUERY_URL, FIELDS } from '../constants/SolrConstants';
 import { ITEM_URL } from '../constants/SongsheetConstants';
-import UploadActions from '../actions/UploadActions';
-import SongsheetActions from '../actions/SongsheetActions';
 import SolrActions from '../actions/SolrActions';
 import SolrQuery from '../objects/SolrQuery';
+import DateHelper from '../helpers/DateHelper';
 
 class SolrService {
 
@@ -36,109 +33,92 @@ class SolrService {
   }
 
   getFacets(field) {
-    /**
-     * TODO: Get facets from solr
-     *    e.g. get all values for landscapeArchive:
-     *    http://localhost:8983/solr/metaData/select?q=*%3A*&rows=0&wt=json&indent=true&facet=true&facet.field=landscapeArchive
-     *    The response has property "facet_counts":
-     *      {
-     *        facet_queries: { },
-     *        facet_fields: {
-     *          landscapeArchive: [
-     *            "Hessisches Archiv, Hessen", 9987
-     *            "Münchner Archiv, Bayern", 3876,
-     *            ...
-     *          ]
-     *        }
-     *      }
-     */
+    let queryString = '?q=*:*&rows=0&wt=json&facet=true&facet.field=' + field + 'Facet';
+    let requestObject = request({
+      url: SEARCH_QUERY_URL + queryString,
+      method: 'GET',
+      crossOrigin: true
+    });
 
-    let facetsArray = [];
-    switch (field) {
-      case 'landscapeArchive':
-        facetsArray = [
-          'Schleswig-Holstein', 500000,
-          'Hessisches Archiv, Hessen', 9978,
-          'Schlesien / Polen', 1904,
-          'Münchner Archiv, Bayern', 1400,
-          'Schweizer Archiv, Schweiz', 1300,
-          'Badisches Archiv, Baden', 923,
-          'Württembergisches Archiv, Württemberg', 800,
-          'Kinzigtal, Schwarzwald, Baden', 7,
-          'Rheinprovinz, Rheinland', 5,
-          'Westfalen, Münsterland', 5,
-          'Pfalz', 1,
-          'Spessart', 1,
-          'Sauerland', 1
-        ];
-        facetsArray = facetsArray.filter((facet) => {
-          return isNaN(parseFloat(facet)) &! isFinite(facet);
+    return this.handleFacetResponse(when(requestObject));
+  }
+
+  handleFacetResponse(facetPremise) {
+    return facetPremise
+      .then(function(response) {
+        let fieldName = response.responseHeader.params["facet.field"].replace('Facet', '');
+        let fieldProperties = FIELDS.find(field => {
+          return field.name === fieldName;
         });
-        break;
+        let facets = [];
 
-      case 'origin':
-        facetsArray = [
-          'Deutschsprachiger Raum', 13155
-        ];
-        facetsArray = facetsArray.filter((facet) => {
-          return isNaN(parseFloat(facet)) &! isFinite(facet);
-        });
-        break;
+        switch (fieldProperties.input) {
+          case 'text':
+            facets = response.facet_counts.facet_fields[response.responseHeader.params["facet.field"]].filter((facet, index) => {
+              if (index % 2 === 0) {
+                return isNaN(parseFloat(facet)) &! isFinite(facet);
+              }
+            });
+            SolrActions.updateFacets(fieldName, facets);
+            break;
 
-      case 'type':
-        facetsArray = [
-          'Kinderlied', 33,
-          'Spiellied', 30,
-          'Ehestandslied', 9,
-          'Hochzeitslied', 9,
-          'Brautlied', 2,
-          'Drahler', 1,
-          'Geleitlied', 1,
-          'Kreistanz', 1,
-          'Schelmenlieder', 1,
-          'Spinnstubenlied', 1,
-          'Tanzlied', 1
-        ];
-        facetsArray = facetsArray.filter((facet) => {
-          return isNaN(parseFloat(facet)) &! isFinite(facet);
-        });
-        break;
-    }
+          case 'date':
+            facets = response.facet_counts.facet_fields[response.responseHeader.params["facet.field"]].filter((facet, index) => {
+              if (fieldProperties.input === 'date') {
+                if (index % 2 === 0) {  // Filter solr counts
+                  return DateHelper.hasValidYear(facet);
+                }
+              }
+            }).map(facet => {
+              return parseInt(DateHelper.extractYear(facet));
+            });
 
-    if (facetsArray.length > 0) {
-      SolrActions.updateFacets(field, facetsArray);
-    }
+            SolrActions.updateFacets(fieldName, {
+              min: Math.min(...facets),
+              max: Math.max(...facets)
+            });
+            break;
+        }
+      });
   }
   
-  search(queryFields) {
-    console.log(queryFields);
-    SolrActions.updateQuery(queryFields);
-
+  search(fields, operator) {
+    let queryArray = [];
     let query = new SolrQuery(SEARCH_QUERY_URL);
     query.setHighlighting(true, 'em', 300, 3);
-    query.setOperator('OR');
-    for (var i = 0; i < queryFields.length; i++) {
-      if (queryFields[i].name === 'search') {
-        query.addQueryString(queryFields[i].value);
+    query.setOperator(operator);
+
+    for (var key in fields) {
+      if (!fields.hasOwnProperty(key)) continue;
+      if (fields[key] === '') continue;
+
+      if (key === 'search') {
+        query.addQueryString(fields[key]);
+        queryArray.push({name: 'search', value: fields[key]});
         continue;
       }
 
       let fieldProperties = FIELDS.find(field => {
-        return field.name === queryFields[i].name;
+        return field.name === key;
       });
 
       switch (fieldProperties.input) {
         case 'text':
-          query.addQueryField(queryFields[i].name, queryFields[i].value);
+          query.addQueryField(key, fields[key], fieldProperties.exact);
+          queryArray.push({name: key, value: fields[key]});
           break;
 
-        case 'select':
-          query.addFilterField(queryFields[i].name, queryFields[i].value);
+        case 'date':
+          if (fields[key].min !== DateHelper.getDefaultMinYear() && fields[key].max !== DateHelper.getDefaultMaxYear()) {
+            query.addDateField(key, fields[key]);
+            queryArray.push({name: key, value: fields[key].min + '-' + fields[key].max});
+          }
           break;
       }
     }
 
     console.log(query.getQueryUrl());
+    SolrActions.updateQuery(queryArray);
 
     let requestObject = request({
       url: query.getQueryUrl(),
@@ -160,10 +140,6 @@ class SolrService {
   handleSearchResponse(searchPremise) {
     return searchPremise
       .then(function(response) {
-        // let docs = response.response.docs.filter(doc => {
-        //   return typeof doc.signature !== 'undefined';
-        // });
-        // console.log(docs);
         let docs = response.response.docs;
         for (var i = 0; i < docs.length; i++) {
           this.findSongsheet(docs[i].signature);

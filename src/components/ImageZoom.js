@@ -8,8 +8,7 @@ export default class ImageZoom extends React.Component {
   static propTypes = {
     itemKey: PropTypes.number.isRequired,
     image: PropTypes.string.isRequired,
-    scale: PropTypes.number,
-    store: PropTypes.object
+    scale: PropTypes.number
   };
 
   static defaultProps = {
@@ -25,31 +24,6 @@ export default class ImageZoom extends React.Component {
     this.onMouseOver = this.onMouseOver.bind(this);
     this.onMouseOut = this.onMouseOut.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
-
-    this.onStoreChange = this.onStoreChange.bind(this);
-  }
-
-  componentDidMount() {
-    if (this.props.store !== null) {
-      this.props.store.addChangeListener(this.onStoreChange);
-    }
-  }
-  componentWillUnmount() {
-    if (this.props.store !== null) {
-      this.props.store.removeChangeListener(this.onStoreChange);
-    }
-  }
-
-  onStoreChange() {
-    this.updateWrapper();
-  }
-
-  componentDidUpdate() {
-    this.updateWrapper();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.updateWrapper();
   }
 
   onMouseOver(e) {
@@ -72,6 +46,7 @@ export default class ImageZoom extends React.Component {
   }
 
   updateWrapper() {
+    console.log("Update image zoom");
     if (this.props.image != '') {
       let $imageZoomWrapper = $('#image-zoom-wrapper-' + this.props.itemKey);
       $imageZoomWrapper.css({
@@ -88,7 +63,9 @@ export default class ImageZoom extends React.Component {
     return (
       <div id={`image-zoom-wrapper-${this.props.itemKey}`} className="image-zoom-wrapper">
         <div className="image-zoom-container" onMouseOver={this.onMouseOver} onMouseOut={this.onMouseOut} onMouseMove={this.onMouseMove}>
-          <div className="image-zoom" style={imageStyle} data-scale={this.props.scale}></div>
+          <div className="image-zoom" style={imageStyle} data-scale={this.props.scale}>
+            <img src={this.props.image} className="img-responsive" />
+          </div>
         </div>
       </div>
     );

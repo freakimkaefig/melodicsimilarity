@@ -22,7 +22,7 @@ export default class SelectField extends React.Component {
   render() {
     return (
       <div className="form-group">
-        <label htmlFor={this.props.name}>{this.props.display}</label>
+        <label htmlFor={this.props.name}>{this.props.title}</label>
         <select name={this.props.name} className="form-control">
           <option value="">Bitte wählen</option>
           {this._getSelectOptions(this.props.options)}

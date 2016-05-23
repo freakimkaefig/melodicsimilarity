@@ -19,14 +19,18 @@ export const FIELDS = [
     "group": "main",
     "name": "signature",
     "display": "Signatur",
-    "input": "text"
+    "input": "text",
+    "facet": true,
+    "exact": true
   },
   {
     "sort": 2,
     "group": "main",
     "name": "title",
     "display": "Titel",
-    "input": "text"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
 
   {
@@ -34,28 +38,36 @@ export const FIELDS = [
     "group": "geographic",
     "name": "origin",
     "display": "Herkunft",
-    "input": "select"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
   {
     "sort": 11,
     "group": "geographic",
     "name": "landscapeArchive",
     "display": "Landschaftsarchiv",
-    "input": "select"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
   {
     "sort": 12,
     "group": "geographic",
     "name": "archive",
     "display": "Archivort",
-    "input": "text"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
   {
     "sort": 13,
     "group": "geographic",
     "name": "singPlace",
     "display": "Sangesort",
-    "input": "text"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
 
   {
@@ -63,14 +75,18 @@ export const FIELDS = [
     "group": "persona",
     "name": "singer",
     "display": "Sänger/in",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 21,
     "group": "persona",
     "name": "recorder",
     "display": "Aufzeichner",
-    "input": "text"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
 
   {
@@ -78,35 +94,45 @@ export const FIELDS = [
     "group": "temporal",
     "name": "dateFindAid",
     "display": "Dat. Findbuch",
-    "input": "date"
+    "input": "date",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 31,
     "group": "temporal",
     "name": "receivedOn",
     "display": "Erhalten am",
-    "input": "date"
+    "input": "date",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 32,
     "group": "temporal",
     "name": "sungOn",
     "display": "Gesungen am",
-    "input": "date"
+    "input": "date",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 33,
     "group": "temporal",
     "name": "recordedOn",
     "display": "Aufgezeichnet am",
-    "input": "date"
+    "input": "date",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 34,
     "group": "hidden",
     "name": "submittedOn",
     "display": "Eingesandt am",
-    "input": "date"
+    "input": "date",
+    "facet": false,
+    "exact": false
   },
 
   {
@@ -114,14 +140,18 @@ export const FIELDS = [
     "group": "advanced",
     "name": "oldSignature",
     "display": "Altsignatur",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 41,
     "group": "advanced",
     "name": "type",
     "display": "Liedgattung",
-    "input": "select"
+    "input": "text",
+    "facet": true,
+    "exact": false
   },
 
   {
@@ -129,62 +159,80 @@ export const FIELDS = [
     "group": "hidden",
     "name": "missingCause",
     "display": "Fehlt, weil",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 51,
     "group": "hidden",
     "name": "includes",
     "display": "Umfasst",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 52,
     "group": "hidden",
     "name": "incipit",
     "display": "Incipit",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 53,
     "group": "hidden",
     "name": "numberOfPages",
     "display": "Blattzahl",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": true
   },
   {
     "sort": 54,
     "group": "hidden",
     "name": "remark",
     "display": "Bemerkung",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 55,
     "group": "hidden",
     "name": "publication",
     "display": "Veröffentlichung",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 56,
     "group": "hidden",
     "name": "reference",
     "display": "Verweis",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 57,
     "group": "hidden",
     "name": "handwrittenSource",
     "display": "Quelle",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": false
   },
   {
     "sort": 58,
     "group": "hidden",
     "name": "versionNumber",
     "display": "Versionsnummer",
-    "input": "text"
+    "input": "text",
+    "facet": false,
+    "exact": true
   }
 ];

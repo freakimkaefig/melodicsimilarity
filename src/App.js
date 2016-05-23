@@ -7,7 +7,7 @@ import 'expose?$!expose?jQuery!jquery';
 import '!bootstrap-webpack!../config/bootstrap.config';
 import 'flexboxgrid';
 import 'font-awesome-webpack!../config/font-awesome.config';
-
+import './stylesheets/App.less';
 var headerLinks = [
   { path: '/overview', title: 'Übersicht', nav: true, auth: false},
   { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false },

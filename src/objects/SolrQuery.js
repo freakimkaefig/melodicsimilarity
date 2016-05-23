@@ -9,7 +9,7 @@ export default class SolrQuery {
   }
 
   setOperator(operator) {
-    this.glue = operator;
+    this._glue = operator;
   }
 
   setHighlighting(hl, tag, fragsize, snippets) {
@@ -33,8 +33,15 @@ export default class SolrQuery {
     this._q.push(value);
   }
 
-  addQueryField(field, value) {
+  addQueryField(field, value, exact) {
+    if (exact) {
+      value = '"' + value + '"';
+    }
     this._q.push(field + ':' + value);
+  }
+
+  addDateField(field, value) {
+    this._q.push(field + ':' + '[' + value.min + ' TO ' + value.max + ']');
   }
 
   addFilterField(field, value) {

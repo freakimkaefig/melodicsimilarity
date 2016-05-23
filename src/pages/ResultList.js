@@ -9,7 +9,6 @@ import LoadingItem from '../components/LoadingItem';
 import SearchResultList from '../components/Search/SearchResultList';
 import '../stylesheets/ResultList.less';
 
-
 export default class ResultList extends React.Component {
   constructor(props) {
     super(props);

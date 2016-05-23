@@ -19,20 +19,22 @@ export default class SearchResultList extends React.Component {
     if (typeof result.signature !== 'undefined') {
       return (
         <Link to={`/songsheets/${result.signature}`}>
-          <div className="hidden-xs col-sm-3 col-md-2">
-            <img src={ result.image } className="img-responsive" />
-          </div>
-          <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
-            <h3>{ this._getResultHeadline(result) }</h3>
-            <div className="highlighting">
-              { this._getResultHighlight(result, highlighting) }
+          <div className="row">
+            <div className="hidden-xs col-sm-3 col-md-2">
+              <img src={ result.image } className="img-responsive" />
+            </div>
+            <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
+              <h3>{ this._getResultHeadline(result) }</h3>
+              <div className="highlighting">
+                { this._getResultHighlight(result, highlighting) }
+              </div>
             </div>
           </div>
         </Link>
       );
     } else {
       return (
-        <div>
+        <div className="row">
           <div className="hidden-xs col-sm-3 col-md-2">
             <img src={`http://localhost:8080/SolrInteractionServer/FrontEnd/img/jpegs/${result.imagename}`} className="img-responsive" />
           </div>

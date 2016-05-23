@@ -38,7 +38,13 @@ var config = {
     new CopyWebpackPlugin([
       {from: 'node_modules/midi/soundfont', to: 'soundfont'}
     ])
-  ]
+  ],
+  resolve: {
+    modules: ['node_modules', 'src'],
+    alias: {
+      'react-input-range-css': path.join(__dirname, './node_modules/react-input-range/dist/react-input-range.css')
+    }
+  }
 };
 
 module.exports = config;
