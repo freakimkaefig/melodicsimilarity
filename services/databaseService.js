@@ -23,19 +23,25 @@ var getStats = function(callback) {
   })
 };
 
-var getCollection = function(collectionName, callback) {
+var getCollection = function(collectionName, start, rows, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
     }
     var collection = db.collection(collectionName);
-    collection.find({}).toArray(function(err, result) {
+    collection.find({}).count(function (err, count) {
       if (err) {
         throw err;
       }
-      callback(result);
-      db.close();
+      collection.find({}).skip(start).limit(rows).toArray(function(err, result) {
+        if (err) {
+          throw err;
+        }
+        callback(result, count);
+        db.close();
+      });
     });
+    
   });
 };
 

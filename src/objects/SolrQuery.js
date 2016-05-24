@@ -9,7 +9,7 @@ export default class SolrQuery {
   }
 
   setOperator(operator) {
-    this._glue = operator;
+    this._glue = operator ? 'AND' : 'OR';
   }
 
   setHighlighting(hl, tag, fragsize, snippets) {
@@ -27,6 +27,14 @@ export default class SolrQuery {
     if (typeof snippets !== 'undefined') {
       this._query += '&hl.snippets=' + snippets;
     }
+  }
+
+  setStart(value) {
+    this._query += '&start=' + value;
+  }
+
+  setRows(value) {
+    this._query += '&rows' + value;
   }
 
   addQueryString(value) {

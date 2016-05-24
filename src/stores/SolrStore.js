@@ -10,6 +10,7 @@ class SolrStore extends BaseStore {
     this._query = [];
     this._results = [];
     this._highlighting = {};
+    this._numFound = 0;
   }
   
   _registerToActions(action) {
@@ -28,9 +29,11 @@ class SolrStore extends BaseStore {
         if (action.results.length > 0) {
           this._results = action.results;
           this._highlighting = action.highlighting;
+          this._numFound = action.numFound;
         } else {
           this._results.push(false);
           this._highlighting = {};
+          this._numFound = 0;
         }
         this.emitChange();
         break;
@@ -59,6 +62,10 @@ class SolrStore extends BaseStore {
 
   get highlighting() {
     return this._highlighting;
+  }
+
+  get numFound() {
+    return this._numFound;
   }
 }
 

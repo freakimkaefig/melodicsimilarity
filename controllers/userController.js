@@ -21,9 +21,10 @@ var _findUser = function(users, username) {
 };
 
 var getUsers = function(req, res) {
-  databaseService.getCollection(databaseConfig.collections.users, function(users) {
+  databaseService.getCollection(databaseConfig.collections.users, 0, 0, function(users, count) {
     res.json({
-      users: users
+      users: users,
+      totalCount: count
     });
   });
 };
@@ -47,7 +48,7 @@ var handleLogin = function(req, res) {
     res.status(400).send("You must send the username and the password");
     return;
   }
-  databaseService.getCollection(databaseConfig.collections.users, function(users) {
+  databaseService.getCollection(databaseConfig.collections.users, 0, 0, function(users, count) {
 
     var user = _findUser(users, req.body.username);
 

@@ -1,4 +1,5 @@
 var path = require('path');
+var request = require('sync-request');
 var databaseService = require('../services/databaseService');
 var databaseConfig = require('../config/database.config.json');
 
@@ -11,9 +12,18 @@ var handleUpload = function(req, res) {
 };
 
 var getUploads = function(req, res) {
-  databaseService.getCollection(databaseConfig.collections.songsheets, function(songsheets) {
-    res.json(songsheets);
-  });
+  console.log(req.query);
+  databaseService.getCollection(
+    databaseConfig.collections.songsheets,
+    parseInt(req.query.start),
+    parseInt(req.query.rows),
+    function(songsheets, count) {
+      res.json({
+        items: songsheets,
+        totalCount: count
+      });
+    }
+  );
 };
 
 var getSongsheetBySignature = function(req, res) {
@@ -23,10 +33,18 @@ var getSongsheetBySignature = function(req, res) {
 };
 
 var getImageByName = function(req, res) {
+  var placeholder = path.join(__dirname, '../public/uploads/placeholder.jpg');
+
   if (req.params.name == 'placeholder.jpg') {
-    res.sendFile(path.join(__dirname, '../public/uploads/placeholder.jpg'));
+    res.sendFile(placeholder);
   } else {
-    res.redirect('http://localhost:8080/SolrInteractionServer/FrontEnd/img/jpegs/' + req.params.name);
+    var url = 'http://localhost:8080/SolrInteractionServer/FrontEnd/img/jpegs/' + req.params.name
+    var image = request('HEAD', url);
+    if (image.statusCode === 200) {
+      res.redirect(url);
+    } else {
+      res.sendFile(placeholder);
+    }
   }
 };
 

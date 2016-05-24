@@ -1,11 +1,19 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { LOAD_LIST, LOAD_ITEM, RENDER_METADATA } from '../constants/SongsheetConstants';
+import { UPDATE_SONGSHEET_START, LOAD_LIST, LOAD_ITEM, RENDER_METADATA } from '../constants/SongsheetConstants';
 
 export default {
-  renderList: (songsheets) => {
+  updateStart: (start) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_SONGSHEET_START,
+      value: start
+    });
+  },
+  
+  renderList: (songsheets, totalCount) => {
     AppDispatcher.dispatch({
       actionType: LOAD_LIST,
-      songsheets: songsheets
+      songsheets: songsheets,
+      totalCount: totalCount
     });
   },
 

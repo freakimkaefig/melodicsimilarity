@@ -13,7 +13,6 @@ import Switch from 'react-bootstrap-switch';
 import $ from 'jquery';
 import '../stylesheets/MetadataSearchbox.less';
 
-
 export default class MetadataSearchbox extends React.Component {
   static propTypes = {
     fields: PropTypes.arrayOf(PropTypes.object)
@@ -80,11 +79,10 @@ export default class MetadataSearchbox extends React.Component {
   onSearchStoreChange() {
     this.setState({
       values: SearchStore.fields,
+      operator: SearchStore.operator,
       submit: true
     });
   }
-
-
 
   getFieldsList(fields, group, itemClass) {
     return fields.filter(field => {
@@ -161,8 +159,7 @@ export default class MetadataSearchbox extends React.Component {
   }
 
   onSwitchChange(component, state) {
-
-    this.setState({operator: state});
+    SearchActions.updateOperator(state)
   }
 
   handleChange(field, value) {
@@ -176,8 +173,12 @@ export default class MetadataSearchbox extends React.Component {
     // Disable submit button
     this.setState({submit: false});
 
-    let operator = this.state.operator ? 'AND' : 'OR';
-    SolrService.search(SearchStore.fields, operator);
+    SolrService.search(
+      SearchStore.fields,
+      SearchStore.operator,
+      SearchStore.start,
+      SearchStore.rows
+    );
   }
 
   render() {

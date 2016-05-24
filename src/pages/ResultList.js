@@ -2,11 +2,14 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { browserHistory } from 'react-router';
 import { APP_NAME } from '../constants/AppConstants';
+import SolrService from '../services/SolrService';
 import SolrStore from '../stores/SolrStore';
+import SearchStore from '../stores/SearchStore';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Breadcrumb } from 'react-bootstrap';
 import LoadingItem from '../components/LoadingItem';
 import SearchResultList from '../components/Search/SearchResultList';
+import {Pagination} from 'react-bootstrap';
 import '../stylesheets/ResultList.less';
 
 export default class ResultList extends React.Component {
@@ -16,28 +19,48 @@ export default class ResultList extends React.Component {
     this.state = {
       query: SolrStore.query,
       results: SolrStore.results,
-      highlighting: SolrStore.highlighting
+      highlighting: SolrStore.highlighting,
+      activePage: (SearchStore.start / SearchStore.rows) + 1,
+      numPages: this.getNumPages()
     };
 
-    this.onStoreChange = this.onStoreChange.bind(this);
+    this.onSolrStoreChange = this.onSolrStoreChange.bind(this);
+    this.onSearchStoreChange = this.onSearchStoreChange.bind(this);
   }
 
   componentWillMount() {
-    SolrStore.addChangeListener(this.onStoreChange);
+    SolrStore.addChangeListener(this.onSolrStoreChange);
+    SearchStore.addChangeListener(this.onSearchStoreChange);
     if (this.state.query.length === 0) {
       browserHistory.push('/search');
     }
   }
 
   componentWillUnmount() {
-    SolrStore.removeChangeListener(this.onStoreChange);
+    SolrStore.removeChangeListener(this.onSolrStoreChange);
+    SearchStore.removeChangeListener(this.onSearchStoreChange);
   }
 
-  onStoreChange() {
+  getNumPages() {
+    return Math.ceil(SolrStore.numFound / SearchStore.rows);
+  }
+
+  onSolrStoreChange() {
     this.setState({
       query: SolrStore.query,
       results: SolrStore.results,
-      highlighting: SolrStore.highlighting
+      highlighting: SolrStore.highlighting,
+      numPages: this.getNumPages()
+    });
+  }
+
+  onSearchStoreChange() {
+    if (this.state.activePage !== (SearchStore.start / SearchStore.rows) + 1) {
+
+    }
+    this.setState({
+      activePage: (SearchStore.start / SearchStore.rows) + 1,
+      numPages: this.getNumPages()
     });
   }
 
@@ -49,6 +72,18 @@ export default class ResultList extends React.Component {
         );
       });
     }
+  }
+
+  handleSelect(event, {eventKey}) {
+    event.preventDefault();
+
+    // Trigger new search for selected page
+    SolrService.search(
+      SearchStore.fields,
+      SearchStore.operator,
+      (eventKey - 1) * SearchStore.rows,
+      SearchStore.rows
+    );
   }
   
   render() {
@@ -74,6 +109,18 @@ export default class ResultList extends React.Component {
 
           <LoadingItem loading={this.state.results <= 0}/>
           <SearchResultList results={this.state.results} highlighting={this.state.highlighting} />
+          <div className="text-center">
+            <Pagination
+              prev
+              next
+              first
+              last
+              ellipsis
+              items={this.state.numPages}
+              maxButtons={7}
+              activePage={this.state.activePage}
+              onSelect={this.handleSelect.bind(this)} />
+          </div>
         </div>
       </DocumentTitle>
     )

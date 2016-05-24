@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import {Link} from 'react-router';
-
+import {METADATA_IMAGE_BASE_URL} from '../../constants/SolrConstants';
 import '../../stylesheets/Accordion.less';
 import '../../stylesheets/SearchResultList.less';
 
@@ -21,7 +21,7 @@ export default class SearchResultList extends React.Component {
         <Link to={`/songsheets/${result.signature}`}>
           <div className="row">
             <div className="hidden-xs col-sm-3 col-md-2">
-              <img src={ result.image } className="img-responsive" />
+              <img src={ METADATA_IMAGE_BASE_URL + result.imagename } className="img-responsive" />
             </div>
             <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
               <h3>{ this._getResultHeadline(result) }</h3>
@@ -36,7 +36,7 @@ export default class SearchResultList extends React.Component {
       return (
         <div className="row">
           <div className="hidden-xs col-sm-3 col-md-2">
-            <img src={`http://localhost:8080/SolrInteractionServer/FrontEnd/img/jpegs/${result.imagename}`} className="img-responsive" />
+            <img src={ METADATA_IMAGE_BASE_URL + result.imagename } className="img-responsive" />
           </div>
           <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
             <h3>{ this._getResultHeadline(result) }</h3>

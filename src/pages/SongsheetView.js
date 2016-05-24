@@ -34,7 +34,10 @@ export default class SongsheetView extends React.Component {
     SongsheetStore.addChangeListener(this.onStoreChange);
 
     if (!this.state.file) {
-      SongsheetService.loadList();
+      this.setState({
+        loading: true
+      });
+      SongsheetService.loadItem(this.props.params.signature);
     }
   }
 
@@ -49,7 +52,8 @@ export default class SongsheetView extends React.Component {
       }),
       metadata: SongsheetStore.metadata.find(item => {
         return item.signature === this.props.params.signature;
-      })
+      }),
+      loading: false
     });
   }
 

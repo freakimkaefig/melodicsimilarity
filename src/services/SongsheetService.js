@@ -6,11 +6,17 @@ import SolrService from './SolrService';
 
 class SongsheetService {
 
-  loadList() {
+  loadList(start, rows) {
+    SongsheetActions.updateStart(start);
+
     return this.handleListResponse(when(request({
       url: LIST_URL,
       method: 'GET',
-      crossOrigin: true
+      crossOrigin: true,
+      data: {
+        start: start,
+        rows: rows
+      }
     })));
   }
   
@@ -25,17 +31,17 @@ class SongsheetService {
   handleListResponse(listPremise) {
     return listPremise
       .then(function(response) {
-        console.log(response);
-        for (var i = 0; i < response.length; i++) {
-          SolrService.findDoc(response[i].signature);
+        for (var i = 0; i < response.items.length; i++) {
+          SolrService.findDoc(response.items[i].signature);
         }
-        SongsheetActions.renderList(response);
+        SongsheetActions.renderList(response.items, response.totalCount);
       });
   }
   
   handleItemResponse(itemPremise) {
     return itemPremise
       .then(function(response) {
+        SolrService.findDoc(response.signature);
         SongsheetActions.renderItem(response);
       });
   }

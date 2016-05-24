@@ -28,11 +28,12 @@ export default {
     browserHistory.push('/search/result');
   },
   
-  updateResults: (results, highlighting) => {
+  updateResults: (results, highlighting, numFound) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_RESULTS,
       results: results,
-      highlighting: highlighting
+      highlighting: highlighting,
+      numFound: numFound
     });
   },
 
