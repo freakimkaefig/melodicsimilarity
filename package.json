@@ -2,7 +2,7 @@
   "name": "melodicsimilarity",
   "version": "0.0.1",
   "description": "App for MusicIR",
-  "author": "Lukas Lamm <lukas.lamm89@gmail.com>",
+  "author": "Lukas Lamm <info@lukaslamm.com>",
   "license": "MIT",
   "main": "./app.js",
   "private": true,
