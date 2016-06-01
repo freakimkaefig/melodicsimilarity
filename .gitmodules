@@ -1,0 +1,3 @@
+[submodule "lib/abcjs"]
+	path = lib/abcjs
+	url = https://github.com/freakimkaefig/abcjs

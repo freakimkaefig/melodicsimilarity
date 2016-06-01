@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import MidiStore from '../stores/MidiStore';
-import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js';
+import ABCJS from 'exports?ABCJS!script!../../lib/abcjs/bin/abcjs_basic_2.4.0.js';
 import '../stylesheets/AbcViewer.less';
 
 
