@@ -9,7 +9,6 @@ export default class AbcViewer extends React.Component {
 
   static propTypes = {
     abc: PropTypes.string,
-    file: PropTypes.object,
     itemKey: PropTypes.number
   };
 
@@ -82,6 +81,14 @@ export default class AbcViewer extends React.Component {
       }
 
       this._midiPluginLoaded(player);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.abc !== nextProps.abc) {
+      this._renderAbc(nextProps.abc, nextProps.itemKey);
+      this._renderMidi(nextProps.abc, nextProps.itemKey);
+      this._midiPluginLoaded(this.state.player);
     }
   }
 

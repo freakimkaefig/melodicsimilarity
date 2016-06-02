@@ -1,17 +1,17 @@
 import React, { PropTypes } from 'react';
-import SolrService from '../services/SolrService';
-import SolrStore from '../stores/SolrStore';
-import SolrActions from '../actions/SolrActions';
-import SearchStore from '../stores/SearchStore';
-import SearchActions from '../actions/SearchActions';
-import InputField from './Form/InputField';
-import AutoSuggestField from './Form/AutoSuggestField';
-import DateHelper from '../helpers/DateHelper';
+import SolrService from '../../services/SolrService';
+import SolrStore from '../../stores/SolrStore';
+import SolrActions from '../../actions/SolrActions';
+import SearchStore from '../../stores/SearchStore';
+import SearchActions from '../../actions/SearchActions';
+import InputField from '../Form/InputField';
+import AutoSuggestField from '../Form/AutoSuggestField';
+import DateHelper from '../../helpers/DateHelper';
 import InputRange from 'react-input-range';
 import 'react-input-range-css';
 import Switch from 'react-bootstrap-switch';
 import $ from 'jquery';
-import '../stylesheets/MetadataSearchbox.less';
+import '../../stylesheets/MetadataSearchbox.less';
 
 export default class MetadataSearchbox extends React.Component {
   static propTypes = {
