@@ -92,7 +92,7 @@
   },
   "scripts": {
     "postinstall": "./node_modules/.bin/webpack --progress --colors -p",
-    "start": "pm2 start processes.json",
+    "start": "./node_modules/.bin/pm2 start processes.json",
     "build-dev": "./node_modules/.bin/webpack -d",
     "watch": "./node_modules/.bin/webpack --progress --colors --watch -d",
     "dev-server": "./node_modules/.bin/nodemon bin/www",
