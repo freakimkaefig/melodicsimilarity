@@ -1,5 +1,6 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import {UPDATE_FIELD_VALUE, UPDATE_SEARCH_OPERATOR, UPDATE_SEARCH_START} from '../constants/SearchConstants';
+import { browserHistory } from 'react-router';
+import {UPDATE_FIELD_VALUE, UPDATE_SEARCH_OPERATOR, UPDATE_SEARCH_START, START_SEARCH, UPDATE_RESULTS} from '../constants/SearchConstants';
 
 export default {
   
@@ -23,5 +24,20 @@ export default {
       actionType: UPDATE_SEARCH_START,
       value: value
     });
+  },
+  
+  startSearch() {
+    AppDispatcher.dispatch({
+      actionType: START_SEARCH
+    });
+  },
+
+  updateResults(results) {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_RESULTS,
+      results: results
+    });
+
+    browserHistory.push('/search/result');
   }
 }

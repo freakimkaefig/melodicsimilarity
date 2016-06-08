@@ -15,83 +15,74 @@ export default class SearchResultList extends React.Component {
     super(props);
   }
 
-  _getContainer(result, highlighting) {
-    if (typeof result.signature !== 'undefined') {
-      return (
-        <Link to={`/songsheets/${result.signature}`}>
-          <div className="row">
-            <div className="hidden-xs col-sm-3 col-md-2">
-              <img src={ METADATA_IMAGE_BASE_URL + result.imagename } className="img-responsive" />
-            </div>
-            <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
-              <h3>{ this._getResultHeadline(result) }</h3>
-              <div className="highlighting">
-                { this._getResultHighlight(result, highlighting) }
-              </div>
-            </div>
-          </div>
-        </Link>
-      );
-    } else {
-      return (
-        <div className="row">
-          <div className="hidden-xs col-sm-3 col-md-2">
-            <img src={ METADATA_IMAGE_BASE_URL + result.imagename } className="img-responsive" />
-          </div>
-          <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
-            <h3>{ this._getResultHeadline(result) }</h3>
-            <div className="highlighting">
-              { this._getResultHighlight(result, highlighting) }
-            </div>
+  _getContainer(result) {
+    console.log(result);
+    let resultHtml = (
+      <div className="row">
+        <div className="hidden-xs col-sm-3 col-md-2">
+          <img src={ METADATA_IMAGE_BASE_URL + result.metadata.imagename } className="img-responsive" />
+        </div>
+        <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
+          <h3>{ this._getResultHeadline(result) }</h3>
+          <div className="highlighting">
+            { this._getResultHighlight(result) }
           </div>
         </div>
+      </div>
+    );
+
+    if (result.url) {
+      return (
+        <Link to={result.url}>
+          { resultHtml }
+        </Link>
       );
     }
   }
 
   _getResultHeadline(result) {
-    let ret = ''
-    if (typeof result.signature !== 'undefined') {
-      ret += result.signature + ' - ';
-    }
-    if (typeof result.title !== 'undefined') {
-      ret += result.title;
-    } else {
-      ret += 'Kein Incipit vorhanden';
+    let title = '';
+    if (result.id !== null) {
+      title += result.id + ' - ';
     }
 
-    return ret;
+    title += result.metadata.title;
+
+    return title;
   }
 
-  _getResultHighlight(result, highlighting) {
-    let highlightItem = highlighting[result.id];
-    if (Object.keys(highlightItem).length === 0 && highlightItem.constructor === Object) {
-      return (
-        <div>{result.text}</div>
-      );
-    } else {
-      var array = [];
-      for (var field in highlightItem) {
-        if (!highlightItem.hasOwnProperty(field)) continue;
-        array.push(highlightItem[field]);
-      }
-
-      return array.map((field, index) => {
-        return(
-          <div key={index} dangerouslySetInnerHTML={{__html: field}} />
+  _getResultHighlight(result) {
+    let highlightItem = result.highlighting;
+    if (typeof highlightItem !== 'undefined') {
+      if (Object.keys(highlightItem).length === 0 && highlightItem.constructor === Object) {
+        return (
+          <div>Kein Ausschnitt vorhanden.</div>
         );
-      });
+      } else {
+        var array = [];
+        for (var field in highlightItem.fields) {
+          if (!highlightItem.fields.hasOwnProperty(field)) continue;
+          array.push(highlightItem.fields[field]);
+        }
+
+        return array.map((field, index) => {
+          return (
+            <div key={index} dangerouslySetInnerHTML={{__html: field}}/>
+          );
+        });
+      }
     }
   }
 
   _getList(results) {
+    console.log("List results:", results);
     return results.map((result, index) => {
       if (result !== false) {
         return (
           <div className="rc-collapse-item search-result-item" key={index}>
             <div className="rc-collapse-header">
               <div className="header">
-                { this._getContainer(result, this.props.highlighting) }
+                { this._getContainer(result) }
               </div>
             </div>
           </div>

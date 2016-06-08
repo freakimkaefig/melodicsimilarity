@@ -4,7 +4,7 @@ import { SEARCH_QUERY_URL, FIELDS } from '../constants/SolrConstants';
 import { ITEM_URL } from '../constants/SongsheetConstants';
 import SolrActions from '../actions/SolrActions';
 import SearchActions from '../actions/SearchActions';
-import SolrQuery from '../objects/SolrQuery';
+import SolrQuery from '../helpers/SolrQuery';
 import DateHelper from '../helpers/DateHelper';
 
 class SolrService {
@@ -82,8 +82,8 @@ class SolrService {
         }
       });
   }
-  
-  search(fields, operator, start, rows) {
+
+  generateQuery(fields, operator, start, rows) {
     let queryArray = [];
     let query = new SolrQuery(SEARCH_QUERY_URL);
     query.setHighlighting(true, 'em', 300, 3);
@@ -120,17 +120,10 @@ class SolrService {
       }
     }
 
-    console.log(query.getQueryUrl());
-    SolrActions.updateQuery(queryArray);
+    SolrActions.updateQuery(queryArray, query);
     SearchActions.updateStart(start);
 
-    let requestObject = request({
-      url: query.getQueryUrl(),
-      method: 'GET',
-      crossOrigin: true
-    });
-
-    return this.handleSearchResponse(when(requestObject));
+    return query;
   }
 
   findSongsheet(signature) {
@@ -139,17 +132,6 @@ class SolrService {
       method: 'GET',
       crossOrigin: true
     })));
-  }
-
-  handleSearchResponse(searchPremise) {
-    return searchPremise
-      .then(function(response) {
-        let docs = response.response.docs;
-        for (var i = 0; i < docs.length; i++) {
-          this.findSongsheet(docs[i].signature);
-        }
-        SolrActions.updateResults(docs, response.highlighting, response.response.numFound);
-      }.bind(this));
   }
 
   handleSearchSongsheetResponse(searchPremise) {

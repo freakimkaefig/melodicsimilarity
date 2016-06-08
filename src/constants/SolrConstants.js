@@ -9,8 +9,8 @@ export const METADATA_PLACEHOLDER_TEXT = 'Kein Liedtext vorhanden';
 
 export const UPDATE_METADATA = 'UPDATE_METADATA';
 export const UPDATE_FACETS = 'UPDATE_FACETS';
-export const UPDATE_QUERY = 'UPDATE_QUERY';
-export const UPDATE_RESULTS = 'UPDATE_RESULTS';
+export const UPDATE_METADATA_QUERY = 'UPDATE_QUERY';
+export const UPDATE_METADATA_RESULTS = 'UPDATE_RESULTS';
 export const UPDATE_RESULT_IMAGE = 'UPDATE_RESULT_IMAGE';
 
 export const FIELDS = [

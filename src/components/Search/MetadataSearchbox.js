@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import SolrService from '../../services/SolrService';
-import SolrStore from '../../stores/SolrStore';
 import SolrActions from '../../actions/SolrActions';
 import SearchStore from '../../stores/SearchStore';
 import SearchActions from '../../actions/SearchActions';
@@ -15,7 +14,8 @@ import '../../stylesheets/MetadataSearchbox.less';
 
 export default class MetadataSearchbox extends React.Component {
   static propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.object)
+    fields: PropTypes.arrayOf(PropTypes.object),
+    submit: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -24,7 +24,7 @@ export default class MetadataSearchbox extends React.Component {
     this.state = {
       facets: {},
       values: {},
-      submit: true,
+      submit: SearchStore.submit,
       operator: false
     };
     for (var i = 0; i < props.fields.length; i++) {
@@ -51,12 +51,10 @@ export default class MetadataSearchbox extends React.Component {
     this.state.values.search = '';
     SearchActions.updateFieldValue('search', '');
 
-    this.onSolrStoreChange = this.onSolrStoreChange.bind(this);
     this.onSearchStoreChange = this.onSearchStoreChange.bind(this);
   }
 
   componentWillMount() {
-    SolrStore.addChangeListener(this.onSolrStoreChange);
     SearchStore.addChangeListener(this.onSearchStoreChange);
 
     this.props.fields.filter(field => {
@@ -68,19 +66,15 @@ export default class MetadataSearchbox extends React.Component {
 
 
   componentWillUnmount() {
-    SolrStore.removeChangeListener(this.onSolrStoreChange);
     SearchStore.removeChangeListener(this.onSearchStoreChange);
-  }
-
-  onSolrStoreChange() {
-    this.setState({facets: SolrStore.facets});
   }
 
   onSearchStoreChange() {
     this.setState({
+      facets: SearchStore.facets,
       values: SearchStore.fields,
       operator: SearchStore.operator,
-      submit: true
+      submit: SearchStore.submit
     });
   }
 
@@ -163,8 +157,13 @@ export default class MetadataSearchbox extends React.Component {
   }
 
   handleChange(field, value) {
-    this.setState({submit: false});
     SearchActions.updateFieldValue(field.props.name, value);
+    SolrService.generateQuery(
+      SearchStore.fields,
+      SearchStore.operator,
+      SearchStore.start,
+      SearchStore.rows
+    );
   }
 
   handleSubmit(e) {
@@ -173,12 +172,7 @@ export default class MetadataSearchbox extends React.Component {
     // Disable submit button
     this.setState({submit: false});
 
-    SolrService.search(
-      SearchStore.fields,
-      SearchStore.operator,
-      SearchStore.start,
-      SearchStore.rows
-    );
+    this.props.submit();
   }
 
   render() {

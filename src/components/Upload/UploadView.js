@@ -4,7 +4,7 @@ import Collapse from '../Accordion/index';
 import AbcViewer from '../AbcViewer';
 import MetadataViewer from '../MetadataViewer';
 import _ from 'lodash';
-import { convert2Abc } from 'musicjson2abc';
+import { json2abc } from 'musicjson2abc';
 import UploadActions from '../../actions/UploadActions';
 import UploadStore from '../../stores/UploadStore';
 import FileList from '../FileAccordion';
@@ -72,7 +72,7 @@ export default class UploadView extends React.Component {
       reader.onload = (function(theFile) {
         return function(e) {
           var content = e.target.result;
-          var abc = convert2Abc(content);
+          var abc = json2abc(content);
           var json = JSON.parse(content);
           var updatedFiles = this.state.files.concat({
             key: this.state.counter + 1,

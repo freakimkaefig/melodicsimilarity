@@ -10,7 +10,7 @@ export default class ParsonViewer extends React.Component {
     super(props);
 
     this.CANVAS_ID = 'parson-canvas-wrapper';
-    this.OFFSET = 16;
+    this.OFFSET = 12;
 
     this.state = {
       canvas: null
@@ -30,7 +30,6 @@ export default class ParsonViewer extends React.Component {
   }
 
   updateCanvas(parson) {
-    console.log(parson);
     let { canvas } = this.state;
     if (canvas === null) {
       canvas = document.getElementById(this.CANVAS_ID);

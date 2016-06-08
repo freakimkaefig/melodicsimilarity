@@ -5,6 +5,7 @@ var apiController = require('../controllers/apiController');
 var userController = require('../controllers/userController.js');
 var songsheetController = require('../controllers/songsheetController');
 var uploadController = require('../controllers/uploadController');
+var searchController = require('../controllers/searchController');
 
 var router = express.Router();
 var upload = multer({ dest: 'public/uploads/' });
@@ -19,6 +20,7 @@ router.get('/api', apiController.getStats);
 router.get('/api/songsheets', songsheetController.getUploads);
 router.get('/api/songsheets/:signature', songsheetController.getSongsheetBySignature);
 router.get('/api/image/:name', songsheetController.getImageByName);
+router.post('/api/search', searchController.search);
 router.post('/api/protected/songsheet/add', songsheetController.handleUpload);
 router.post('/api/protected/scan/add', upload.any(), uploadController.postUpload);
 

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {PropTypes} from 'react';
 import AbcViewer from '../../AbcViewer';
 import MusicjsonToolbox from 'musicjson-toolbox';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
 
 export default class Intervals extends React.Component {
+  static propTypes = {
+    submit: PropTypes.func.isRequired
+  };
 
   constructor(props) {
     super(props);
@@ -66,6 +69,10 @@ export default class Intervals extends React.Component {
     });
   }
 
+  handleSubmit() {
+    this.props.submit();
+  }
+
   render() {
     let { abc, intervals, error, errorMessage } = this.state;
     let validationClass = error ? 'has-error' : 'has-success';
@@ -111,6 +118,17 @@ export default class Intervals extends React.Component {
               </div>
               <span id="intervals-error" className="help-block">{errorMessage}</span>
             </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="colxs-12 text-right">
+            <button
+              type="button"
+              className="btn btn-default"
+              onClick={this.handleSubmit}>
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </button>
           </div>
         </div>
       </div>

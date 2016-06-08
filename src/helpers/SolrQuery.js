@@ -6,6 +6,7 @@ export default class SolrQuery {
 
   constructor(url) {
     this._query = url + '?wt=json';
+    this._fq.push('signature:*');
   }
 
   setOperator(operator) {
@@ -30,11 +31,11 @@ export default class SolrQuery {
   }
 
   setStart(value) {
-    this._query += '&start=' + value;
+    // this._query += '&start=' + value;
   }
 
   setRows(value) {
-    this._query += '&rows' + value;
+    // this._query += '&rows' + value;
   }
 
   addQueryString(value) {
@@ -70,6 +71,10 @@ export default class SolrQuery {
     } else {
       return '';
     }
+  }
+
+  isEmpty() {
+    return !(this._q.length > 0);
   }
 
   getQueryUrl() {

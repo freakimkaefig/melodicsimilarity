@@ -2,8 +2,7 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { browserHistory } from 'react-router';
 import { APP_NAME } from '../constants/AppConstants';
-import SolrService from '../services/SolrService';
-import SolrStore from '../stores/SolrStore';
+import SearchActions from '../actions/SearchActions';
 import SearchStore from '../stores/SearchStore';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Breadcrumb } from 'react-bootstrap';
@@ -17,41 +16,31 @@ export default class ResultList extends React.Component {
     super(props);
 
     this.state = {
-      query: SolrStore.query,
-      results: SolrStore.results,
-      highlighting: SolrStore.highlighting,
+      metadataQueryFields: SearchStore.queryFields,
+      parsonQuery: SearchStore.parsonQuery,
+      results: SearchStore.results,
+      highlighting: SearchStore.highlighting,
       activePage: (SearchStore.start / SearchStore.rows) + 1,
       numPages: this.getNumPages()
     };
 
-    this.onSolrStoreChange = this.onSolrStoreChange.bind(this);
     this.onSearchStoreChange = this.onSearchStoreChange.bind(this);
   }
 
   componentWillMount() {
-    SolrStore.addChangeListener(this.onSolrStoreChange);
     SearchStore.addChangeListener(this.onSearchStoreChange);
-    if (this.state.query.length === 0) {
+    if (this.state.metadataQueryFields.length === 0
+      && this.state.parsonQuery === '') {
       browserHistory.push('/search');
     }
   }
 
   componentWillUnmount() {
-    SolrStore.removeChangeListener(this.onSolrStoreChange);
     SearchStore.removeChangeListener(this.onSearchStoreChange);
   }
 
   getNumPages() {
-    return Math.ceil(SolrStore.numFound / SearchStore.rows);
-  }
-
-  onSolrStoreChange() {
-    this.setState({
-      query: SolrStore.query,
-      results: SolrStore.results,
-      highlighting: SolrStore.highlighting,
-      numPages: this.getNumPages()
-    });
+    return Math.ceil(SearchStore.results.length / SearchStore.rows);
   }
 
   onSearchStoreChange() {
@@ -59,34 +48,46 @@ export default class ResultList extends React.Component {
 
     }
     this.setState({
+      metadataQueryFields: SearchStore.queryFields,
+      parsonQuery: SearchStore.parsonQuery,
+      results: SearchStore.results,
+      highlighting: SearchStore.highlighting,
       activePage: (SearchStore.start / SearchStore.rows) + 1,
       numPages: this.getNumPages()
     });
   }
 
-  _renderQuery(query) {
-    if (query.length > 0) {
-      return query.map((field, index) => {
-        return (
-          <span className="label label-default" key={index}>{`${field.name}: ${field.value}`}</span>
-        );
-      });
-    }
+  _renderQuery(metadataQuery, parsonQuery) {
+    let renderedMetadataQuery = metadataQuery.map((field, index) => {
+      return (
+        <span className="label label-default" key={index}>{`${field.name}: ${field.value}`}</span>
+      );
+    });
+
+    let renderedParsonQuery = parsonQuery !== null ? (
+      <span className="label label-default">{`Parsons Code: ${parsonQuery}`}</span>
+    ) : '';
+
+    return (
+      <span>
+        {renderedMetadataQuery}
+        {renderedParsonQuery}
+      </span>
+    );
   }
 
   handleSelect(event, {eventKey}) {
     event.preventDefault();
 
-    // Trigger new search for selected page
-    SolrService.search(
-      SearchStore.fields,
-      SearchStore.operator,
-      (eventKey - 1) * SearchStore.rows,
-      SearchStore.rows
-    );
+    SearchActions.updateStart((eventKey - 1) * SearchStore.rows);
   }
   
   render() {
+    console.log("results:", this.state.results);
+    console.log("start:", SearchStore.start);
+    console.log(SearchStore.rows);
+    let currentResults = this.state.results.slice(SearchStore.start, SearchStore.start + SearchStore.rows);
+    console.log("currentResults:", currentResults);
     return (
       <DocumentTitle title={`Suche // ${APP_NAME}`}>
         <div>
@@ -96,7 +97,7 @@ export default class ResultList extends React.Component {
                 <LinkContainer to="/search" key={0}>
                   <Breadcrumb.Item>Suche</Breadcrumb.Item>
                 </LinkContainer>
-                <Breadcrumb.Item active>{this._renderQuery(this.state.query)}</Breadcrumb.Item>
+                <Breadcrumb.Item active>{this._renderQuery(this.state.metadataQueryFields, this.state.parsonQuery)}</Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>
@@ -108,7 +109,9 @@ export default class ResultList extends React.Component {
           </div>
 
           <LoadingItem loading={this.state.results <= 0}/>
-          <SearchResultList results={this.state.results} highlighting={this.state.highlighting} />
+          <SearchResultList
+            results={currentResults}
+            highlighting={this.state.highlighting} />
           <div className="text-center">
             <Pagination
               prev

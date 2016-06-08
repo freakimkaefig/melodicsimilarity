@@ -1,6 +1,5 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { browserHistory } from 'react-router';
-import { UPDATE_METADATA, UPDATE_FACETS, UPDATE_QUERY, UPDATE_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
+import { UPDATE_METADATA, UPDATE_FACETS, UPDATE_METADATA_QUERY, UPDATE_METADATA_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
 
 export default {
 
@@ -19,21 +18,11 @@ export default {
     });
   },
   
-  updateQuery: (fields) => {
+  updateQuery: (fields, query) => {
     AppDispatcher.dispatch({
-      actionType: UPDATE_QUERY,
-      fields: fields
-    });
-
-    browserHistory.push('/search/result');
-  },
-  
-  updateResults: (results, highlighting, numFound) => {
-    AppDispatcher.dispatch({
-      actionType: UPDATE_RESULTS,
-      results: results,
-      highlighting: highlighting,
-      numFound: numFound
+      actionType: UPDATE_METADATA_QUERY,
+      fields: fields,
+      query: query
     });
   },
 
