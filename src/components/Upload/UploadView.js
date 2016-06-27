@@ -138,7 +138,7 @@ export default class UploadView extends React.Component {
               </div>
             </div>
             <div className="col-xs-12 col-md-7 col-md-offset-1">
-              <AbcViewer itemKey={file.key} abc={file.abc} />
+              <AbcViewer itemKey={file.key} abc={file.abc} player={true} />
               <MetadataViewer metadata={metadata} />
             </div>
           </div>

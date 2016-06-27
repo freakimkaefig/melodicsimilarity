@@ -2,6 +2,10 @@ import React, {PropTypes} from 'react';
 import AbcViewer from '../../AbcViewer';
 import MusicjsonToolbox from 'musicjson-toolbox';
 import {OverlayTrigger, Popover} from 'react-bootstrap';
+import InputRange from 'react-input-range';
+import MelodyActions from '../../../actions/MelodyActions';
+import SearchStore from '../../../stores/SearchStore';
+import '../../../stylesheets/InputRange.less';
 
 export default class Intervals extends React.Component {
   static propTypes = {
@@ -13,21 +17,63 @@ export default class Intervals extends React.Component {
 
     this.INPUT_REGEX = /^(-?\d{1,2}){1}(\s{1}-?\d{1,2})*\s?$/;
     this.BASE_PITCH = MusicjsonToolbox.base12Pitch('C', 0, 4, 0, true);
+    this.DEFAULT_INTERVALS = '* ';
     this.DEFAULT_ABC = 'X:1\nL:1/4\nM:none\nK:C\nK:treble\nC';
 
     this.state = {
       abc: this.DEFAULT_ABC,
-      intervals: '',
+      intervals: [],
       error: false,
-      errorMessage: ''
+      errorMessage: '',
+      threshold: 50
+    };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onSearchStoreChange = this.onSearchStoreChange.bind(this);
+  }
+  
+  componentDidMount() {
+    SearchStore.addChangeListener(this.onSearchStoreChange);
+    MelodyActions.updateIntervalQuery(this.state.intervals);
+    MelodyActions.updateThreshold(this.state.threshold);
+  }
+  
+  componentWillUnmount() {
+    SearchStore.removeChangeListener(this.onSearchStoreChange);
+  }
+  
+  onSearchStoreChange() {
+    if (SearchStore.intervalQuery.length > 0) {
+      let intervals = SearchStore.intervalQuery;
+      let abc = '';
+      while (intervals.charAt(0) === '*') {
+        intervals = intervals.substr(2);
+      }
+      let disabled = true;
+      if (this.validateIntervalString(intervals)) {
+        disabled = false;
+        abc = intervals.split(' ').map((item, index, items) => {
+          let base = this.BASE_PITCH;
+          for (var i = index; i > 0; i--) {
+            base += parseInt(items[i-1]);
+          }
+          return MusicjsonToolbox.interval2AbcStep(parseInt(item), base);
+        }).join(' ');
+      }
+      this.setState({
+        abc: this.DEFAULT_ABC + abc,
+        intervals: intervals,
+        threshold: SearchStore.threshold,
+        disabled: disabled
+      });
     }
   }
 
   validateIntervalString(value) {
     let regex = new RegExp(this.INPUT_REGEX);
 
-    var error = false;
-    var errorMessage = '';
+    let error = false;
+    let errorMessage = '';
     if (!regex.test(value)) {
       error = true;
       if (value.split(' ').length < 1) {
@@ -52,24 +98,21 @@ export default class Intervals extends React.Component {
   }
 
   onSearchChange(event) {
-    let intervals = '';
-    if (this.validateIntervalString(event.target.value)) {
-      intervals = event.target.value.trim().split(' ').map((item, index, items) => {
-        let base = this.BASE_PITCH;
-        for (var i = index; i > 0; i--) {
-          base += parseInt(items[i-1]);
-        }
-        console.log(parseInt(item), base);
-        return MusicjsonToolbox.interval2AbcStep(parseInt(item), base);
-      }).join(' ');
-    }
-    this.setState({
-      abc: this.DEFAULT_ABC + ' ' + intervals,
-      intervals: event.target.value
-    });
+    let intervals = event.target.value;
+    MelodyActions.updateIntervalQuery(this.DEFAULT_INTERVALS + intervals);
   }
 
-  handleSubmit() {
+  handleThresholdChange(component, value) {
+    MelodyActions.updateThreshold(value);
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+
+    this.setState({
+      disabled: true
+    });
+
     this.props.submit();
   }
 
@@ -87,51 +130,64 @@ export default class Intervals extends React.Component {
     );
 
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-xs-12">
-            <AbcViewer abc={abc} itemKey={1} />
+      <form onSubmit={this.handleSubmit}>
+        <div className="container">
+          <div className="row">
+            <div className="col-xs-12">
+              <AbcViewer abc={abc} itemKey={1} />
+            </div>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="col-xs-12">
-            <div className={`form-group ${validationClass}`} id="interval-input">
-              <div className="input-group">
-                <span className="input-group-addon" id="intervals-addon">*</span>
-                  <input
-                    type="text"
-                    name="intervals"
-                    value={intervals}
-                    className="form-control"
-                    aria-describedby="intervals-addon"
-                    onChange={this.onSearchChange.bind(this)} />
-                  <span className="input-group-btn">
-                    <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={tutorial}>
-                      <button
-                        type="button"
-                        className="btn btn-default">
-                        <i className="fa fa-question" aria-hidden="true"></i>
-                      </button>
-                    </OverlayTrigger>
-                  </span>
+          <div className="row">
+            <div className="col-xs-12">
+              <div className={`form-group ${validationClass}`} id="interval-input">
+                <div className="input-group">
+                  <span className="input-group-addon" id="intervals-addon">*</span>
+                    <input
+                      type="text"
+                      name="intervals"
+                      value={intervals}
+                      className="form-control"
+                      aria-describedby="intervals-addon"
+                      onChange={this.onSearchChange.bind(this)} />
+                    <span className="input-group-btn">
+                      <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={tutorial}>
+                        <button
+                          type="button"
+                          className="btn btn-default">
+                          <i className="fa fa-question" aria-hidden="true"></i>
+                        </button>
+                      </OverlayTrigger>
+                    </span>
+                </div>
+                <span id="intervals-error" className="help-block">{errorMessage}</span>
               </div>
-              <span id="intervals-error" className="help-block">{errorMessage}</span>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-12 col-sm-6 col-md-4">
+              <InputRange
+                maxValue={100}
+                minValue={30}
+                step={10}
+                value={this.state.threshold}
+                onChange={this.handleThresholdChange.bind(this)} />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-xs-12 text-right">
+              <button
+                type="submit"
+                className="btn btn-default"
+                disabled={this.state.disabled}>
+                <i className="fa fa-search" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         </div>
-
-        <div className="row">
-          <div className="colxs-12 text-right">
-            <button
-              type="button"
-              className="btn btn-default"
-              onClick={this.handleSubmit}>
-              <i className="fa fa-search" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
-      </div>
+      </form>
     );
   }
 }

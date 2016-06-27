@@ -9,7 +9,12 @@ export default class AbcViewer extends React.Component {
 
   static propTypes = {
     abc: PropTypes.string,
-    itemKey: PropTypes.number
+    itemKey: PropTypes.number,
+    player: PropTypes.bool
+  };
+
+  static defaultProps = {
+    player: true
   };
 
   constructor(props) {
@@ -53,11 +58,10 @@ export default class AbcViewer extends React.Component {
         this._renderAbc(this.props.abc, this.props.itemKey);
       }
 
-      if (!this.state.midiRendered) {
+      if (!this.state.midiRendered && this.props.player) {
         this._renderMidi(this.props.abc, this.props.itemKey);
+        this._midiPluginLoaded(player);
       }
-
-      this._midiPluginLoaded(player);
     }
   }
 
@@ -77,18 +81,17 @@ export default class AbcViewer extends React.Component {
       }
 
       if (!this.state.midiRendered) {
-        this._renderMidi(this.props.abc, this.props.itemKey);
+        this._renderMidi(this.props.abc, this.props.itemKey, player);
       }
-
-      this._midiPluginLoaded(player);
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.abc !== nextProps.abc) {
       this._renderAbc(nextProps.abc, nextProps.itemKey);
-      this._renderMidi(nextProps.abc, nextProps.itemKey);
-      this._midiPluginLoaded(this.state.player);
+      if (this.props.player || nextProps.player) {
+        this._renderMidi(nextProps.abc, nextProps.itemKey, this.state.player);
+      }
     }
   }
 
@@ -97,19 +100,24 @@ export default class AbcViewer extends React.Component {
     this.setState({abcRendered: true});
   }
 
-  _renderMidi(abc, itemKey) {
+  _renderMidi(abc, itemKey, player) {
     ABCJS.renderMidi('midi-' + itemKey, abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
-    this.setState({midiRendered: true});
+    this._midiPluginLoaded(player);
   }
 
   _midiPluginLoaded = (player) => {
     let midi = document.getElementById('midi-' + this.props.itemKey);
     let song = midi.getElementsByTagName('a')[0].href;
-    player.loadFile(song, function() {
-      player.addListener(this._midiEventListener.bind(this));
-      this.setState({midiLoaded: true});
-    }.bind(this));
-    this.setState({player: player});
+    if (typeof player !== 'undefined' && player !== null) {
+      player.loadFile(song, function () {
+        player.addListener(this._midiEventListener.bind(this));
+        this.setState({midiLoaded: true});
+      }.bind(this));
+      this.setState({
+        player: player,
+        midiRendered: true
+      });
+    }
   };
 
   _onMidiLoaded(player) {
@@ -144,11 +152,9 @@ export default class AbcViewer extends React.Component {
     let key = this.props.itemKey;
     let playClass = this.state.playing ? 'pause' : 'play';
 
-    return (
-      <div>
-        <div className="scroll-x-container">
-          <div id={`notation-${key}`} className="notation"></div>
-        </div>
+    let player = '';
+    if (this.props.player) {
+      player = (
         <div id={`midi-player-${key}`}>
           <div id={`player-${key}`} className="player-container">
             {this.state.playing}
@@ -160,6 +166,15 @@ export default class AbcViewer extends React.Component {
             <div id={`midi-${key}`} className="midi-container"></div>
           </div>
         </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="scroll-x-container">
+          <div id={`notation-${key}`} className="notation"></div>
+        </div>
+        { player }
       </div>
     )
   }

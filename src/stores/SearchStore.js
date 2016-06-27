@@ -1,7 +1,7 @@
 import BaseStore from './BaseStore';
 import { SEARCH_QUERY_URL, UPDATE_FACETS, UPDATE_METADATA_QUERY, UPDATE_RESULT_IMAGE, UPDATE_METADATA } from '../constants/SolrConstants';
 import {UPDATE_FIELD_VALUE, UPDATE_SEARCH_OPERATOR, UPDATE_SEARCH_START, START_SEARCH, UPDATE_RESULTS} from '../constants/SearchConstants';
-import { UPDATE_MODE, UPDATE_PARSON_QUERY, UPDATE_THRESHOLD } from '../constants/MelodyConstants';
+import { UPDATE_MODE, UPDATE_PARSON_QUERY, UPDATE_INTERVAL_QUERY, UPDATE_THRESHOLD } from '../constants/MelodyConstants';
 import SolrService from '../services/SolrService';
 import SolrQuery from '../helpers/SolrQuery';
 class SearchStore extends BaseStore {
@@ -13,7 +13,7 @@ class SearchStore extends BaseStore {
     this._fields = {};
     this._operator = false;
     this._start = 0;
-    this._rows = 3;
+    this._rows = 8;
 
     this._facets = {};
     this._query = new SolrQuery(SEARCH_QUERY_URL);
@@ -24,6 +24,7 @@ class SearchStore extends BaseStore {
 
     this._melodyMode = 0;
     this._parsonQuery = '';
+    this._intervalQuery = '';
     this._threshold = 30;
   }
 
@@ -77,6 +78,11 @@ class SearchStore extends BaseStore {
         this.emitChange();
         break;
 
+      case UPDATE_INTERVAL_QUERY:
+        this._intervalQuery = action.intervals;
+        this.emitChange();
+        break;
+
       case UPDATE_METADATA:
         if (action.response.response.numFound > 0) {
           let findResult = this._results.find(item => {
@@ -105,11 +111,9 @@ class SearchStore extends BaseStore {
         break;
 
       case UPDATE_RESULT_IMAGE:
-        // console.log(action);
         let result = this._results.find(result => {
           return result.id === action.signature;
         });
-        // console.log(result);
         // result.image = action.image;
         this.emitChange();
         break;
@@ -165,6 +169,10 @@ class SearchStore extends BaseStore {
 
   get parsonQuery() {
     return this._parsonQuery;
+  }
+
+  get intervalQuery() {
+    return this._intervalQuery;
   }
 
   get threshold() {

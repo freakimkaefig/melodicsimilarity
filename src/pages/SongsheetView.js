@@ -83,7 +83,7 @@ export default class SongsheetView extends React.Component {
     if (typeof file !== 'undefined') {
       if (typeof file.abc !== 'undefined') {
         return (
-          <AbcViewer abc={file.abc} itemKey={0}/>
+          <AbcViewer abc={file.abc} itemKey={0} player={true} />
         );
       }
     }

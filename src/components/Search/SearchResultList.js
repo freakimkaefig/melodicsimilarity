@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import {Link} from 'react-router';
 import {METADATA_IMAGE_BASE_URL} from '../../constants/SolrConstants';
-import '../../stylesheets/Accordion.less';
+import { json2abc } from 'musicjson2abc';
+import AbcViewer from '../AbcViewer';
 import '../../stylesheets/SearchResultList.less';
 
 export default class SearchResultList extends React.Component {
@@ -15,29 +16,44 @@ export default class SearchResultList extends React.Component {
     super(props);
   }
 
-  _getContainer(result) {
+  _getContainer(result, index) {
     console.log(result);
-    let resultHtml = (
+    
+    let headline = '';
+    let image = '';
+    if (result.url) {
+      headline = (
+        <Link to={result.url}>
+          <h3>{ this._getResultHeadline(result) }</h3>
+        </Link>
+      );
+      image = (
+        <Link to={result.url}>
+          <img src={ METADATA_IMAGE_BASE_URL + result.metadata.imagename } className="img-responsive" />
+        </Link>
+      );
+    } else {
+      headline = (
+        <h3>{ this._getResultHeadline(result) }</h3>
+      );
+      image = (
+        <img src={ METADATA_IMAGE_BASE_URL + result.metadata.imagename } className="img-responsive" />
+      );
+    }
+
+    return (
       <div className="row">
         <div className="hidden-xs col-sm-3 col-md-2">
-          <img src={ METADATA_IMAGE_BASE_URL + result.metadata.imagename } className="img-responsive" />
+          { image }
         </div>
         <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
-          <h3>{ this._getResultHeadline(result) }</h3>
+          { headline }
           <div className="highlighting">
-            { this._getResultHighlight(result) }
+            { this._getResultHighlight(result, index) }
           </div>
         </div>
       </div>
     );
-
-    if (result.url) {
-      return (
-        <Link to={result.url}>
-          { resultHtml }
-        </Link>
-      );
-    }
   }
 
   _getResultHeadline(result) {
@@ -51,11 +67,12 @@ export default class SearchResultList extends React.Component {
     return title;
   }
 
-  _getResultHighlight(result) {
+  _getResultHighlight(result, itemKey) {
+    let highlightText = '';
     let highlightItem = result.highlighting;
     if (typeof highlightItem !== 'undefined') {
       if (Object.keys(highlightItem).length === 0 && highlightItem.constructor === Object) {
-        return (
+        highlightText = (
           <div>Kein Ausschnitt vorhanden.</div>
         );
       } else {
@@ -65,45 +82,78 @@ export default class SearchResultList extends React.Component {
           array.push(highlightItem.fields[field]);
         }
 
-        return array.map((field, index) => {
+        highlightText = array.map((field, index) => {
           return (
             <div key={index} dangerouslySetInnerHTML={{__html: field}}/>
           );
         });
       }
     }
+
+    let highlightMelody = '';
+    if (typeof result.melodic !== 'undefined' && typeof result.json !== 'undefined') {
+      let melodic = result.melodic.sort((a, b) => {
+        return a.distance - b.distance;
+      })[0].highlight.map(item => {
+        return item.measure;
+      }).filter((value, index, self) => {
+        return self.indexOf(value) === index;
+      });
+      // console.log(result.melodic.sort((a, b) => {
+      //   return a.distance - b.distance;
+      // })[0].highlight);
+      let highlightMeasures = [];
+      for (var i = 0; i < melodic.length; i++) {
+        highlightMeasures.push(result.json.measures[melodic[i]]);
+      }
+      let tempJson = {
+        id: result.json.id,
+        attributes: result.json.attributes,
+        measures: highlightMeasures
+      };
+      let tempAbc = json2abc(JSON.stringify(tempJson));
+      highlightMelody = (
+        <div>
+          <AbcViewer abc={tempAbc} itemKey={itemKey} player={false} />
+          <p><span className="text-info">DEBUG</span> <span className="text-muted">Distance: {result.minDistance}</span></p>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div className="text">{ highlightText }</div>
+        <div className="melody">{ highlightMelody }</div>
+      </div>
+    );
   }
 
   _getList(results) {
-    console.log("List results:", results);
     return results.map((result, index) => {
+      let container = '';
       if (result !== false) {
-        return (
-          <div className="rc-collapse-item search-result-item" key={index}>
-            <div className="rc-collapse-header">
-              <div className="header">
-                { this._getContainer(result) }
-              </div>
-            </div>
-          </div>
-        );
+        container = this._getContainer(result, index);
       } else {
-        return (
-          <div className="rc-collapse-item search-result-item" key={index}>
-            <div className="rc-collapse-header">
-              <div className="header">
-                <h3 className="text-center">Für deine Suchanfrage konnten keine Ergebnisse gefunden werden.</h3>
-              </div>
-            </div>
-          </div>
+        container = (
+          <h3 className="text-center">Für deine Suchanfrage konnten keine Ergebnisse gefunden werden.</h3>
         );
       }
+
+      return (
+        <div className="search-result-item col-xs-12" key={index}>
+          <div className="content">
+            <div className="header">
+              { container }
+            </div>
+          </div>
+        </div>
+      );
     });
   }
 
   render() {
     return (
-      <div className="rc-collapse">
+      <div className="row">
         { this._getList(this.props.results) }
       </div>
     );

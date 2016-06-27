@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { UPDATE_MODE, UPDATE_PARSON_QUERY, UPDATE_THRESHOLD } from '../constants/MelodyConstants';
+import { UPDATE_MODE, UPDATE_PARSON_QUERY, UPDATE_INTERVAL_QUERY, UPDATE_THRESHOLD } from '../constants/MelodyConstants';
 
 export default {
   updateMode: (mode) => {
@@ -20,6 +20,13 @@ export default {
     AppDispatcher.dispatch({
       actionType: UPDATE_PARSON_QUERY,
       parson: parson
+    });
+  },
+
+  updateIntervalQuery: (intervals) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_INTERVAL_QUERY,
+      intervals: intervals
     });
   }
 }

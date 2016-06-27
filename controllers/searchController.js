@@ -58,6 +58,7 @@ var search = function(req, res) {
         break;
 
       case 'INTERVALS':
+        callback = searchIntervals;
         break;
 
       case 'PARSONS':
@@ -160,6 +161,47 @@ var searchParson = function() {
           return a.rank - b.rank;
         }),
         rankingFactor: parson.length
+      };
+      handleResults();
+    }
+  );
+};
+
+var searchIntervals = function() {
+  var intervals = store.melodyQuery.intervals;
+  var threshold = store.melodyQuery.threshold;
+  databaseService.getCollection(
+    databaseConfig.collections.songsheets,
+    0,
+    0,
+    function(songsheets, count) {
+      var results = [];
+      for (var i = 0; i < count; i++) {
+        var distance = MusicJsonToolbox.distanceIntervalsNgrams(songsheets[i].json, intervals.split(' ').map(function(item) {
+          return parseInt(item);
+        }));
+        var minDistance = Math.min(...distance.map(function(item) {
+          return item.distance;
+        }));
+
+        console.log(distance);
+
+        if (100 - ((100 / intervals.length) * minDistance) >= threshold) {
+          results.push({
+            id: songsheets[i].signature,
+            abc: songsheets[i].abc,
+            json: songsheets[i].json,
+            melodic: distance,
+            minDistance: minDistance,
+            rank: minDistance
+          });
+        }
+      }
+      store.melodyResponse = {
+        results: results.sort(function(a, b) {
+          return a.rank - b.rank;
+        }),
+        rankingFactor: intervals.length
       };
       handleResults();
     }

@@ -4,7 +4,7 @@ import {OverlayTrigger, Popover} from 'react-bootstrap';
 import InputRange from 'react-input-range';
 import MelodyActions from '../../../actions/MelodyActions';
 import SearchStore from '../../../stores/SearchStore';
-import '../../../stylesheets/ParsonsCode.less';
+import '../../../stylesheets/InputRange.less';
 
 export default class ParsonsCode extends React.Component {
   static propTypes = {
@@ -31,7 +31,7 @@ export default class ParsonsCode extends React.Component {
   
   componentDidMount() {
     SearchStore.addChangeListener(this.onSearchStoreChange);
-    MelodyActions.updateThreshold(this.state.parsons);
+    MelodyActions.updateParsonQuery(this.state.parsons);
     MelodyActions.updateThreshold(this.state.threshold);
   }
   

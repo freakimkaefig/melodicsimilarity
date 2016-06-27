@@ -18,6 +18,7 @@ export default class ResultList extends React.Component {
     this.state = {
       metadataQueryFields: SearchStore.queryFields,
       parsonQuery: SearchStore.parsonQuery,
+      intervalQuery: SearchStore.intervalQuery,
       results: SearchStore.results,
       highlighting: SearchStore.highlighting,
       activePage: (SearchStore.start / SearchStore.rows) + 1,
@@ -30,7 +31,8 @@ export default class ResultList extends React.Component {
   componentWillMount() {
     SearchStore.addChangeListener(this.onSearchStoreChange);
     if (this.state.metadataQueryFields.length === 0
-      && this.state.parsonQuery === '') {
+      && this.state.parsonQuery === ''
+      && this.state.intervalQuery === '') {
       browserHistory.push('/search');
     }
   }
@@ -83,11 +85,7 @@ export default class ResultList extends React.Component {
   }
   
   render() {
-    console.log("results:", this.state.results);
-    console.log("start:", SearchStore.start);
-    console.log(SearchStore.rows);
     let currentResults = this.state.results.slice(SearchStore.start, SearchStore.start + SearchStore.rows);
-    console.log("currentResults:", currentResults);
     return (
       <DocumentTitle title={`Suche // ${APP_NAME}`}>
         <div>

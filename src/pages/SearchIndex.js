@@ -31,6 +31,12 @@ export default class SearchIndex extends React.Component {
         break;
 
       case 'INTERVALS':
+        if (SearchStore.intervalQuery.length > 1) {
+          melodyQuery = {
+            intervals: SearchStore.intervalQuery,
+            threshold: SearchStore.threshold
+          };
+        }
         break;
 
       case 'PARSONS':
