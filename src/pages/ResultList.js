@@ -52,6 +52,7 @@ export default class ResultList extends React.Component {
     this.setState({
       metadataQueryFields: SearchStore.queryFields,
       parsonQuery: SearchStore.parsonQuery,
+      intervalQuery: SearchStore.intervalQuery,
       results: SearchStore.results,
       highlighting: SearchStore.highlighting,
       activePage: (SearchStore.start / SearchStore.rows) + 1,
@@ -59,21 +60,26 @@ export default class ResultList extends React.Component {
     });
   }
 
-  _renderQuery(metadataQuery, parsonQuery) {
+  _renderQuery(metadataQuery, parsonQuery, intervalQuery) {
     let renderedMetadataQuery = metadataQuery.map((field, index) => {
       return (
         <span className="label label-default" key={index}>{`${field.name}: ${field.value}`}</span>
       );
     });
 
-    let renderedParsonQuery = parsonQuery !== null ? (
+    let renderedParsonQuery = parsonQuery.length > 1 ? (
       <span className="label label-default">{`Parsons Code: ${parsonQuery}`}</span>
+    ) : '';
+
+    let renderedIntervalQuery = intervalQuery.length > 1 ? (
+      <span className="label label-default">{`Intervalle: ${intervalQuery}`}</span>
     ) : '';
 
     return (
       <span>
         {renderedMetadataQuery}
         {renderedParsonQuery}
+        {renderedIntervalQuery}
       </span>
     );
   }
@@ -85,6 +91,7 @@ export default class ResultList extends React.Component {
   }
   
   render() {
+    let { metadataQueryFields, parsonQuery, intervalQuery, highlighting } = this.state;
     let currentResults = this.state.results.slice(SearchStore.start, SearchStore.start + SearchStore.rows);
     return (
       <DocumentTitle title={`Suche // ${APP_NAME}`}>
@@ -95,7 +102,7 @@ export default class ResultList extends React.Component {
                 <LinkContainer to="/search" key={0}>
                   <Breadcrumb.Item>Suche</Breadcrumb.Item>
                 </LinkContainer>
-                <Breadcrumb.Item active>{this._renderQuery(this.state.metadataQueryFields, this.state.parsonQuery)}</Breadcrumb.Item>
+                <Breadcrumb.Item active>{this._renderQuery(metadataQueryFields, parsonQuery, intervalQuery)}</Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>
@@ -106,10 +113,9 @@ export default class ResultList extends React.Component {
             </div>
           </div>
 
-          <LoadingItem loading={this.state.results <= 0}/>
           <SearchResultList
             results={currentResults}
-            highlighting={this.state.highlighting} />
+            highlighting={highlighting} />
           <div className="text-center">
             <Pagination
               prev

@@ -10,7 +10,7 @@ import AbcViewer from '../components/AbcViewer';
 import MetadataViewer from '../components/MetadataViewer';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Breadcrumb } from 'react-bootstrap';
-
+import '../stylesheets/SongsheetView.less';
 
 export default class SongsheetView extends React.Component {
 
@@ -73,8 +73,8 @@ export default class SongsheetView extends React.Component {
     if (typeof metadata !== 'undefined') {
       if (typeof metadata.text !== 'undefined') {
         return (
-          <div className="col-xs-12 text">{metadata.text}</div>
-        )
+          <div className="text">{metadata.text}</div>
+        );
       }
     }
   }
@@ -98,10 +98,13 @@ export default class SongsheetView extends React.Component {
   }
 
   render() {
+    let signature = this.props.params.signature;
+    let { loading, metadata, file } = this.state;
+    let title = typeof metadata !== 'undefined' ? ' - ' + metadata.title : '';
     return (
-      <DocumentTitle title={`Liedblatt - ${this.props.params.signature} // ${APP_NAME}`}>
-        <div>
-          <LoadingOverlay loading={this.state.loading} />
+      <DocumentTitle title={`Liedblatt - ${signature} // ${APP_NAME}`}>
+        <div className="songsheet-view">
+          <LoadingOverlay loading={loading} />
           <div className="row">
             <div className="col-xs-12">
               <Breadcrumb>
@@ -111,28 +114,38 @@ export default class SongsheetView extends React.Component {
                   </Breadcrumb.Item>
                 </LinkContainer>
                 <Breadcrumb.Item active>
-                  {this.props.params.signature}
+                  {signature}
                 </Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>
           <div className="row">
             <div className="col-xs-12">
-              <h1>Songsheet View</h1>
+              <h1 className="text-center">{`${signature}${title}`}</h1>
             </div>
             <div className="col-xs-12 col-md-4">
               <div className="row">
-                { this._getImageView(this.state.metadata) }
-                { this._getMetadataText(this.state.metadata) }
+                { this._getImageView(metadata) }
               </div>
             </div>
             <div className="col-xs-12 col-md-7 col-md-offset-1">
-              { this._getAbcViewer(this.state.file) }
-              { this._getMetadataViewer(this.state.metadata) }
+              { this._getAbcViewer(file) }
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-xs-12 col-md-4">
+              <h2>Liedtext</h2>
+              { this._getMetadataText(metadata) }
+            </div>
+            <div className="col-xs-12 col-md-7 col-md-offset-1">
+              <h2>Metadaten</h2>
+              { this._getMetadataViewer(metadata) }
             </div>
           </div>
         </div>
       </DocumentTitle>
     );
+
+
   }
 }

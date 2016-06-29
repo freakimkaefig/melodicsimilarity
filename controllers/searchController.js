@@ -38,6 +38,8 @@ var mergeResults = function() {
     }
 
   });
+  
+  // if (results.length <= 0) return false;
 
   return results.sort(function(a, b) {
     return a.rank - b.rank;
@@ -168,7 +170,9 @@ var searchParson = function() {
 };
 
 var searchIntervals = function() {
-  var intervals = store.melodyQuery.intervals;
+  var intervals = store.melodyQuery.intervals.split(' ').map(function(item) {
+    return parseInt(item);
+  });
   var threshold = store.melodyQuery.threshold;
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
@@ -177,14 +181,13 @@ var searchIntervals = function() {
     function(songsheets, count) {
       var results = [];
       for (var i = 0; i < count; i++) {
-        var distance = MusicJsonToolbox.distanceIntervalsNgrams(songsheets[i].json, intervals.split(' ').map(function(item) {
-          return parseInt(item);
-        }));
+        var distance = MusicJsonToolbox.distanceIntervalsNgrams(songsheets[i].json, intervals);
         var minDistance = Math.min(...distance.map(function(item) {
           return item.distance;
         }));
 
-        console.log(distance);
+        console.log(threshold, intervals.length);
+        console.log(100 - ((100 / intervals.length) * minDistance) >= threshold);
 
         if (100 - ((100 / intervals.length) * minDistance) >= threshold) {
           results.push({

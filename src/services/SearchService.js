@@ -27,6 +27,7 @@ class SearchService {
   handleSearchResponse(searchPremise) {
     return searchPremise
       .then(function(response) {
+        console.log(response);
         SearchActions.updateResults(response);
       });
   }

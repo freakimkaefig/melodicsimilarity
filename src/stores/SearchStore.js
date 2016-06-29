@@ -4,6 +4,7 @@ import {UPDATE_FIELD_VALUE, UPDATE_SEARCH_OPERATOR, UPDATE_SEARCH_START, START_S
 import { UPDATE_MODE, UPDATE_PARSON_QUERY, UPDATE_INTERVAL_QUERY, UPDATE_THRESHOLD } from '../constants/MelodyConstants';
 import SolrService from '../services/SolrService';
 import SolrQuery from '../helpers/SolrQuery';
+
 class SearchStore extends BaseStore {
 
   constructor() {

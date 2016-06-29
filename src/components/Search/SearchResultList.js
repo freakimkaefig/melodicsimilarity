@@ -130,20 +130,11 @@ export default class SearchResultList extends React.Component {
 
   _getList(results) {
     return results.map((result, index) => {
-      let container = '';
-      if (result !== false) {
-        container = this._getContainer(result, index);
-      } else {
-        container = (
-          <h3 className="text-center">Für deine Suchanfrage konnten keine Ergebnisse gefunden werden.</h3>
-        );
-      }
-
       return (
         <div className="search-result-item col-xs-12" key={index}>
           <div className="content">
             <div className="header">
-              { container }
+              { this._getContainer(result, index) }
             </div>
           </div>
         </div>
@@ -152,9 +143,17 @@ export default class SearchResultList extends React.Component {
   }
 
   render() {
+    let renderedResults = this.props.results.length > 0 ? (
+      this._getList(this.props.results)
+    ) : (
+      <div className="empty-results col-xs-12">
+        <h3 className="text-center">Für deine Suchanfrage konnten keine Ergebnisse gefunden werden.</h3>
+      </div>
+    );
+
     return (
       <div className="row">
-        { this._getList(this.props.results) }
+        { renderedResults }
       </div>
     );
   }

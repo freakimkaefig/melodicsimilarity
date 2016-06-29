@@ -61,7 +61,7 @@ export default class SongsheetList extends React.Component {
     return (
       <DocumentTitle title={`Liedblätter // ${APP_NAME}`}>
         <div>
-          <h1>Liedblätter</h1>
+          <h1 className="text-center">Liedblatt-Galerie</h1>
           <LoadingOverlay loading={this.state.songsheets <= 0} />
           <FileGrid files={this.state.songsheets} metadata={this.state.metadata} />
           <div className="text-center">

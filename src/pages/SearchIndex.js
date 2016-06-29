@@ -63,7 +63,7 @@ export default class SearchIndex extends React.Component {
       <DocumentTitle title={`Suche // ${APP_NAME}`}>
         <div>
           <LoadingOverlay loading={this.state.loading} />
-          <h1>Suche</h1>
+          <h1 className="text-center">Suche</h1>
           <MetadataSearchbox fields={FIELDS} submit={this.handleSubmit} />
           <MelodicSearchbox submit={this.handleSubmit} />
         </div>

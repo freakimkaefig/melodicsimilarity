@@ -11,7 +11,7 @@ export default class HomePage extends React.Component {
         <div>
           <div className="row">
             <div className="col-xs-12">
-              <h1>{APP_NAME}</h1>
+              <h1 className="text-center">{APP_NAME}</h1>
             </div>
           </div>
           <div className="row">
