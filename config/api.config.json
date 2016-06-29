@@ -15,5 +15,28 @@
         "driver": "mongo"
       }
     }
+  },
+  "statistics": {
+    "notes": {
+      "mode": "notes",
+      "title": "Notenverteilung",
+      "yAxis": "Häufigkeit",
+      "labels": ["Cb", "C", "C#", "Db", "D", "D#", "Eb", "E", "E#", "Fb", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B", "B#"],
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "intervals": {
+      "mode": "intervals",
+      "title": "Intervallverteilung",
+      "yAxis": "Häufigkeit",
+      "labels": ["Prim", "kl. Sekunde", "gr. Sekunde", "kl. Terz", "gr. Terz", "Quarte", "Quinte", "kl. Sexte", "gr. Sexte", "kl. Septe", "gr. Septe", "Oktave"],
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "keys": {
+      "mode": "keys",
+      "title": "Tonartverteilung",
+      "yAxis": "Haufigkeit",
+      "labels": ["Db-Dur / B-Moll", "Ab-Dur / F-Moll", "Eb-Dur / C-Moll", "B-Dur / G-Moll", "F-Dur / D-Moll", "C-Dur / A-Moll", "G-Dur / E-Moll", "D-Dur / H-Moll", "A-Dur / F#-Moll", "E-Dur / C#-Moll", "H-Dur / G#-Moll", "F#-/Gb-Dur / D#-/Eb-Moll"],
+      "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }
   }
 }

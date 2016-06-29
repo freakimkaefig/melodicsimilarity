@@ -6,6 +6,7 @@ var userController = require('../controllers/userController.js');
 var songsheetController = require('../controllers/songsheetController');
 var uploadController = require('../controllers/uploadController');
 var searchController = require('../controllers/searchController');
+var statisticController = require('../controllers/statisticController');
 
 var router = express.Router();
 var upload = multer({ dest: 'public/uploads/' });
@@ -24,6 +25,10 @@ router.post('/api/search', searchController.search);
 router.post('/api/protected/songsheet/add', songsheetController.handleUpload);
 router.post('/api/protected/scan/add', upload.any(), uploadController.postUpload);
 
+/* Statistics */
+router.get('/api/index/:mode', statisticController.getStats);
+
+
 /* ========================================
  * ======== PROTECTED API REQUESTS ========
  * ======================================== */
@@ -38,6 +43,8 @@ router.get('/api/protected/random-quote', function(req, res) {
 router.get('/api/protected/users', userController.getUsers);
 
 
+/* Statistics */
+router.get('/api/protected/index/update/:mode', statisticController.updateStats);
 
 /* ========================================
  * ============ AUTHENTICATION ============

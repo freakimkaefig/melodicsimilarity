@@ -1,6 +1,7 @@
 {
   "collections": {
     "users": "usercollection",
-    "songsheets": "songsheets"
+    "songsheets": "songsheets",
+    "statistics": "statistics"
   }
 }

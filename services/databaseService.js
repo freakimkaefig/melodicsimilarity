@@ -82,6 +82,31 @@ var addUser = function(username, password, callback) {
   });
 };
 
+var getStatistics = function(mode, callback) {
+  that.getDocument(databaseConfig.collections.statistics, { mode: mode}, callback);
+};
+
+var updateStatistics = function(mode, values, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    var collection = db.collection(databaseConfig.collections.statistics);
+    collection.findOneAndUpdate(
+      { mode: mode },
+      { mode: mode, values: values },
+      { upsert: true, returnOriginal: false },
+      function(err, result) {
+        if (err) {
+          throw err;
+        }
+        callback(result);
+        db.close();
+      }
+    )
+  })
+};
+
 var addDocument = function(data, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -111,6 +136,8 @@ that.getStats = getStats;
 that.getCollection = getCollection;
 that.getDocument = getDocument;
 that.addUser = addUser;
+that.getStatistics = getStatistics;
+that.updateStatistics = updateStatistics;
 that.addDocument = addDocument;
 
 module.exports = that;
