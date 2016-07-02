@@ -6,7 +6,6 @@ import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
 import ReactHighcharts from 'react-highcharts';
 require('highcharts-exporting')(ReactHighcharts.Highcharts);
-import {TagCloud, defaultRenderer} from 'react-tagcloud';
 import deepcopy from 'deepcopy';
 import _ from 'lodash';
 import '../stylesheets/OverviewPage.less';
@@ -191,16 +190,6 @@ export default class HomePage extends React.Component {
       }
     };
 
-    this.tagRenderer = defaultRenderer({
-      colorOptions: {
-        luminosity: 'dark',
-        hue: 'random'
-      },
-      tagRenderer: (tag, size, handlers) => {
-        return <span {...handlers} key={tag.value} className={`tag-${size}`}>{tag.value} ({tag.count})</span>;
-      }
-    });
-
     this.state = {
       notes: StatisticsStore.notes,
       intervals: StatisticsStore.intervals,
@@ -211,11 +200,9 @@ export default class HomePage extends React.Component {
       dates: StatisticsStore.dates,
       origin: StatisticsStore.origin,
       archive: StatisticsStore.archive,
-      singPlace: StatisticsStore.singPlace
     };
 
     this.onStatisticsStoreChange = this.onStatisticsStoreChange.bind(this);
-    this.onMouseOverTag = this.onMouseOverTag.bind(this);
   }
 
   componentDidMount() {
@@ -247,9 +234,6 @@ export default class HomePage extends React.Component {
     }
     if (!StatisticsStore.archive) {
       StatisticsService.getStatistics('archive');
-    }
-    if (StatisticsStore.singPlace.length <= 0) {
-      StatisticsService.getStatistics('singPlace');
     }
   }
 
@@ -312,8 +296,7 @@ export default class HomePage extends React.Component {
       meters: nextMeters,
       dates: nextDates,
       origin: nextOrigin,
-      archive: nextArchive,
-      singPlace: StatisticsStore.singPlace
+      archive: nextArchive
     });
   }
 
@@ -382,12 +365,8 @@ export default class HomePage extends React.Component {
     return chartConfig;
   }
 
-  onMouseOverTag(tag) {
-    alert(tag.count);
-  }
-
   render() {
-    let {notes, intervals, durations, rests, keys, meters, dates, origin, archive, singPlace} = this.state;
+    let {notes, intervals, durations, rests, keys, meters, dates, origin, archive} = this.state;
 
     const notesChart = this.getColumnChartConfig('notes', notes);
     const intervalsChart = this.getColumnChartConfig('intervals', intervals);
@@ -443,9 +422,8 @@ export default class HomePage extends React.Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-xs-6">
-                  <h3>Top 20 Sangesorte</h3>
-                  <TagCloud minSize={12} maxSize={28} tags={singPlace} renderer={this.tagRenderer} onClick={this.onMouseOverTag}  />
+                <div className="col-xs-12">
+                  <div id="songsheet-network" style={{height: '800px'}}/>
                 </div>
               </div>
             </div>
