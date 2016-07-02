@@ -21,6 +21,7 @@ export const FIELDS = [
     "display": "Signatur",
     "input": "text",
     "facet": true,
+    "statistic": false,
     "exact": true
   },
   {
@@ -30,6 +31,7 @@ export const FIELDS = [
     "display": "Titel",
     "input": "text",
     "facet": true,
+    "statistic": false,
     "exact": false
   },
 
@@ -40,6 +42,7 @@ export const FIELDS = [
     "display": "Herkunft",
     "input": "text",
     "facet": true,
+    "statistic": true,
     "exact": false
   },
   {
@@ -49,6 +52,7 @@ export const FIELDS = [
     "display": "Landschaftsarchiv",
     "input": "text",
     "facet": true,
+    "statistic": true,
     "exact": false
   },
   {
@@ -58,6 +62,7 @@ export const FIELDS = [
     "display": "Archivort",
     "input": "text",
     "facet": true,
+    "statistic": false,
     "exact": false
   },
   {
@@ -67,6 +72,7 @@ export const FIELDS = [
     "display": "Sangesort",
     "input": "text",
     "facet": true,
+    "statistic": false,
     "exact": false
   },
 
@@ -77,6 +83,7 @@ export const FIELDS = [
     "display": "Sänger/in",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -86,6 +93,7 @@ export const FIELDS = [
     "display": "Aufzeichner",
     "input": "text",
     "facet": true,
+    "statistic": false,
     "exact": false
   },
 
@@ -96,6 +104,7 @@ export const FIELDS = [
     "display": "Dat. Findbuch",
     "input": "date",
     "facet": false,
+    "statistic": true,
     "exact": false
   },
   {
@@ -105,6 +114,7 @@ export const FIELDS = [
     "display": "Erhalten am",
     "input": "date",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -114,6 +124,7 @@ export const FIELDS = [
     "display": "Gesungen am",
     "input": "date",
     "facet": false,
+    "statistic": true,
     "exact": false
   },
   {
@@ -123,6 +134,7 @@ export const FIELDS = [
     "display": "Aufgezeichnet am",
     "input": "date",
     "facet": false,
+    "statistic": true,
     "exact": false
   },
   {
@@ -132,6 +144,7 @@ export const FIELDS = [
     "display": "Eingesandt am",
     "input": "date",
     "facet": false,
+    "statistic": true,
     "exact": false
   },
 
@@ -142,6 +155,7 @@ export const FIELDS = [
     "display": "Altsignatur",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -151,6 +165,7 @@ export const FIELDS = [
     "display": "Liedgattung",
     "input": "text",
     "facet": true,
+    "statistic": false,
     "exact": false
   },
 
@@ -161,6 +176,7 @@ export const FIELDS = [
     "display": "Fehlt, weil",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -170,6 +186,7 @@ export const FIELDS = [
     "display": "Umfasst",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -179,6 +196,7 @@ export const FIELDS = [
     "display": "Incipit",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -188,6 +206,7 @@ export const FIELDS = [
     "display": "Blattzahl",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": true
   },
   {
@@ -197,6 +216,7 @@ export const FIELDS = [
     "display": "Bemerkung",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -206,6 +226,7 @@ export const FIELDS = [
     "display": "Veröffentlichung",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -215,6 +236,7 @@ export const FIELDS = [
     "display": "Verweis",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -224,6 +246,7 @@ export const FIELDS = [
     "display": "Quelle",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": false
   },
   {
@@ -233,6 +256,7 @@ export const FIELDS = [
     "display": "Versionsnummer",
     "input": "text",
     "facet": false,
+    "statistic": false,
     "exact": true
   }
 ];

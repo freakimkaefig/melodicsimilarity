@@ -19,24 +19,88 @@
   "statistics": {
     "notes": {
       "mode": "notes",
-      "title": "Notenverteilung",
+      "datatype": "melodic",
+      "title": "Notenhäufigkeit",
       "yAxis": "Häufigkeit",
       "labels": ["Cb", "C", "C#", "Db", "D", "D#", "Eb", "E", "E#", "Fb", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B", "B#"],
       "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
     "intervals": {
       "mode": "intervals",
-      "title": "Intervallverteilung",
+      "datatype": "melodic",
+      "title": "Intervallhäufigkeit",
       "yAxis": "Häufigkeit",
       "labels": ["Prim", "kl. Sekunde", "gr. Sekunde", "kl. Terz", "gr. Terz", "Quarte", "Quinte", "kl. Sexte", "gr. Sexte", "kl. Septe", "gr. Septe", "Oktave"],
       "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
+    "durations": {
+      "mode": "durations",
+      "datatype": "melodic",
+      "title": "Verteilung der Notenwerte",
+      "values": [
+        {"name": "1/1", "y": 0},
+        {"name": "1/2", "y": 0},
+        {"name": "1/4", "y": 0},
+        {"name": "1/8", "y": 0},
+        {"name": "1/16", "y": 0},
+        {"name": "1/32", "y": 0},
+        {"name": "1/64", "y": 0},
+        {"name": "1/128", "y": 0},
+        {"name": "1/256", "y": 0},
+        {"name": "1/512", "y": 0},
+        {"name": "1/1024", "y": 0}
+      ]
+    },
     "keys": {
       "mode": "keys",
-      "title": "Tonartverteilung",
+      "datatype": "melodic",
+      "title": "Tonarthäufigkeit",
       "yAxis": "Haufigkeit",
       "labels": ["Db-Dur / B-Moll", "Ab-Dur / F-Moll", "Eb-Dur / C-Moll", "B-Dur / G-Moll", "F-Dur / D-Moll", "C-Dur / A-Moll", "G-Dur / E-Moll", "D-Dur / H-Moll", "A-Dur / F#-Moll", "E-Dur / C#-Moll", "H-Dur / G#-Moll", "F#-/Gb-Dur / D#-/Eb-Moll"],
       "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    },
+    "rests": {
+      "mode": "rests",
+      "datatype": "melodic",
+      "title": "Verteilung der Pausen",
+      "values": [
+        {"name": "1/1", "y": 0},
+        {"name": "1/2", "y": 0},
+        {"name": "1/4", "y": 0},
+        {"name": "1/8", "y": 0},
+        {"name": "1/16", "y": 0},
+        {"name": "1/32", "y": 0},
+        {"name": "1/64", "y": 0},
+        {"name": "1/128", "y": 0},
+        {"name": "1/256", "y": 0},
+        {"name": "1/512", "y": 0},
+        {"name": "1/1024", "y": 0}
+      ]
+    },
+    "meters": {
+      "mode": "meters",
+      "datatype": "melodic",
+      "title": "Verteilung der Taktarten",
+      "values": []
+    },
+    "temporal": {
+      "mode": "temporal",
+      "datatype": "date",
+      "title": "Zeitliche Einordnung"
+    },
+    "origin": {
+      "mode": "origin",
+      "datatype": "geo",
+      "title": "Räumliche Einordnung"
+    },
+    "archive": {
+      "mode": "archive",
+      "datatype": "geo",
+      "title": "Archive"
+    },
+    "singPlace": {
+      "mode": "singPlace",
+      "datatype": "tag"
     }
   }
 }
