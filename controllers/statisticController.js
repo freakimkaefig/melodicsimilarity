@@ -118,44 +118,20 @@ var updateDurations = function(req, res) {
         var notes = MusicJsonToolbox.notes(songsheets[i].json, false, false);
         for (var j = 0; j < notes.length; j++) {
           var type = notes[j].type;
-
-          var name = '';
-          switch (type) {
-            case 'whole':
-              name = '1/1';
-              break;
-            case 'half':
-              name = '1/2';
-              break;
-            case 'quarter':
-              name = '1/4';
-              break;
-            case 'eighth':
-              name = '1/8';
-              break;
-            case '16th':
-              name = '1/16';
-              break;
-            case '32nd':
-              name = '1/32';
-              break;
-            case '64th':
-              name = '1/64';
-              break;
-            case '128th':
-              name = '1/128';
-              break;
-            case '256th':
-              name = '1/256';
-              break;
-            case '512th':
-              name = '1/512';
-              break;
-            case '1024':
-              name = '1/1024';
-              break;
+          var name = apiConfig.statistics.durations.translation[type];
+          if (notes[j].dot === 'true' || notes[j].dot === true) {
+            name = apiConfig.statistics.durations.dotted + name;
           }
-          _.find(values, ['name', name]).y++;
+
+          var index = _.findIndex(values, ['name', name]);
+          if (index > -1) {
+            values[index].y++;
+          } else {
+            values.push({
+              name: name,
+              y: 1
+            });
+          }
         }
       }
       databaseService.updateStatistics(
@@ -207,44 +183,20 @@ var updateRests = function(req, res) {
         for (var j = 0; j < notes.length; j++) {
           if (notes[j].rest === 'true' || notes[j].rest === true) {
             var type = notes[j].type;
-
-            var name = '';
-            switch (type) {
-              case 'whole':
-                name = '1/1';
-                break;
-              case 'half':
-                name = '1/2';
-                break;
-              case 'quarter':
-                name = '1/4';
-                break;
-              case 'eighth':
-                name = '1/8';
-                break;
-              case '16th':
-                name = '1/16';
-                break;
-              case '32nd':
-                name = '1/32';
-                break;
-              case '64th':
-                name = '1/64';
-                break;
-              case '128th':
-                name = '1/128';
-                break;
-              case '256th':
-                name = '1/256';
-                break;
-              case '512th':
-                name = '1/512';
-                break;
-              case '1024':
-                name = '1/1024';
-                break;
+            var name = apiConfig.statistics.durations.translation[type];
+            if (notes[j].dot === 'true' || notes[j].dot === true) {
+              name = apiConfig.statistics.durations.dotted + name;
             }
-            _.find(values, ['name', name]).y++;
+            
+            var index = _.findIndex(values, ['name', name]);
+            if (index > -1) {
+              values[index].y++;
+            } else {
+              values.push({
+                name: name,
+                y: 1
+              });
+            }
           }
         }
       }

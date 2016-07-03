@@ -37,19 +37,21 @@
       "mode": "durations",
       "datatype": "melodic",
       "title": "Verteilung der Notenwerte",
-      "values": [
-        {"name": "1/1", "y": 0},
-        {"name": "1/2", "y": 0},
-        {"name": "1/4", "y": 0},
-        {"name": "1/8", "y": 0},
-        {"name": "1/16", "y": 0},
-        {"name": "1/32", "y": 0},
-        {"name": "1/64", "y": 0},
-        {"name": "1/128", "y": 0},
-        {"name": "1/256", "y": 0},
-        {"name": "1/512", "y": 0},
-        {"name": "1/1024", "y": 0}
-      ]
+      "translation": {
+        "whole": "1/1",
+        "half": "1/2",
+        "quarter": "1/4",
+        "eighth": "1/8",
+        "16th": "1/16",
+        "32nd": "1/32",
+        "64th": "1/64",
+        "128th": "1/128",
+        "256th": "1/256",
+        "512th": "1/512",
+        "1024th": "1/1024"
+      },
+      "dotted": "punktierte ",
+      "values": []
     },
     "keys": {
       "mode": "keys",
@@ -63,19 +65,7 @@
       "mode": "rests",
       "datatype": "melodic",
       "title": "Verteilung der Pausen",
-      "values": [
-        {"name": "1/1", "y": 0},
-        {"name": "1/2", "y": 0},
-        {"name": "1/4", "y": 0},
-        {"name": "1/8", "y": 0},
-        {"name": "1/16", "y": 0},
-        {"name": "1/32", "y": 0},
-        {"name": "1/64", "y": 0},
-        {"name": "1/128", "y": 0},
-        {"name": "1/256", "y": 0},
-        {"name": "1/512", "y": 0},
-        {"name": "1/1024", "y": 0}
-      ]
+      "values": []
     },
     "meters": {
       "mode": "meters",
