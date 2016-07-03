@@ -6,6 +6,7 @@ import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
 import ReactHighcharts from 'react-highcharts';
 require('highcharts-exporting')(ReactHighcharts.Highcharts);
+require('highcharts-more')(ReactHighcharts.Highcharts);
 import deepcopy from 'deepcopy';
 import _ from 'lodash';
 import '../stylesheets/OverviewPage.less';
@@ -141,7 +142,8 @@ export default class HomePage extends React.Component {
                 return this.key + ': ' + this.y;
               }
             }
-          }
+          },
+          showInLegend: true
         }
       },
       series: [{
@@ -190,6 +192,38 @@ export default class HomePage extends React.Component {
       }
     };
 
+    this.boxplotConfig = {
+      chart: {
+        type: 'boxplot'
+      },
+      title: {
+        text: ''
+      },
+      subtitle: {
+        text: '',
+      },
+      legend: {
+        enabled: false
+      },
+      credits: {
+        enabled: false
+      },
+      xAxis: {
+        categories: []
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: ''
+        }
+      },
+      series: [],
+      exporting: {
+        enabled: true,
+        filename: 'chart'
+      }
+    };
+
     this.state = {
       notes: StatisticsStore.notes,
       intervals: StatisticsStore.intervals,
@@ -197,6 +231,7 @@ export default class HomePage extends React.Component {
       rests: StatisticsStore.rests,
       keys: StatisticsStore.keys,
       meters: StatisticsStore.meters,
+      counts: StatisticsStore.counts, 
       dates: StatisticsStore.dates,
       origin: StatisticsStore.origin,
       archive: StatisticsStore.archive,
@@ -226,6 +261,9 @@ export default class HomePage extends React.Component {
     if (StatisticsStore.meters.length <= 0) {
       StatisticsService.getStatistics('meters');
     }
+    if (StatisticsStore.counts.length <= 0) {
+      StatisticsService.getStatistics('counts');
+    }
     if (StatisticsStore.dates.length <= 0) {
       StatisticsService.getStatistics('temporal');
     }
@@ -242,46 +280,52 @@ export default class HomePage extends React.Component {
   }
 
   onStatisticsStoreChange() {
+    let {notes, intervals, durations, rests, keys, meters, counts, dates, origin, archive} = this.state;
     let nextNotes = StatisticsStore.notes;
     let nextIntervals = StatisticsStore.intervals;
     let nextDurations = StatisticsStore.durations;
     let nextRests = StatisticsStore.rests;
     let nextKeys = StatisticsStore.keys;
     let nextMeters = StatisticsStore.meters;
+    let nextCounts = StatisticsStore.counts;
     let nextDates = StatisticsStore.dates;
     let nextOrigin = StatisticsStore.origin;
     let nextArchive = StatisticsStore.archive;
 
-    if (_.difference(this.state.notes, nextNotes).length > 0) {
+    if (_.difference(notes, nextNotes).length > 0) {
       this.updateChart(this.refs.notes, nextNotes);
     }
-    if (_.difference(this.state.intervals, nextIntervals).length > 0) {
+    if (_.difference(intervals, nextIntervals).length > 0) {
       this.updateChart(this.refs.intervals, nextIntervals);
     }
-    if (_.difference(this.state.durations, nextDurations).length > 0) {
+    if (_.difference(durations, nextDurations).length > 0) {
       this.updateChart(this.refs.durations, nextDurations);
     }
-    if (_.difference(this.state.rests, nextRests).length > 0) {
+    if (_.difference(rests, nextRests).length > 0) {
       this.updateChart(this.refs.rests, nextRests);
     }
-    if (_.difference(this.state.keys, nextKeys).length > 0) {
+    if (_.difference(keys, nextKeys).length > 0) {
       this.updateChart(this.refs.keys, nextKeys);
     }
-    if (_.difference(this.state.meters, nextMeters).length > 0) {
+    if (_.difference(meters, nextMeters).length > 0) {
       this.updateChart(this.refs.meters, nextMeters);
     }
-    if (_.difference(this.state.dates, nextDates).length > 0) {
+    if (_.difference(counts, nextCounts).length > 0) {
+      let countsChart = this.refs.counts.getChart();
+      countsChart.series = nextCounts;
+    }
+    if (_.difference(dates, nextDates).length > 0) {
       let dateChart = this.refs.temporal.getChart();
       dateChart.series = nextDates;
     }
-    if (_.difference(this.state.origin.labels, nextOrigin.labels).length > 0
-      || _.difference(this.state.origin.values, nextOrigin.values).length > 0) {
+    if (_.difference(origin.labels, nextOrigin.labels).length > 0
+      || _.difference(origin.values, nextOrigin.values).length > 0) {
       let originChart = this.refs.origin.getChart();
       originChart.series[0].setData(nextOrigin.values);
       originChart.xAxis.categories = nextOrigin.labels;
     }
-    if (_.difference(this.state.archive.labels, nextArchive.labels).length > 0
-      || _.difference(this.state.archive.values, nextArchive.values).length > 0) {
+    if (_.difference(archive.labels, nextArchive.labels).length > 0
+      || _.difference(archive.values, nextArchive.values).length > 0) {
       let originChart = this.refs.archive.getChart();
       originChart.series[0].setData(nextArchive.values);
       originChart.xAxis.categories = nextArchive.labels;
@@ -294,6 +338,7 @@ export default class HomePage extends React.Component {
       rests: nextRests,
       keys: nextKeys,
       meters: nextMeters,
+      counts: nextCounts,
       dates: nextDates,
       origin: nextOrigin,
       archive: nextArchive
@@ -365,8 +410,19 @@ export default class HomePage extends React.Component {
     return chartConfig;
   }
 
+  getBoxplotChartConfig(mode, data) {
+    let chartConfig = deepcopy(this.boxplotConfig);
+    chartConfig.title.text = statistics[mode].title;
+    chartConfig.exporting.filename = statistics[mode].title;
+    chartConfig.subtitle.text = statistics[mode].subtitle;
+    chartConfig.xAxis.categories = statistics[mode].labels;
+    chartConfig.series = data;
+
+    return chartConfig;
+  }
+
   render() {
-    let {notes, intervals, durations, rests, keys, meters, dates, origin, archive} = this.state;
+    let {notes, intervals, durations, rests, keys, meters, counts, dates, origin, archive} = this.state;
 
     const notesChart = this.getColumnChartConfig('notes', notes);
     const intervalsChart = this.getColumnChartConfig('intervals', intervals);
@@ -374,6 +430,7 @@ export default class HomePage extends React.Component {
     const restsChart = this.getPieChartConfig('rests', rests);
     const keysChart = this.getColumnChartConfig('keys', keys);
     const metersChart = this.getPieChartConfig('meters', meters);
+    const countsChart = this.getBoxplotChartConfig('counts', counts);
     const temporalChart = this.getLineChartConfig('temporal', dates);
     const originChart = this.getBarChartConfig('origin', origin);
     const archiveChart = this.getBarChartConfig('archive', archive);
@@ -404,13 +461,16 @@ export default class HomePage extends React.Component {
                 <div id="rests-chart" className="chart col-xs-12 col-md-4">
                   <ReactHighcharts config={restsChart} ref="rests" />
                 </div>
+                <div id="meters-chart" className="chart col-xs-12 col-md-4">
+                  <ReactHighcharts config={metersChart} ref="meters" />
+                </div>
               </div>
               <div className="row around-md">
                 <div id="keys-chart" className="chart col-xs-12 col-md-6">
                   <ReactHighcharts config={keysChart} ref="keys" />
                 </div>
-                <div id="meters-chart" className="chart col-xs-12 col-md-4">
-                  <ReactHighcharts config={metersChart} ref="meters" />
+                <div id="counts-chart" className="chart col-xs-12 col-md-6">
+                  <ReactHighcharts config={countsChart} ref="counts" />
                 </div>
               </div>
               <div className="row around-md">

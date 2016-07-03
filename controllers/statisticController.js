@@ -32,6 +32,12 @@ var updateStats = function(req, res) {
     case 'meters':
       updateMeters(req, res);
       break;
+    case 'counts':
+      updateCounts(req, res);
+      break;
+    default:
+      res.status(404);
+      break;
   }
 };
 
@@ -241,6 +247,96 @@ var updateMeters = function(req, res) {
     }
   );
 };
+
+var updateCounts = function(req, res) {
+  var values = apiConfig.statistics.counts.values;
+
+  databaseService.getCollection(
+    databaseConfig.collections.songsheets,
+    0,
+    0,
+    function(songsheets, count) {
+      var countData = [
+        [], // 0 = notes
+        [], // 1 = rests
+        []  // 2 = measures
+      ];
+
+      // count notes, rests and measures for each songsheet
+      for (var i = 0; i < count; i++) {
+        var notes = MusicJsonToolbox.notes(songsheets[i].json, false, false).length;
+        countData[0].push(notes);
+        var rests = MusicJsonToolbox.notes(songsheets[i].json, false, true).length - notes;
+        countData[1].push(rests);
+        var measures = songsheets[i].json.measures.length;
+        countData[2].push(measures);
+      }
+
+      // generate box plot values for notes, rests and measures
+      for (var x = 0; x < countData.length; x++) {
+        console.log(countData[x], x);
+        var boxplot = getBoxplotValues(countData[x], x);
+        values[0].data[x] = boxplot.data;
+        values[1].data = values[1].data.concat(boxplot.outliers);
+      }
+
+      databaseService.updateStatistics(
+        apiConfig.statistics.counts.mode,
+        values,
+        function(result) {
+          res.json(result);
+        }
+      );
+    }
+  );
+};
+
+function getBoxplotValues(data, series) {
+  var q1 = getPercentile(data, 25);
+  var median = getPercentile(data, 50);
+  var q3 = getPercentile(data, 75);
+
+  var iqr = Math.abs(q3 - q1);
+
+  var min = Math.min.apply(Math, data);
+  var allowedMin = q1 - (1.5 * iqr);
+  allowedMin = allowedMin < 0 ? 0 : allowedMin;
+  var low = min >= allowedMin ? min : allowedMin;
+
+  var max = Math.max.apply(Math, data);
+  var allowedMax = q3 + (1.5 * iqr);
+  var high = min <= allowedMax ? max : allowedMax;
+
+  var outliers = data.filter(function(value) {
+    return value < low || value > high;
+  }).map(function(value) {
+    return [series, value];
+  });
+
+  return {
+    data: [low, q1, median, q3, high],
+    outliers: outliers
+  };
+}
+
+//get any percentile from an array
+function getPercentile(data, percentile) {
+  data.sort(numSort);
+  var index = (percentile/100) * data.length;
+  var result;
+  if (Math.floor(index) == index) {
+    result = (data[(index-1)] + data[index])/2;
+  }
+  else {
+    result = data[Math.floor(index)];
+  }
+  return result;
+}
+
+//because .sort() doesn't sort numbers correctly
+function numSort(a,b) {
+  return a - b;
+}
 
 that.getStats = getStats;
 that.updateStats = updateStats;

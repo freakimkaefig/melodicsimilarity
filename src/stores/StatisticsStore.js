@@ -13,7 +13,8 @@ class StatisticsStore extends BaseStore {
       durations: [],
       rests: [],
       keys: [],
-      meters: []
+      meters: [],
+      counts: [],
     };
     this._dates = [];
     this._geo = {};
@@ -73,6 +74,10 @@ class StatisticsStore extends BaseStore {
 
   get meters() {
     return this._statistics.meters;
+  }
+
+  get counts() {
+    return this._statistics.counts;
   }
 
   get dates() {

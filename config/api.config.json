@@ -20,7 +20,7 @@
     "notes": {
       "mode": "notes",
       "datatype": "melodic",
-      "title": "Notenhäufigkeit",
+      "title": "Häufigkeit der Tonhöhen",
       "yAxis": "Häufigkeit",
       "labels": ["Cb", "C", "C#", "Db", "D", "D#", "Eb", "E", "E#", "Fb", "F", "F#", "Gb", "G", "G#", "Ab", "A", "A#", "Bb", "B", "B#"],
       "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -72,6 +72,39 @@
       "datatype": "melodic",
       "title": "Verteilung der Taktarten",
       "values": []
+    },
+    "counts": {
+      "mode": "counts",
+      "datatype": "melodic",
+      "title": "Noten-, Pausen- & Takt-Verteilung",
+      "subtitle": "pro Liedblatt",
+      "labels": ["Noten", "Pausen", "Takte"],
+      "yAxis": "Haufigkeit",
+      "values": [
+        { "name": "Häufigkeiten",
+          "data": [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0]
+          ],
+          "tooltip": {
+            "headerFormat": "<strong>{point.key}</strong><br>",
+            "pointFormat": "Maximum: {point.high}<br>Oberes Quartil: {point.q3}<br>Median: {point.median}<br>Unteres Quartil: {point.q1}<br>Minimum: {point.low}"
+          }
+        },
+        { "name": "Ausreißer",
+          "type": "scatter",
+          "data": [],
+          "marker": {
+            "fillColor": "white",
+            "lineWidth": 1,
+            "lineColor": "#7cb5ec"
+          },
+          "tooltip": {
+            "pointFormat": "{point.y}"
+          }
+        }
+      ]
     },
     "temporal": {
       "mode": "temporal",
