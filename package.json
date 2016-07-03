@@ -68,6 +68,7 @@
     "reqwest": "^2.0.5",
     "sync-request": "^3.0.1",
     "url-join": "^1.1.0",
+    "vis": "^4.16.1",
     "webpack": "^1.13.0",
     "webpack-cleanup-plugin": "^0.2.0",
     "when": "^3.7.7"
