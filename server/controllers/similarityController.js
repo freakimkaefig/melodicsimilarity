@@ -36,15 +36,7 @@ var update = function(req, res, search) {
     function(songsheets) {
       var distances = [];
       for (var i = 0; i < songsheets.length; i++) {
-        var distance = MusicJsonToolbox.distancePitchDuration(
-          songsheets[i].json,
-          MusicJsonToolbox.pitchDurationValues(
-            MusicJsonToolbox.notes(search.json, false, true),
-            search.json.attributes.key.fifths,
-            search.json.attributes.divisions,
-            search.json.attributes.time['beat-type']
-          )
-        );
+        var distance = MusicJsonToolbox.pitchDurationSimilarity(songsheets[i].json, search.json);
         distances.push({
           signature: songsheets[i].signature,
           distance: distance
