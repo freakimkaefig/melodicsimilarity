@@ -7,20 +7,23 @@ import { UPLOAD_SONGSHEET_URL } from '../constants/UploadConstants';
 class UploadService {
 
   upload(file) {
-    console.log("Upload", file);
     this.uploadSongsheet(file);
   }
 
   uploadSongsheet(file) {
-    return this.handleUploadResponse(when(request({
+    console.log(file);
+    let requestObject = request({
       url: UPLOAD_SONGSHEET_URL,
-      method: 'POST',
+      method: 'PUT',
       crossOrigin: true,
+      contentType: 'application/json',
       headers: {
         'Authorization': 'Bearer ' + LoginStore.jwt
       },
-      data: file
-    })));
+      data: JSON.stringify(file)
+    });
+
+    return this.handleUploadResponse(when(requestObject));
   }
 
   handleUploadResponse(uploadPremise) {

@@ -61,11 +61,11 @@ export default AuthenticatedComponent(class UploadProgressPage extends React.Com
   }
 
   render() {
+    let {responses} = this.state;
     return (
       <DocumentTitle title={`Upload // ${APP_NAME}`}>
         <div>
-          <h1>Upload wird ausgeführt ...</h1>
-          <ResultList responses={this.state.responses} />
+          <ResultList responses={responses} />
         </div>
       </DocumentTitle>
     );

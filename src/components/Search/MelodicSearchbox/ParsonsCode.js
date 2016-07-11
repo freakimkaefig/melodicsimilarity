@@ -15,13 +15,12 @@ export default class ParsonsCode extends React.Component {
     super(props);
 
     this.INPUT_REGEX = /^[udr]+$/;
-    this.DEFAULT_PARSONS = '*';
 
     this.state = {
-      parsons: '',
+      parsons: SearchStore.parsonQuery,
       error: false,
       errorMessage: '',
-      threshold: 50,
+      threshold: SearchStore.threshold,
       disabled: true
     };
 
@@ -31,8 +30,6 @@ export default class ParsonsCode extends React.Component {
   
   componentDidMount() {
     SearchStore.addChangeListener(this.onSearchStoreChange);
-    MelodyActions.updateParsonQuery(this.state.parsons);
-    MelodyActions.updateThreshold(this.state.threshold);
   }
   
   componentWillUnmount() {
@@ -77,7 +74,7 @@ export default class ParsonsCode extends React.Component {
 
   onSearchChange(event) {
     let parsons = event.target.value;
-    MelodyActions.updateParsonQuery(this.DEFAULT_PARSONS + parsons);
+    MelodyActions.updateParsonQuery(parsons);
   }
 
   handleThresholdChange(component, value) {

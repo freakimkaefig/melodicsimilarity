@@ -2,7 +2,7 @@ import request from 'reqwest';
 import when from 'when';
 import {STATISTICS_URL} from '../constants/StatisticsConstants';
 import {FIELDS, SEARCH_QUERY_URL, METADATA_QUERY_URL} from '../constants/SolrConstants';
-import {statistics} from '../../config/api.config.json';
+import {statistics} from '../../server/config/api.config.json';
 import StatisticsActions from '../actions/StatisticsActions';
 import DateHelper from '../helpers/DateHelper';
 

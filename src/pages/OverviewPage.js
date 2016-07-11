@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import {APP_NAME} from '../constants/AppConstants';
-import {statistics} from '../../config/api.config.json';
+import {statistics} from '../../server/config/api.config.json';
 import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
 import ReactHighcharts from 'react-highcharts';
-require('highcharts-exporting')(ReactHighcharts.Highcharts);
-require('highcharts-more')(ReactHighcharts.Highcharts);
 import vis from 'vis';
 import deepcopy from 'deepcopy';
 import _ from 'lodash';
 import '../stylesheets/OverviewPage.less';
+require('highcharts-exporting')(ReactHighcharts.Highcharts);
+require('highcharts-more')(ReactHighcharts.Highcharts);
 
 export default class HomePage extends React.Component {
   static propTypes = {};
@@ -201,7 +201,7 @@ export default class HomePage extends React.Component {
         text: ''
       },
       subtitle: {
-        text: '',
+        text: ''
       },
       legend: {
         enabled: false
@@ -288,7 +288,7 @@ export default class HomePage extends React.Component {
   }
 
   onStatisticsStoreChange() {
-    let {notes, intervals, durations, rests, keys, meters, counts, dates, origin, archive} = this.state;
+    let {notes, intervals, durations, rests, keys, meters, counts, dates, origin, archive, network} = this.state;
     let nextNotes = StatisticsStore.notes;
     let nextIntervals = StatisticsStore.intervals;
     let nextDurations = StatisticsStore.durations;
@@ -357,6 +357,11 @@ export default class HomePage extends React.Component {
     });
   }
 
+  /**
+   * Rerender chart when new data received
+   * @param {object} ref - React reference to component
+   * @param {object} data - The new data
+   */
   updateChart(ref, data) {
     let chart = ref.getChart();
     chart.series[0].setData(data, true);
@@ -513,6 +518,12 @@ export default class HomePage extends React.Component {
     });
   }
 
+  /**
+   * Create a new config object for highcharts column chart
+   * @param {String} mode - The selected mode (for lookup in api config)
+   * @param {object} data - The chart data
+   * @returns {object} react-highcharts config object
+   */
   getColumnChartConfig(mode, data) {
     let chartConfig = deepcopy(this.columnChartConfig);
     let sum = data.reduce((pv, cv) => pv + cv, 0);
@@ -528,6 +539,12 @@ export default class HomePage extends React.Component {
     return chartConfig;
   }
 
+  /**
+   * Create a new config object for highcharts bar chart
+   * @param {String} mode - The selected mode (for lookup in api config)
+   * @param {object} data - The chart data
+   * @returns {object} react-highcharts config object
+   */
   getBarChartConfig(mode, data) {
     let chartConfig = deepcopy(this.barChartConfig);
     let sum = 0;
@@ -550,6 +567,12 @@ export default class HomePage extends React.Component {
     return chartConfig;
   }
 
+  /**
+   * Create a new config object for highcharts pie chart
+   * @param {String} mode - The selected mode (for lookup in api config)
+   * @param {object} data - The chart data
+   * @returns {object} react-highcharts config object
+   */
   getPieChartConfig(mode, data) {
     let chartConfig = deepcopy(this.pieChartConfig);
     chartConfig.title.text = statistics[mode].title;
@@ -559,6 +582,12 @@ export default class HomePage extends React.Component {
     return chartConfig;
   }
 
+  /**
+   * Create a new config object for highcharts line chart
+   * @param {String} mode - The selected mode (for lookup in api config)
+   * @param {object} data - The chart data
+   * @returns {object} react-highcharts config object
+   */
   getLineChartConfig(mode, data) {
     let chartConfig = deepcopy(this.lineChartConfig);
     chartConfig.title.text = statistics[mode].title;
@@ -573,6 +602,12 @@ export default class HomePage extends React.Component {
     return chartConfig;
   }
 
+  /**
+   * Create a new config object for highcharts boxplot chart
+   * @param {String} mode - The selected mode (for lookup in api config)
+   * @param {object} data - The chart data
+   * @returns {object} react-highcharts config object
+   */
   getBoxplotChartConfig(mode, data) {
     let chartConfig = deepcopy(this.boxplotConfig);
     chartConfig.title.text = statistics[mode].title;

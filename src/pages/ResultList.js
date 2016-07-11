@@ -41,6 +41,10 @@ export default class ResultList extends React.Component {
     SearchStore.removeChangeListener(this.onSearchStoreChange);
   }
 
+  /**
+   * Retrieve number of pages
+   * @returns {number} Number of pages
+   */
   getNumPages() {
     return Math.ceil(SearchStore.results.length / SearchStore.rows);
   }
@@ -59,7 +63,7 @@ export default class ResultList extends React.Component {
       numPages: this.getNumPages()
     });
   }
-
+  
   _renderQuery(metadataQuery, parsonQuery, intervalQuery) {
     let renderedMetadataQuery = metadataQuery.map((field, index) => {
       return (

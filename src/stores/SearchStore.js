@@ -1,7 +1,27 @@
 import BaseStore from './BaseStore';
-import { SEARCH_QUERY_URL, UPDATE_FACETS, UPDATE_METADATA_QUERY, UPDATE_RESULT_IMAGE, UPDATE_METADATA } from '../constants/SolrConstants';
-import {UPDATE_FIELD_VALUE, UPDATE_SEARCH_OPERATOR, UPDATE_SEARCH_START, START_SEARCH, UPDATE_RESULTS} from '../constants/SearchConstants';
-import { UPDATE_MODE, UPDATE_PARSON_QUERY, UPDATE_INTERVAL_QUERY, UPDATE_THRESHOLD } from '../constants/MelodyConstants';
+import {
+  SEARCH_QUERY_URL,
+  UPDATE_FACETS,
+  UPDATE_METADATA_QUERY,
+  UPDATE_RESULT_IMAGE,
+  UPDATE_METADATA
+} from '../constants/SolrConstants';
+import {
+  UPDATE_FIELD_VALUE,
+  UPDATE_SEARCH_OPERATOR,
+  UPDATE_SEARCH_START,
+  START_SEARCH,
+  UPDATE_RESULTS
+} from '../constants/SearchConstants';
+import {
+  INTERVAL_DEFAULT_ABC,
+  MELODY_DEFAULT_ABC,
+  UPDATE_MODE,
+  UPDATE_PARSON_QUERY,
+  UPDATE_INTERVAL_QUERY,
+  UPDATE_MELODY_QUERY,
+  UPDATE_THRESHOLD
+} from '../constants/MelodyConstants';
 import SolrService from '../services/SolrService';
 import SolrQuery from '../helpers/SolrQuery';
 
@@ -26,7 +46,10 @@ class SearchStore extends BaseStore {
     this._melodyMode = 0;
     this._parsonQuery = '';
     this._intervalQuery = '';
-    this._threshold = 30;
+    this._intervalAbc = INTERVAL_DEFAULT_ABC;
+    this._melodyQuery = [];
+    this._melodyAbc = MELODY_DEFAULT_ABC;
+    this._threshold = 50;
   }
 
   _registerToActions(action) {
@@ -81,6 +104,13 @@ class SearchStore extends BaseStore {
 
       case UPDATE_INTERVAL_QUERY:
         this._intervalQuery = action.intervals;
+        this._intervalAbc = action.abc;
+        this.emitChange();
+        break;
+
+      case UPDATE_MELODY_QUERY:
+        this._melodyQuery = action.melody;
+        this._melodyAbc = action.abc;
         this.emitChange();
         break;
 
@@ -174,6 +204,18 @@ class SearchStore extends BaseStore {
 
   get intervalQuery() {
     return this._intervalQuery;
+  }
+
+  get intervalAbc() {
+    return this._intervalAbc;
+  }
+
+  get melodyQuery() {
+    return this._melodyQuery;
+  }
+
+  get melodyAbc() {
+    return this._melodyAbc;
   }
 
   get threshold() {

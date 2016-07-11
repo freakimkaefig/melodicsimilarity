@@ -1,9 +1,16 @@
 import React, {PropTypes} from 'react';
 import AbcViewer from '../../AbcViewer';
 import MusicjsonToolbox from 'musicjson-toolbox';
-import {OverlayTrigger, Popover} from 'react-bootstrap';
+import {
+  OverlayTrigger,
+  Popover
+} from 'react-bootstrap';
 import InputRange from 'react-input-range';
 import MelodyActions from '../../../actions/MelodyActions';
+import {
+  INTERVAL_DEFAULT_ABC,
+  MODES
+} from '../../../constants/MelodyConstants';
 import SearchStore from '../../../stores/SearchStore';
 import '../../../stylesheets/InputRange.less';
 
@@ -15,17 +22,17 @@ export default class Intervals extends React.Component {
   constructor(props) {
     super(props);
 
-    this.INPUT_REGEX = /^(-?\d{1,2}){1}(\s{1}-?\d{1,2})*\s?$/;
+    this.INPUT_REGEX = /^(-?\d{1,2}){1}(\s{1}-?\d{0,2})*\s?$/;
     this.BASE_PITCH = MusicjsonToolbox.base12Pitch('C', 0, 4, 0, true);
-    this.DEFAULT_INTERVALS = '* ';
     this.DEFAULT_ABC = 'X:1\nL:1/4\nM:none\nK:C\nK:treble\nC';
 
     this.state = {
+      mode: SearchStore.melodyMode,
       abc: this.DEFAULT_ABC,
       intervals: [],
       error: false,
       errorMessage: '',
-      threshold: 50
+      threshold: SearchStore.threshold
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -34,8 +41,6 @@ export default class Intervals extends React.Component {
   
   componentDidMount() {
     SearchStore.addChangeListener(this.onSearchStoreChange);
-    MelodyActions.updateIntervalQuery(this.state.intervals);
-    MelodyActions.updateThreshold(this.state.threshold);
   }
   
   componentWillUnmount() {
@@ -43,29 +48,27 @@ export default class Intervals extends React.Component {
   }
   
   onSearchStoreChange() {
-    if (SearchStore.intervalQuery.length > 0) {
-      let intervals = SearchStore.intervalQuery;
-      let abc = '';
-      while (intervals.charAt(0) === '*') {
-        intervals = intervals.substr(2);
-      }
-      let disabled = true;
-      if (this.validateIntervalString(intervals)) {
-        disabled = false;
-        abc = intervals.split(' ').map((item, index, items) => {
-          let base = this.BASE_PITCH;
-          for (var i = index; i > 0; i--) {
-            base += parseInt(items[i-1]);
-          }
-          return MusicjsonToolbox.interval2AbcStep(parseInt(item), base);
-        }).join(' ');
-      }
-      this.setState({
-        abc: this.DEFAULT_ABC + abc,
-        intervals: intervals,
-        threshold: SearchStore.threshold,
-        disabled: disabled
-      });
+    this.setState({
+      mode: SearchStore.melodyMode,
+      abc: SearchStore.intervalAbc,
+      intervals: SearchStore.intervalQuery,
+      threshold: SearchStore.threshold,
+      disabled: SearchStore.intervalQuery.length === 0
+    });
+  }
+  
+  generateAbc(intervals) {
+    console.log(this.validateIntervalString(intervals));
+    if (this.validateIntervalString(intervals)) {
+      return INTERVAL_DEFAULT_ABC + intervals.split(' ').map((item, index, items) => {
+        let base = this.BASE_PITCH;
+        for (var i = index; i > 0; i--) {
+          base += parseInt(items[i-1]);
+        }
+        return MusicjsonToolbox.interval2AbcStep(parseInt(item), base);
+      }).join(' ');
+    } else {
+      return false;
     }
   }
 
@@ -99,7 +102,10 @@ export default class Intervals extends React.Component {
 
   onSearchChange(event) {
     let intervals = event.target.value;
-    MelodyActions.updateIntervalQuery(this.DEFAULT_INTERVALS + intervals);
+    let abc = this.generateAbc(intervals);
+    if (abc !== false) {
+      MelodyActions.updateIntervalQuery(intervals, abc);
+    }
   }
 
   handleThresholdChange(component, value) {
@@ -117,7 +123,7 @@ export default class Intervals extends React.Component {
   }
 
   render() {
-    let { abc, intervals, error, errorMessage } = this.state;
+    let { mode, abc, intervals, threshold, disabled, error, errorMessage } = this.state;
     let validationClass = error ? 'has-error' : 'has-success';
 
     let tutorial = (
@@ -129,12 +135,19 @@ export default class Intervals extends React.Component {
       </Popover>
     );
 
+    let abcViewer;
+    if (mode === MODES.indexOf('INTERVALS')) {
+      abcViewer = (
+        <AbcViewer abc={abc} itemKey={1} />
+      )
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="container">
           <div className="row">
             <div className="col-xs-12">
-              <AbcViewer abc={abc} itemKey={1} />
+              <div className="col-xs-12">{abcViewer}</div>
             </div>
           </div>
 
@@ -171,7 +184,7 @@ export default class Intervals extends React.Component {
                 maxValue={100}
                 minValue={30}
                 step={10}
-                value={this.state.threshold}
+                value={threshold}
                 onChange={this.handleThresholdChange.bind(this)} />
             </div>
           </div>
@@ -181,7 +194,7 @@ export default class Intervals extends React.Component {
               <button
                 type="submit"
                 className="btn btn-default"
-                disabled={this.state.disabled}>
+                disabled={disabled}>
                 <i className="fa fa-search" aria-hidden="true"></i>
               </button>
             </div>

@@ -28,6 +28,12 @@ export default class SearchIndex extends React.Component {
     var melodyMode = MODES[SearchStore.melodyMode];
     switch (melodyMode) {
       case 'MELODY':
+        if (SearchStore.melodyQuery.length > 1) {
+          melodyQuery = {
+            melody: SearchStore.melodyQuery,
+            threshold: SearchStore.threshold
+          };
+        }
         break;
 
       case 'INTERVALS':
