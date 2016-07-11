@@ -1,0 +1,67 @@
+var MusicJsonToolbox = require('musicjson-toolbox');
+var databaseConfig = require('../config/database.config.json');
+var databaseService = require('../services/databaseService');
+
+var that = {};
+
+var getOne = function(req, res) {
+  databaseService.getSimilarity(req.params.signature, function(result) {
+    if (typeof result !== 'undefined') {
+      res.json(result);
+    } else {
+      res.status(404).send('Songsheet not found!');
+    }
+  });
+};
+
+var updateOne = function(req, res) {
+  var signature = req.params.signature;
+  databaseService.getDocument(
+    databaseConfig.collections.songsheets,
+    {signature: signature},
+    function(search) {
+      if (typeof search !== 'undefined') {
+        update(req, res, search);
+      } else {
+        res.status(404).send('Songsheet not found!');
+      }
+    }
+  );
+};
+
+var update = function(req, res, search) {
+  databaseService.getDocuments(
+    databaseConfig.collections.songsheets,
+    {signature: {$ne: search.signature}},
+    function(songsheets) {
+      var distances = [];
+      for (var i = 0; i < songsheets.length; i++) {
+        var distance = MusicJsonToolbox.distancePitchDuration(
+          songsheets[i].json,
+          MusicJsonToolbox.pitchDurationValues(
+            MusicJsonToolbox.notes(search.json, false, true),
+            search.json.attributes.key.fifths,
+            search.json.attributes.divisions,
+            search.json.attributes.time['beat-type']
+          )
+        );
+        distances.push({
+          signature: songsheets[i].signature,
+          distance: distance
+        });
+      }
+      databaseService.updateSimilarity(
+        search.signature,
+        distances,
+        function(result) {
+          res.json(result);
+        }
+      );
+    }
+  );
+};
+
+that.getOne = getOne;
+that.updateOne = updateOne;
+
+module.exports = that;

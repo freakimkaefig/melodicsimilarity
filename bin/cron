@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+var schedule = require('../server/schedule');
+
+console.log("Start cron!");
+schedule.init();

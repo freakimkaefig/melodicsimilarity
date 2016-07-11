@@ -1,0 +1,8 @@
+{
+  "collections": {
+    "users": "usercollection",
+    "songsheets": "songsheets",
+    "statistics": "statistics",
+    "similarity": "similarity"
+  }
+}
