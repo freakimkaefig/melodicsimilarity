@@ -1,5 +1,12 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { UPDATE_METADATA, UPDATE_FACETS, UPDATE_METADATA_QUERY, UPDATE_METADATA_RESULTS, UPDATE_RESULT_IMAGE } from '../constants/SolrConstants';
+import {
+  UPDATE_METADATA,
+  UPDATE_FACETS,
+  UPDATE_METADATA_QUERY,
+  UPDATE_METADATA_RESULTS,
+  UPDATE_RESULT_IMAGE,
+  UPDATE_SIMILAR_METADATA
+} from '../constants/SolrConstants';
 
 export default {
 
@@ -31,6 +38,13 @@ export default {
       actionType: UPDATE_RESULT_IMAGE,
       signature: songsheet.signature,
       image: songsheet.image,
+    });
+  },
+
+  updateSimilarMetadata: (response) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_SIMILAR_METADATA,
+      response: response
     });
   }
 }

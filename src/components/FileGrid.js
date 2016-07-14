@@ -11,27 +11,44 @@ export default class FileGrid extends React.Component {
       abc: PropTypes.string,
       json: PropTypes.object,
       name: PropTypes.string,
-      signature: PropTypes.string.isRequired,
+      signature: PropTypes.string.isRequired
     })).isRequired,
-    metadata: PropTypes.array
+    metadata: PropTypes.array,
+    itemClass: PropTypes.string
+  };
+
+  static defaultProps = {
+    itemClass: 'item col-xs-6 col-sm-3 col-lg-2 text-center'
   };
 
   constructor(props) {
     super(props);
   }
 
-  renderFileGrid(files, metadata) {
+  renderFileGrid(files, metadata, itemClass) {
     if (files.length > 0) {
       return files.map((file, index) => {
         let data = metadata.find(item => {
           return item.signature == file.signature;
         });
+
+        let title = 'Kein Incipit vorhanden';
+        let imagename = 'placeholder.jpg';
+        if (typeof data !== 'undefined') {
+          if (typeof data.title !== 'undefined') {
+            title = data.title;
+          }
+          if (typeof data.imagename !== 'undefined') {
+            imagename = data.imagename;
+          }
+        }
+
         return (
-          <div className="item col-xs-6 col-sm-3 col-lg-2 text-center" key={index}>
+          <div className={itemClass} key={index}>
             <Link to={`/songsheets/${file.signature}`}>
-              <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + data.imagename}/>
+              <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + imagename}/>
               <h4>{file.signature}</h4>
-              <h5>{data.title}</h5>
+              <h5>{title}</h5>
             </Link>
           </div>
         );
@@ -40,9 +57,10 @@ export default class FileGrid extends React.Component {
   }
 
   render() {
+    let {files, metadata, itemClass} = this.props;
     return (
       <div className="grid row start-xs">
-        { this.renderFileGrid(this.props.files, this.props.metadata) }
+        { this.renderFileGrid(files, metadata, itemClass) }
       </div>
     );
   }

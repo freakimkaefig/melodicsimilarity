@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
+import ArrayHelper from '../helpers/ArrayHelper';
 import { APP_NAME } from '../constants/AppConstants';
 import { METADATA_IMAGE_BASE_URL } from '../constants/SolrConstants';
 import LoadingOverlay from '../components/LoadingOverlay';
@@ -8,6 +9,7 @@ import SongsheetStore from '../stores/SongsheetStore';
 import ImageZoom from '../components/ImageZoom';
 import AbcViewer from '../components/AbcViewer';
 import MetadataViewer from '../components/MetadataViewer';
+import FileGrid from '../components/FileGrid';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Breadcrumb } from 'react-bootstrap';
 import '../stylesheets/SongsheetView.less';
@@ -24,6 +26,8 @@ export default class SongsheetView extends React.Component {
       metadata: SongsheetStore.metadata.find(item => {
         return item.signature === props.params.signature;
       }),
+      similarSongsheets: SongsheetStore.similarSongsheets,
+      similarMetadata: SongsheetStore.similarMetadata,
       loading: false
     };
 
@@ -39,6 +43,11 @@ export default class SongsheetView extends React.Component {
       });
       SongsheetService.loadItem(this.props.params.signature);
     }
+
+    if (this.state.similarSongsheets.length <= 0 || this.state.similarMetadata.length <= 0) {
+      console.log("Load similar");
+      SongsheetService.loadSimilar(this.props.params.signature);
+    }
   }
 
   componentWillUnmount() {
@@ -53,6 +62,8 @@ export default class SongsheetView extends React.Component {
       metadata: SongsheetStore.metadata.find(item => {
         return item.signature === this.props.params.signature;
       }),
+      similarSongsheets: SongsheetStore.similarSongsheets,
+      similarMetadata: SongsheetStore.similarMetadata,
       loading: false
     });
   }
@@ -99,12 +110,15 @@ export default class SongsheetView extends React.Component {
 
   render() {
     let signature = this.props.params.signature;
-    let { loading, metadata, file } = this.state;
+    let { loading, metadata, file, similarSongsheets, similarMetadata } = this.state;
+
     let title = typeof metadata !== 'undefined' ? ' - ' + metadata.title : '';
+
     return (
       <DocumentTitle title={`Liedblatt - ${signature} // ${APP_NAME}`}>
         <div className="songsheet-view">
           <LoadingOverlay loading={loading} />
+
           <div className="row">
             <div className="col-xs-12">
               <Breadcrumb>
@@ -119,6 +133,7 @@ export default class SongsheetView extends React.Component {
               </Breadcrumb>
             </div>
           </div>
+
           <div className="row">
             <div className="col-xs-12">
               <h1 className="text-center">{`${signature}${title}`}</h1>
@@ -132,6 +147,7 @@ export default class SongsheetView extends React.Component {
               { this._getAbcViewer(file) }
             </div>
           </div>
+
           <div className="row">
             <div className="col-xs-12 col-md-4">
               <h2>Liedtext</h2>
@@ -142,10 +158,15 @@ export default class SongsheetView extends React.Component {
               { this._getMetadataViewer(metadata) }
             </div>
           </div>
+
+          <div className="row">
+            <div className="col-lg-8 col-lg-offset-2 text-center">
+              <h3>Ähnliche Liedblätter</h3>
+              <FileGrid files={similarSongsheets} metadata={similarMetadata} itemClass="item col-xs-6 col-sm-3 text-center" />
+            </div>
+          </div>
         </div>
       </DocumentTitle>
     );
-
-
   }
 }

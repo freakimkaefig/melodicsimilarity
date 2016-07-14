@@ -1,9 +1,15 @@
 import request from 'reqwest';
 import when from 'when';
-import { SEARCH_QUERY_URL, FIELDS } from '../constants/SolrConstants';
-import { ITEM_URL } from '../constants/SongsheetConstants';
+import {
+  SEARCH_QUERY_URL,
+  FIELDS
+} from '../constants/SolrConstants';
+import {
+  ITEM_URL
+} from '../constants/SongsheetConstants';
 import SolrActions from '../actions/SolrActions';
 import SearchActions from '../actions/SearchActions';
+import StatisticsActions from '../actions/StatisticsActions';
 import SolrQuery from '../helpers/SolrQuery';
 import DateHelper from '../helpers/DateHelper';
 
@@ -138,6 +144,30 @@ class SolrService {
     return searchPremise
       .then(function(response) {
         SolrActions.updateResultImage(response);
+      });
+  }
+
+  findSimilarDoc(signature) {
+    let requestObject = request({
+      url: SEARCH_QUERY_URL,
+      method: 'POST',
+      crossOrigin: true,
+      type: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        params:{
+          q: "signature:\"" + signature + "\""
+        }
+      })
+    });
+    return this.handleSimilarFindResponse(when(requestObject));
+  }
+
+  handleSimilarFindResponse(findPremise) {
+    return findPremise
+      .then(response => {
+        SolrActions.updateSimilarMetadata(response);
+        return true;
       });
   }
 

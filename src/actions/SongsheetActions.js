@@ -1,5 +1,12 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { UPDATE_SONGSHEET_START, LOAD_LIST, LOAD_ITEM, RENDER_METADATA } from '../constants/SongsheetConstants';
+import {
+  UPDATE_SONGSHEET_START,
+  LOAD_LIST,
+  LOAD_ITEM,
+  UPDATE_SIMILAR,
+  RENDER_METADATA,
+  LOAD_SIMILAR_ITEM
+} from '../constants/SongsheetConstants';
 
 export default {
   updateStart: (start) => {
@@ -28,6 +35,20 @@ export default {
     AppDispatcher.dispatch({
       actionType: RENDER_METADATA,
       response: response
+    });
+  },
+  
+  updateSimilar: (similar) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_SIMILAR,
+      similar: similar
+    })
+  },
+
+  renderSimilarItem: (songsheet) => {
+    AppDispatcher.dispatch({
+      actionType: LOAD_SIMILAR_ITEM,
+      songsheet: songsheet
     });
   }
 }

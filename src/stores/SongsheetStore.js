@@ -1,7 +1,20 @@
 import BaseStore from './BaseStore';
 import ArrayHelper from '../helpers/ArrayHelper';
-import { UPDATE_SONGSHEET_START, LOAD_LIST, LOAD_ITEM } from '../constants/SongsheetConstants';
-import { UPDATE_METADATA, METADATA_PLACEHOLDER_IMAGE, METADATA_PLACEHOLDER_TITLE, METADATA_PLACEHOLDER_TEXT } from '../constants/SolrConstants';
+import {
+  UPDATE_SONGSHEET_START,
+  LOAD_LIST,
+  LOAD_ITEM,
+  UPDATE_SIMILAR,
+  LOAD_SIMILAR_ITEM
+} from '../constants/SongsheetConstants';
+import {
+  UPDATE_METADATA,
+  METADATA_PLACEHOLDER_IMAGE,
+  METADATA_PLACEHOLDER_TITLE,
+  METADATA_PLACEHOLDER_TEXT,
+  UPDATE_SIMILAR_METADATA
+} from '../constants/SolrConstants';
+import SongsheetService from '../services/SongsheetService';
 
 class SongsheetStore extends BaseStore {
 
@@ -13,6 +26,8 @@ class SongsheetStore extends BaseStore {
     this._songsheets = [];
     this._metadata = [];
     this._songsheet = {};
+    this._similarSongsheets = [];
+    this._similarMetadata = [];
   }
 
 
@@ -50,6 +65,30 @@ class SongsheetStore extends BaseStore {
         }
         break;
 
+      case UPDATE_SIMILAR:
+        let similar = action.similar;
+        let diff = ArrayHelper.arrayDiff(similar, this._songsheets, 'signature');
+        diff.forEach(item => {
+          SongsheetService.loadSimilarItem(item.signature);
+        });
+        // this._similarSongsheets = ArrayHelper.arrayIntersect(this._songsheets, similar, 'signature');
+        // this._similarMetadata = ArrayHelper.arrayIntersect(this._metadata, similar, 'signature');
+        this.emitChange();
+        break;
+
+      case LOAD_SIMILAR_ITEM:
+        console.log(action);
+        this._similarSongsheets.push(action.songsheet)
+        // ArrayHelper.mergeByProperty(this._similarSongsheets, action.songsheet, 'signature');
+        this.emitChange();
+        break;
+
+      case UPDATE_SIMILAR_METADATA:
+        console.log(action);
+        this._similarMetadata.push(action.response.response.docs[0]);
+        // ArrayHelper.mergeByProperty(this._similarMetadata, action.response.response.docs, 'signature');
+        break;
+
       default:
         break;
     }
@@ -73,6 +112,14 @@ class SongsheetStore extends BaseStore {
 
   get songsheet() {
     return this._songsheet;
+  }
+
+  get similarSongsheets() {
+    return this._similarSongsheets;
+  }
+
+  get similarMetadata() {
+    return this._similarMetadata;
   }
 }
 
