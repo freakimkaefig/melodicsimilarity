@@ -1,6 +1,15 @@
 import React, { PropTypes } from 'react';
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import { IndexLinkContainer, LinkContainer } from 'react-router-bootstrap';
+import {
+  Navbar,
+  Nav,
+  NavItem,
+  NavDropdown,
+  MenuItem
+} from 'react-bootstrap';
+import {
+  IndexLinkContainer,
+  LinkContainer
+} from 'react-router-bootstrap';
 import LoginStore from '../stores/LoginStore';
 
 require('../stylesheets/NavBar.less');
@@ -10,10 +19,12 @@ export default class NavBar extends React.Component {
     header: PropTypes.bool,
     links: PropTypes.arrayOf(
       PropTypes.shape({
-        path: PropTypes.string.isRequired,
+        path: PropTypes.string,
         title: PropTypes.string.isRequired,
-        nav: PropTypes.bool,
-        auth: PropTypes.bool
+        nav: PropTypes.bool.isRequired,
+        auth: PropTypes.bool.isRequired,
+        dropdown: PropTypes.bool.isRequired,
+        children: PropTypes.array
       })
     ).isRequired,
     route: PropTypes.string.isRequired
@@ -24,14 +35,32 @@ export default class NavBar extends React.Component {
       return (link.nav === true && (link.auth === false || (link.auth === true && LoginStore.isLoggedIn())));
     });
   }
+  
+  getDropdownChildren(children, eventKey) {
+    return children.map((link, index) => {
+      return (
+        <LinkContainer to={link.path} key={`${eventKey}-${index}`}>
+          <MenuItem active={(link.path === this.props.route)} eventKey={`${eventKey}.${index}`}>{link.title}</MenuItem>
+        </LinkContainer>
+      );
+    });
+  }
 
   getLinkComponents() {
     return this.getVisibleLinks().map((link, index) => {
-      return (
-        <LinkContainer to={link.path} key={index}>
-          <NavItem active={(link.path === this.props.route)} eventKey={index}>{link.title}</NavItem>
-        </LinkContainer>
-      );
+      if (link.dropdown) {
+        return (
+          <NavDropdown eventKey={index} title={link.title} id={`dropdown-${index}`}>
+            {this.getDropdownChildren(link.children, index)}
+          </NavDropdown>
+        );
+      } else {
+        return (
+          <LinkContainer to={link.path} key={index}>
+            <NavItem active={(link.path === this.props.route)} eventKey={index}>{link.title}</NavItem>
+          </LinkContainer>
+        );
+      }
     });
   }
 

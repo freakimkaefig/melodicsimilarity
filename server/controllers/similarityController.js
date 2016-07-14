@@ -4,6 +4,12 @@ var databaseService = require('../services/databaseService');
 
 var that = {};
 
+var getAll = function(req, res) {
+  databaseService.getCollection(databaseConfig.collections.similarity, 0, 0, function(result, count) {
+    res.json(result);
+  });
+};
+
 var getOne = function(req, res) {
   databaseService.getSimilarity(req.params.signature, function(result) {
     if (typeof result !== 'undefined') {
@@ -53,6 +59,7 @@ var update = function(req, res, search) {
   );
 };
 
+that.getAll = getAll;
 that.getOne = getOne;
 that.updateOne = updateOne;
 

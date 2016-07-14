@@ -8,17 +8,25 @@ import '!bootstrap-webpack!../config/bootstrap.config';
 import 'flexboxgrid';
 import 'font-awesome-webpack!../config/font-awesome.config';
 import './stylesheets/App.less';
+import Highcharts from 'highcharts';
+require('highcharts-exporting')(Highcharts);
+require('highcharts-more')(Highcharts);
+
 var headerLinks = [
-  { path: '/overview', title: 'Übersicht', nav: true, auth: false},
-  { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false },
-  { path: '/search', title: 'Suche', nav: true, auth: false }
+  { title: 'Statistik', nav: true, auth: false, dropdown: true, children: [
+    { path: '/statistics/melody', title: 'Melodie' },
+    { path: '/statistics/metadata', title: 'Metadaten' },
+    { path: '/statistics/similarity', title: 'Ähnlichkeit' }
+  ]},
+  { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false, dropdown: false },
+  { path: '/search', title: 'Suche', nav: true, auth: false, dropdown: false }
 ];
 
 var footerLinks = [
-  { path: '/upload', title: 'Upload', nav: true, auth: true },
-  { path: '/login', title: 'Login', nav: false, auth: false },
-  { path: '/logout', title: 'Logout', nav: true, auth: true },
-  { path: '/imprint', title: 'Impressum', nav: true, auth: false }
+  { path: '/upload', title: 'Upload', nav: true, auth: true, dropdown: false },
+  { path: '/login', title: 'Login', nav: false, auth: false, dropdown: false },
+  { path: '/logout', title: 'Logout', nav: true, auth: true, dropdown: false },
+  { path: '/imprint', title: 'Impressum', nav: true, auth: false, dropdown: false }
 ];
 
 

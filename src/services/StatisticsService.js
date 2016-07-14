@@ -1,8 +1,17 @@
 import request from 'reqwest';
 import when from 'when';
-import {STATISTICS_URL} from '../constants/StatisticsConstants';
-import {FIELDS, SEARCH_QUERY_URL, METADATA_QUERY_URL} from '../constants/SolrConstants';
-import {statistics} from '../../server/config/api.config.json';
+import {
+  STATISTICS_URL,
+  SIMILARITY_URL
+} from '../constants/StatisticsConstants';
+import {FIELDS,
+  SEARCH_QUERY_URL,
+  METADATA_QUERY_URL
+} from '../constants/SolrConstants';
+import {
+  statistics
+} from '../../server/config/api.config.json';
+import SolrService from './SolrService';
 import StatisticsActions from '../actions/StatisticsActions';
 import DateHelper from '../helpers/DateHelper';
 
@@ -45,10 +54,18 @@ class StatisticsService {
     }
   }
 
+  getGraph() {
+    return this.handleGraphSimilarityResponse(when(request({
+      url: SIMILARITY_URL,
+      method: 'GET',
+      crossOrigin: true
+    })));
+  }
+
   handleMelodicStatisticsResponse(premise) {
     return premise
-      .then(function(response) {
-        if (response.hasOwnProperty('values')) {
+      .then(response => {
+        if (response.hasOwnProperty('data')) {
           StatisticsActions.updateMelodicStatistics(response);
         }
       });
@@ -56,7 +73,7 @@ class StatisticsService {
   
   handleTemporalStatisticsResponse(premise) {
     return premise
-      .then(function(response) {
+      .then(response => {
         let data = [];
         let fieldDates = [];
         let min = Infinity;
@@ -119,7 +136,7 @@ class StatisticsService {
   
   handleGeoStatisticResponse(premise) {
     return premise
-      .then(function(response) {
+      .then(response => {
         let field = response.responseHeader.params['facet.field'];
         let fieldName = field.replace('Facet', '');
         let facets = response.facet_counts.facet_fields[field];
@@ -141,7 +158,7 @@ class StatisticsService {
   }
   handleTagStatisticResponse(premise) {
     return premise
-      .then(function(response) {
+      .then(response => {
         let field = response.responseHeader.params['facet.field'];
         let fieldName = field.replace('Facet', '');
         let facets = response.facet_counts.facet_fields[field];
@@ -157,6 +174,33 @@ class StatisticsService {
           }
         }
         StatisticsActions.updateTagStatistics(fieldName, data);
+      });
+  }
+
+  handleGraphSimilarityResponse(premise) {
+    return premise
+      .then(response => {
+        let edges = [];
+        response.forEach(item => {
+          let signature = item.signature;
+          SolrService.findGraphDoc(signature);
+          for (var i = 0; i < item.distances.length; i++) {
+            let distance = item.distances[i];
+            let search = edges.filter(i => {
+              return (i.from === signature && i.to === distance.signature)
+                || (i.from === distance.signature && i.to === signature);
+            });
+            if (search.length === 0) {
+              edges.push({
+                from: signature,
+                to: distance.signature,
+                title: "Edit-Distance: " + distance.distance,
+                length: distance.distance * 10
+              });
+            }
+          }
+        });
+        StatisticsActions.updateGraphEdges(edges);
       });
   }
 }

@@ -37,6 +37,7 @@
       "mode": "durations",
       "datatype": "melodic",
       "title": "Verteilung der Notenwerte",
+      "yAxis": "Häufigkeit",
       "translation": {
         "whole": "1/1",
         "half": "1/2",
@@ -51,6 +52,7 @@
         "1024th": "1/1024"
       },
       "dotted": "punktierte ",
+      "labels": [],
       "values": []
     },
     "keys": {
@@ -65,12 +67,16 @@
       "mode": "rests",
       "datatype": "melodic",
       "title": "Verteilung der Pausen",
+      "yAxis": "Häufigkeit",
+      "labels": [],
       "values": []
     },
     "meters": {
       "mode": "meters",
       "datatype": "melodic",
       "title": "Verteilung der Taktarten",
+      "yAxis": "Häufigkeit",
+      "labels": [],
       "values": []
     },
     "counts": {

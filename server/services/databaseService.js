@@ -110,7 +110,7 @@ var updateStatistics = function(mode, values, callback) {
     var collection = db.collection(databaseConfig.collections.statistics);
     collection.findOneAndUpdate(
       { mode: mode },
-      { mode: mode, values: values, lastUpdated: new Date() },
+      { mode: mode, data: data, lastUpdated: new Date() },
       { upsert: true, returnOriginal: false },
       function(err, result) {
         if (err) {

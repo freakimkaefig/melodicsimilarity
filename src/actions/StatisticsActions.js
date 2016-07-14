@@ -1,5 +1,12 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import {UPDATE_MELODIC_STATISTIC, UPDATE_DATE_STATISTIC, UPDATE_GEO_STATISTIC, UPDATE_TAG_STATISTIC} from '../constants/StatisticsConstants';
+import {
+  UPDATE_MELODIC_STATISTIC,
+  UPDATE_DATE_STATISTIC,
+  UPDATE_GEO_STATISTIC,
+  UPDATE_TAG_STATISTIC,
+  UPDATE_GRAPH_NODES,
+  UPDATE_GRAPH_EDGES
+} from '../constants/StatisticsConstants';
 
 export default {
   updateMelodicStatistics: (response) => {
@@ -30,6 +37,20 @@ export default {
       actionType: UPDATE_TAG_STATISTIC,
       mode: mode,
       data: data
+    });
+  },
+
+  updateGraphNodes: (node) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_GRAPH_NODES,
+      node: node
+    });
+  },
+
+  updateGraphEdges: (edges) => {
+    AppDispatcher.dispatch({
+      actionType: UPDATE_GRAPH_EDGES,
+      edges: edges
     });
   }
 }

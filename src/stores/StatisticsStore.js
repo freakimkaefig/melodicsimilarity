@@ -1,5 +1,13 @@
 import BaseStore from './BaseStore';
-import {UPDATE_MELODIC_STATISTIC, UPDATE_DATE_STATISTIC, UPDATE_GEO_STATISTIC, UPDATE_TAG_STATISTIC} from '../constants/StatisticsConstants';
+import {
+  UPDATE_MELODIC_STATISTIC,
+  UPDATE_DATE_STATISTIC,
+  UPDATE_GEO_STATISTIC,
+  UPDATE_TAG_STATISTIC,
+  UPDATE_GRAPH_NODES,
+  UPDATE_GRAPH_EDGES
+} from '../constants/StatisticsConstants';
+import update from 'react-addons-update';
 
 class StatisticsStore extends BaseStore {
   
@@ -8,24 +16,27 @@ class StatisticsStore extends BaseStore {
     this.subscribe(() => this._registerToActions.bind(this));
 
     this._statistics = {
-      notes: [],
-      intervals: [],
-      durations: [],
-      rests: [],
-      keys: [],
-      meters: [],
-      counts: [],
+      notes: {labels: [], values: []},
+      intervals: {labels: [], values: []},
+      durations: {labels: [], values: []},
+      rests: {labels: [], values: []},
+      keys: {labels: [], values: []},
+      meters: {labels: [], values: []},
+      counts: []
     };
     this._dates = [];
     this._geo = {};
     this._tag = {};
+    this._graph = {
+      nodes: [],
+      edges: []
+    }
   }
-  
   
   _registerToActions(action) {
     switch(action.actionType) {
       case UPDATE_MELODIC_STATISTIC:
-        this._statistics[action.response.mode] = action.response.values;
+        this._statistics[action.response.mode] = action.response.data;
         this.emitChange();
         break;
       
@@ -44,6 +55,16 @@ class StatisticsStore extends BaseStore {
 
       case UPDATE_TAG_STATISTIC:
         this._tag[action.mode] = action.data;
+        this.emitChange();
+        break;
+
+      case UPDATE_GRAPH_NODES:
+        this._graph.nodes = update(this._graph.nodes, {$push: [action.node]});
+        this.emitChange();
+        break;
+
+      case UPDATE_GRAPH_EDGES:
+        this._graph.edges = action.edges;
         this.emitChange();
         break;
 
@@ -108,6 +129,10 @@ class StatisticsStore extends BaseStore {
     } else {
       return [];
     }
+  }
+  
+  get graph() {
+    return this._graph;
   }
 }
 

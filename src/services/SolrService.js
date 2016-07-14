@@ -140,6 +140,38 @@ class SolrService {
         SolrActions.updateResultImage(response);
       });
   }
+
+  findGraphDoc(signature) {
+    let requestObject = request({
+      url: SEARCH_QUERY_URL,
+      method: 'POST',
+      crossOrigin: true,
+      type: 'json',
+      contentType: 'application/json',
+      data: JSON.stringify({
+        params:{
+          q: "signature:\"" + signature + "\""
+        }
+      })
+    });
+    return this.handleGraphDocResponse(when(requestObject));
+  }
+
+  handleGraphDocResponse(premise) {
+    return premise
+      .then(response => {
+        console.log(response);
+        if (response.response.numFound > 0) {
+          let doc = response.response.docs[0];
+          StatisticsActions.updateGraphNodes({
+            id: doc.signature,
+            label: doc.signature,
+            title: "Signatur: " + doc.signature + "<br>Landschaftsarchiv: " + doc.landscapeArchive,
+            group: doc.landscapeArchive
+          });
+        }
+      });
+  }
 }
 
 export default new SolrService();
