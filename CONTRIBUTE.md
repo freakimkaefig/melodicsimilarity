@@ -80,7 +80,7 @@ melodicsimilarity
  ├── public/                     # The webroot
  │   └── build/                  # WebPack builds dependencies in here
  ├── routes/
- │   └── index.js                # Webserver routes are defined here
+ │   └── routes.js                # Webserver routes are defined here
  ├── src/                        # Project structure for `Flux Application Architecture`
  │   ├── actions/
  │   ├── components/
@@ -90,7 +90,7 @@ melodicsimilarity
  │   ├── stylesheets/
  │   ├── App.js                  # Renders main page layout
  │   ├── common.js               # Common dependencies (jquery, bootstrap)
- │   ├── index.js                # Entry point for index page
+ │   ├── routes.js                # Entry point for index page
  │   └── Root.js                 # Router from `react-router`
  ├── test/                       # Test directory
  ├── views/                      # Jade view templates
