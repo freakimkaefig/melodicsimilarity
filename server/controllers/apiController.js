@@ -1,3 +1,8 @@
+/**
+ * Backend controller for handling api requests.
+ */
+
+'use strict';
 var express = require('express');
 var databaseService = require('../services/databaseService');
 var apiConfig = require('../config/api.config');

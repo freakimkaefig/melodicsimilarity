@@ -1,3 +1,13 @@
+/**
+ * Service component for file upload.
+ *
+ * Implements 3 different storage connections:
+ *   - Disk
+ *   - AWS S3
+ *   - MongoDB
+ */
+
+'use strict';
 var AWS = require('aws-sdk');
 var fs = require('fs');
 var path = require('path');
@@ -7,6 +17,19 @@ var apiConfig = require('../config/api.config.json');
 
 var that = {};
 
+/**
+ * @callback uploadCallback
+ * @param {object|boolean} err - Error object
+ * @param {object} data - The uploaded data
+ */
+
+/**
+ * Handles post request for upload
+ * @param {object} file - The uploaded file content
+ * @param {string} destFileName - The file name
+ * @param {string} type - The file type
+ * @param {uploadCallback} callback - The upload callback function
+ */
 var upload = function(file, destFileName, type, callback) {
   switch(apiConfig.uploads.driver) {
     case apiConfig.uploads.connections.s3.driver:
@@ -28,6 +51,13 @@ var upload = function(file, destFileName, type, callback) {
   }
 };
 
+/**
+ * Uploads file to disk
+ * @param {object} file - The uploaded file content
+ * @param {string} destFileName - The file name
+ * @param {uploadCallback} callback - The upload callback function
+ * @private
+ */
 var _uploadToDisk = function(file, destFileName, callback) {
   var buffer = new Buffer(file.replace(/^data:image\/\w+;base64,/, ""), 'base64');
   var urlPath = urljoin(env.BASE_URL, apiConfig.uploads.connections.disk.path, destFileName);
@@ -41,7 +71,15 @@ var _uploadToDisk = function(file, destFileName, callback) {
   )
 };
 
-// http://stackoverflow.com/questions/7511321/uploading-base64-encoded-image-to-amazon-s3-via-node-js
+/**
+ * Uploads file to AWS S3
+ * Source: {@link // http://stackoverflow.com/questions/7511321/uploading-base64-encoded-image-to-amazon-s3-via-node-js}
+ * @param {object} file - The uploaded file content
+ * @param {string} destFileName - The file name
+ * @param {string} type - The file type
+ * @param {uploadCallback} callback - The upload callback function
+ * @private
+ */
 var _uploadToS3 = function(file, destFileName, type, callback) {
   var buffer = new Buffer(file.replace(/^data:image\/\w+;base64,/, ""), 'base64');
   var bucket = new AWS.S3();
@@ -55,6 +93,12 @@ var _uploadToS3 = function(file, destFileName, type, callback) {
     .send(callback);
 };
 
+/**
+ * Uploads file to Mongo DB
+ * @param {object} file - The uploaded file content
+ * @param {uploadCallback} callback - The upload callback function
+ * @private
+ */
 var _uploadToMongo = function(file, callback) {
   callback(false, {Location: file});
 };

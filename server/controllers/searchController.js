@@ -1,3 +1,8 @@
+/**
+ * Backend controller for handling search queries.
+ */
+
+'use strict';
 var requestify = require('requestify');
 var when = require('when');
 var _ = require('lodash');

@@ -1,3 +1,8 @@
+/**
+ * Backend controller for handling create and update operations for songsheets.
+ */
+
+'use strict';
 var path = require('path');
 var request = require('sync-request');
 var databaseService = require('../services/databaseService');

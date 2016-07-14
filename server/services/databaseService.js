@@ -1,3 +1,8 @@
+/**
+ * Manages Mongo DB database connection.
+ */
+
+'use strict';
 var mongo = require('mongodb');
 var databaseConfig = require('../config/database.config.json');
 var MongoClient = mongo.MongoClient;
@@ -8,6 +13,7 @@ var that = {};
 
 var url = env.MONGO_URI;
 
+// Get Mongo DB status
 var getStats = function(callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -23,6 +29,7 @@ var getStats = function(callback) {
   })
 };
 
+// Retrieve database collection by name
 var getCollection = function(collectionName, start, rows, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -45,6 +52,7 @@ var getCollection = function(collectionName, start, rows, callback) {
   });
 };
 
+// Retrieve multiple documents from Mongo DB collection by query
 var getDocuments = function(collectionName, query, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -61,6 +69,7 @@ var getDocuments = function(collectionName, query, callback) {
   });
 };
 
+// Retrieve single documents from Mongo DB collection by query
 var getDocument = function(collectionName, query, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -77,6 +86,7 @@ var getDocument = function(collectionName, query, callback) {
   });
 };
 
+// Add user to database
 var addUser = function(username, password, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -98,11 +108,13 @@ var addUser = function(username, password, callback) {
   });
 };
 
+// Get statistic by mode
 var getStatistics = function(mode, callback) {
   that.getDocument(databaseConfig.collections.statistics, { mode: mode}, callback);
 };
 
-var updateStatistics = function(mode, values, callback) {
+// Update statistics in database
+var updateStatistics = function(mode, data, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
@@ -123,10 +135,12 @@ var updateStatistics = function(mode, values, callback) {
   });
 };
 
+// Get similarity data by songsheet number
 var getSimilarity = function(signature, callback) {
   that.getDocument(databaseConfig.collections.similarity, {signature: signature}, callback);
 };
 
+// Update similarity data for given songsheet
 var updateSimilarity = function(signature, distances, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
@@ -148,6 +162,7 @@ var updateSimilarity = function(signature, distances, callback) {
   });
 };
 
+// Add songsheet to database
 var addDocument = function(data, callback) {
   console.log(typeof data.json.attributes.divisions);
   MongoClient.connect(url, function(err, db) {

@@ -1,3 +1,8 @@
+/**
+ * Backend controller for handling similarity data.
+ */
+
+'use strict';
 var MusicJsonToolbox = require('musicjson-toolbox');
 var databaseConfig = require('../config/database.config.json');
 var databaseService = require('../services/databaseService');

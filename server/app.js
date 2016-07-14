@@ -1,6 +1,8 @@
 /**
- * Created by Lukas Lamm on 26.03.2016.
+ * Main backend component.
+ * It takes care of routing and rendering associated views.
  */
+
 'use strict';
 var path = require('path');
 var express = require('express');
@@ -21,8 +23,11 @@ app.use(function (req, res, next) {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// Include parsers for url params and json
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({limit: '500mb', extended: true}));
+
+// server static files from public directory
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Include routes in ./routes/index.js

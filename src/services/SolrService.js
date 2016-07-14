@@ -33,7 +33,7 @@ class SolrService {
 
   handleFindResponse(findPremise) {
     return findPremise
-      .then(function(response) {
+      .then(response => {
         SolrActions.updateMetadata(response);
         return true;
       });
@@ -52,7 +52,7 @@ class SolrService {
 
   handleFacetResponse(facetPremise) {
     return facetPremise
-      .then(function(response) {
+      .then(response => {
         let fieldName = response.responseHeader.params["facet.field"].replace('Facet', '');
         let fieldProperties = FIELDS.find(field => {
           return field.name === fieldName;
@@ -142,7 +142,7 @@ class SolrService {
 
   handleSearchSongsheetResponse(searchPremise) {
     return searchPremise
-      .then(function(response) {
+      .then(response => {
         SolrActions.updateResultImage(response);
       });
   }

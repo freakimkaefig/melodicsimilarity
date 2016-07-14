@@ -1,4 +1,3 @@
-var dotenv = require('dotenv');
 var env = require('../.env');
 var should = require('should');
 

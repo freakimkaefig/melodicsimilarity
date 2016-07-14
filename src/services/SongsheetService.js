@@ -26,7 +26,7 @@ class SongsheetService {
 
   handleListResponse(listPremise) {
     return listPremise
-      .then(function(response) {
+      .then(response => {
         for (var i = 0; i < response.items.length; i++) {
           SolrService.findDoc(response.items[i].signature);
         }
@@ -44,7 +44,7 @@ class SongsheetService {
   
   handleItemResponse(itemPremise) {
     return itemPremise
-      .then(function(response) {
+      .then(response => {
         SolrService.findDoc(response.signature);
         SongsheetActions.renderItem(response);
       });

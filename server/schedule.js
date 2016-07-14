@@ -1,6 +1,7 @@
 /**
- * Created by Lukas Lamm on 26.03.2016.
+ * Schedules processes for updating statistics and similarity on a regular basis.
  */
+
 'use strict';
 var schedule = require('node-schedule');
 var statisticController = require('./controllers/statisticController');
