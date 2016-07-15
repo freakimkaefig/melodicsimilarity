@@ -10,13 +10,23 @@ var databaseConfig = require('../config/database.config.json');
 
 var that = {};
 
+/**
+ * Handles POST request for uploading songhseet data.
+ * @param {object} req - request object
+ * @param {object} res - response object
+ */
 var handleUpload = function(req, res) {
-  console.log("Hey");
   databaseService.addDocument(req.body, function(results) {
     res.json(results);
   });
 };
 
+/**
+ * Handles GET request for uploaded songhseet data.
+ * Returns all songsheets.
+ * @param {object} req - request object
+ * @param {object} res - response object
+ */
 var getUploads = function(req, res) {
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
@@ -31,6 +41,12 @@ var getUploads = function(req, res) {
   );
 };
 
+/**
+ * Handles GET request for uploaded songhseet data.
+ * Returns single songsheet specified by signature param.
+ * @param {object} req - request object
+ * @param {object} res - response object
+ */
 var getSongsheetBySignature = function(req, res) {
   databaseService.getDocument(databaseConfig.collections.songsheets, {signature: req.params.signature}, function(songsheet) {
     if (typeof songsheet !== 'undefined') {
@@ -41,10 +57,14 @@ var getSongsheetBySignature = function(req, res) {
   });
 };
 
+/**
+ * Handles GET request for songsheet image.
+ * Delivers image from SolrInteractionServer instance or placeholder if no file found.
+ * @param {object} req - request object
+ * @param {object} res - response object
+ */
 var getImageByName = function(req, res) {
-  console.log(req.params.name);
   var placeholder = path.join(__dirname, '../assets/placeholder.jpg');
-  console.log(placeholder);
   if (req.params.name == 'placeholder.jpg') {
     res.sendFile(placeholder);
   } else {

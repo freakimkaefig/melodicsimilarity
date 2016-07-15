@@ -25,7 +25,12 @@ var store = {
   res: null
 };
 
-var mergeResults = function() {
+/**
+ * Merges results of solr and melody search.
+ * @returns {Array.<object>} The merged results, that should be returned to the user
+ * @private
+ */
+var _mergeResults = function() {
   var results = store.melodyResponse.results;
 
   _.each(store.solrResults, function(solrResult) {
@@ -43,48 +48,62 @@ var mergeResults = function() {
     }
 
   });
-  
-  // if (results.length <= 0) return false;
 
   return results.sort(function(a, b) {
     return a.rank - b.rank;
   });
 };
 
+/**
+ * Handle POST request for search form.
+ * @param {object} req - request object
+ * @param {object} res - response object
+ */
 var search = function(req, res) {
-  resetStore();
+  // Reset stored variables from earlier search sessions
+  _resetStore();
+
+  // Update stored search
   store.solrQuery = req.body.solrQuery;
   store.melodyMode = req.body.melodyMode;
   store.melodyQuery = req.body.melodyQuery;
   store.res = res;
 
+  // Determine callback by melody mode
   var callback = null;
   if (store.melodyQuery) {
     switch(store.melodyMode) {
       case 'MELODY':
-        callback = searchMelody;
+        callback = _searchMelody;
         break;
 
       case 'INTERVALS':
-        callback = searchIntervals;
+        callback = _searchIntervals;
         break;
 
       case 'PARSONS':
-        callback = searchParson;
+        callback = _searchParson;
         break;
     }
   }
 
+  // Request solr API if necessary
   if (store.solrQuery !== false) {
     var solrRequest = requestify.get(store.solrQuery);
-    return handleSolrSearch(when(solrRequest), callback);
+    return _handleSolrSearch(when(solrRequest), callback);
   } else {
     callback();
   }
 };
 
-var handleSolrSearch = function(solrSearchPremise, callback) {
-  return solrSearchPremise
+/**
+ * Manages response from solr search
+ * @param {Promise} solrSearchPromise - The solr search promise
+ * @param {onSolrCallback} callback - The callback function defined by melody search mode
+ * @private
+ */
+var _handleSolrSearch = function(solrSearchPromise, callback) {
+  return solrSearchPromise
     .then(function(response) {
       var solrResponse = response.getBody();
       var highlights = [];
@@ -97,6 +116,7 @@ var handleSolrSearch = function(solrSearchPremise, callback) {
       }
 
       var solrResults = [];
+      // Preprocess solr response
       for (var i = 0; i < solrResponse.response.docs.length; i++) {
         solrResults.push({
           id: solrResponse.response.docs[i].signature,
@@ -107,23 +127,34 @@ var handleSolrSearch = function(solrSearchPremise, callback) {
           rank: i
         });
       }
+
+      // store solr response for later usage
       store.solrResults = solrResults;
 
       if (callback !== null) {
         callback();
       } else {
-        handleResults();
+        _handleResults();
       }
     });
 };
 
-var handleResults = function() {
-  var results = mergeResults();
+/**
+ * Triggers result merging and sends response through response object.
+ * @private
+ */
+var _handleResults = function() {
+  var results = _mergeResults();
 
+  // send results
   store.res.json(results);
 };
 
-var resetStore = function() {
+/**
+ * Reset stored variables from earlier search sessions.
+ * @private
+ */
+var _resetStore = function() {
   store = {
     solrResults: [],
     solrQuery: null,
@@ -138,7 +169,12 @@ var resetStore = function() {
   };
 };
 
-var searchParson = function() {
+/**
+ * Search in songsheets by parsons code
+ * @callback onSolrCallback
+ * @private
+ */
+var _searchParson = function() {
   var parson = '*' + store.melodyQuery.parson;
   var threshold = store.melodyQuery.threshold;
   databaseService.getCollection(
@@ -148,11 +184,15 @@ var searchParson = function() {
     function(songsheets, count) {
       var results = [];
       for (var i = 0; i < count; i++) {
+        // Calculate distance between songsheets and search
         var distance = MusicJsonToolbox.distanceParsonsNgrams(songsheets[i].json, parson);
+
+        // Determine minimum distance
         var minDistance = Math.min(...distance.map(function(item) {
           return item.distance;
         }));
 
+        // only return results above threshold
         if (100 - ((100 / parson.length) * minDistance) >= threshold) {
           results.push({
             id: songsheets[i].signature,
@@ -164,18 +204,25 @@ var searchParson = function() {
           });
         }
       }
+
+      // store response
       store.melodyResponse = {
         results: results.sort(function(a, b) {
           return a.rank - b.rank;
         }),
         rankingFactor: parson.length
       };
-      handleResults();
+      _handleResults();
     }
   );
 };
 
-var searchIntervals = function() {
+/**
+ * Search in songsheets by intervals
+ * @callback onSolrCallback
+ * @private
+ */
+var _searchIntervals = function() {
   var defaultIntervals = ['*'];
   var intervals = defaultIntervals.concat(store.melodyQuery.intervals.split(' ').map(function(item) {
     return parseInt(item);
@@ -188,11 +235,15 @@ var searchIntervals = function() {
     function(songsheets, count) {
       var results = [];
       for (var i = 0; i < count; i++) {
+        // Calculate distance between songsheets and search
         var distance = MusicJsonToolbox.distanceIntervalsNgrams(songsheets[i].json, intervals);
+
+        // Determine minimum distance
         var minDistance = Math.min(...distance.map(function(item) {
           return item.distance;
         }));
 
+        // only return results above threshold
         if (100 - ((100 / intervals.length) * minDistance) >= threshold) {
           results.push({
             id: songsheets[i].signature,
@@ -204,18 +255,25 @@ var searchIntervals = function() {
           });
         }
       }
+
+      // store response
       store.melodyResponse = {
         results: results.sort(function(a, b) {
           return a.rank - b.rank;
         }),
         rankingFactor: intervals.length
       };
-      handleResults();
+      _handleResults();
     }
   );
 };
 
-var searchMelody = function() {
+/**
+ * Search in songsheets by pitch and duration
+ * @callback onSolrCallback
+ * @private
+ */
+var _searchMelody = function() {
   var melody = store.melodyQuery.melody;
   var threshold = store.melodyQuery.threshold;
   databaseService.getCollection(
@@ -225,6 +283,7 @@ var searchMelody = function() {
     function(songsheets, count) {
       var results = [];
       for (var i = 0; i < count; i++) {
+        // Calculate distance between songsheets and search
         var distance = MusicJsonToolbox.distancePitchDurationNgrams(
           songsheets[i].json,
           MusicJsonToolbox.pitchDurationValues(
@@ -232,10 +291,13 @@ var searchMelody = function() {
             0, 16, 4
           )
         );
+
+        // Determine minimum distance
         var minDistance = Math.min(...distance.map(function(item) {
           return item.distance;
         }));
 
+        // only return results above threshold
         if (100 - ((100 / melody.length) * minDistance) >= threshold) {
           results.push({
             id: songsheets[i].signature,
@@ -247,13 +309,15 @@ var searchMelody = function() {
           });
         }
       }
+
+      // store response
       store.melodyResponse = {
         results: results.sort(function(a, b) {
           return a.rank - b.rank;
         }),
         rankingFactor: melody.length
       };
-      handleResults();
+      _handleResults();
     }
   );
 };

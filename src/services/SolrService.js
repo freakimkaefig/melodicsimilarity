@@ -31,8 +31,8 @@ class SolrService {
     return this.handleFindResponse(when(requestObject));
   }
 
-  handleFindResponse(findPremise) {
-    return findPremise
+  handleFindResponse(findPromise) {
+    return findPromise
       .then(response => {
         SolrActions.updateMetadata(response);
         return true;
@@ -50,8 +50,8 @@ class SolrService {
     return this.handleFacetResponse(when(requestObject));
   }
 
-  handleFacetResponse(facetPremise) {
-    return facetPremise
+  handleFacetResponse(facetPromise) {
+    return facetPromise
       .then(response => {
         let fieldName = response.responseHeader.params["facet.field"].replace('Facet', '');
         let fieldProperties = FIELDS.find(field => {
@@ -86,6 +86,9 @@ class SolrService {
             });
             break;
         }
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -140,10 +143,13 @@ class SolrService {
     })));
   }
 
-  handleSearchSongsheetResponse(searchPremise) {
-    return searchPremise
+  handleSearchSongsheetResponse(searchPromise) {
+    return searchPromise
       .then(response => {
         SolrActions.updateResultImage(response);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -163,11 +169,14 @@ class SolrService {
     return this.handleSimilarFindResponse(when(requestObject));
   }
 
-  handleSimilarFindResponse(findPremise) {
-    return findPremise
+  handleSimilarFindResponse(findPromise) {
+    return findPromise
       .then(response => {
         SolrActions.updateSimilarMetadata(response);
         return true;
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -187,10 +196,9 @@ class SolrService {
     return this.handleGraphDocResponse(when(requestObject));
   }
 
-  handleGraphDocResponse(premise) {
-    return premise
+  handleGraphDocResponse(promise) {
+    return promise
       .then(response => {
-        console.log(response);
         if (response.response.numFound > 0) {
           let doc = response.response.docs[0];
           StatisticsActions.updateGraphNodes({
@@ -200,6 +208,9 @@ class SolrService {
             group: doc.landscapeArchive
           });
         }
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 }

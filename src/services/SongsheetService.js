@@ -24,13 +24,16 @@ class SongsheetService {
     })));
   }
 
-  handleListResponse(listPremise) {
-    return listPremise
+  handleListResponse(listPromise) {
+    return listPromise
       .then(response => {
         for (var i = 0; i < response.items.length; i++) {
           SolrService.findDoc(response.items[i].signature);
         }
         SongsheetActions.renderList(response.items, response.totalCount);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
   
@@ -42,11 +45,14 @@ class SongsheetService {
     })));
   }
   
-  handleItemResponse(itemPremise) {
-    return itemPremise
+  handleItemResponse(itemPromise) {
+    return itemPromise
       .then(response => {
         SolrService.findDoc(response.signature);
         SongsheetActions.renderItem(response);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -58,10 +64,13 @@ class SongsheetService {
     })));
   }
 
-  handleSimilarResponse(similarPremise) {
-    return similarPremise
+  handleSimilarResponse(similarPromise) {
+    return similarPromise
       .then(response => {
         SongsheetActions.updateSimilar(response.distances);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -73,11 +82,14 @@ class SongsheetService {
     })));
   }
 
-  handleSimilarItemResponse(itemPremise) {
-    return itemPremise
+  handleSimilarItemResponse(itemPromise) {
+    return itemPromise
       .then(response => {
         SolrService.findSimilarDoc(response.signature);
         SongsheetActions.renderSimilarItem(response);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 }

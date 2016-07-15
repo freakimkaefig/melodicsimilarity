@@ -50,7 +50,7 @@ export default class NavBar extends React.Component {
     return this.getVisibleLinks().map((link, index) => {
       if (link.dropdown) {
         return (
-          <NavDropdown eventKey={index} title={link.title} id={`dropdown-${index}`}>
+          <NavDropdown key={index} eventKey={index} title={link.title} id={`dropdown-${index}`}>
             {this.getDropdownChildren(link.children, index)}
           </NavDropdown>
         );

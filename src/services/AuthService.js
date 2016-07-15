@@ -27,6 +27,9 @@ class AuthService {
         var jwt = response.id_token;
         LoginActions.loginUser(jwt);
         return true;
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 }

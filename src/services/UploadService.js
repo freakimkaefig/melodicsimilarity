@@ -26,10 +26,13 @@ class UploadService {
     return this.handleUploadResponse(when(requestObject));
   }
 
-  handleUploadResponse(uploadPremise) {
-    return uploadPremise
+  handleUploadResponse(uploadPromise) {
+    return uploadPromise
       .then(response => {
         UploadActions.handleUpload(response);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 }

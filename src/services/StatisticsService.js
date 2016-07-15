@@ -62,17 +62,20 @@ class StatisticsService {
     })));
   }
 
-  handleMelodicStatisticsResponse(premise) {
-    return premise
+  handleMelodicStatisticsResponse(promise) {
+    return promise
       .then(response => {
         if (response.hasOwnProperty('data')) {
           StatisticsActions.updateMelodicStatistics(response);
         }
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
   
-  handleTemporalStatisticsResponse(premise) {
-    return premise
+  handleTemporalStatisticsResponse(promise) {
+    return promise
       .then(response => {
         let data = [];
         let fieldDates = [];
@@ -131,11 +134,14 @@ class StatisticsService {
 
         // populate result
         StatisticsActions.updateDateStatistics(data);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
   
-  handleGeoStatisticResponse(premise) {
-    return premise
+  handleGeoStatisticResponse(promise) {
+    return promise
       .then(response => {
         let field = response.responseHeader.params['facet.field'];
         let fieldName = field.replace('Facet', '');
@@ -154,10 +160,13 @@ class StatisticsService {
           }
         }
         StatisticsActions.updateGeoStatistics(fieldName, labels, values);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
-  handleTagStatisticResponse(premise) {
-    return premise
+  handleTagStatisticResponse(promise) {
+    return promise
       .then(response => {
         let field = response.responseHeader.params['facet.field'];
         let fieldName = field.replace('Facet', '');
@@ -174,11 +183,14 @@ class StatisticsService {
           }
         }
         StatisticsActions.updateTagStatistics(fieldName, data);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
-  handleGraphSimilarityResponse(premise) {
-    return premise
+  handleGraphSimilarityResponse(promise) {
+    return promise
       .then(response => {
         let edges = [];
         response.forEach(item => {
@@ -201,6 +213,9 @@ class StatisticsService {
           }
         });
         StatisticsActions.updateGraphEdges(edges);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 }

@@ -24,11 +24,14 @@ class SearchService {
     return this.handleSearchResponse(when(requestObject));
   }
 
-  handleSearchResponse(searchPremise) {
-    return searchPremise
+  handleSearchResponse(searchPromise) {
+    return searchPromise
       .then(response => {
         console.log(response);
         SearchActions.updateResults(response);
+      })
+      .catch(error => {
+        console.log(error);
       });
   }
 
