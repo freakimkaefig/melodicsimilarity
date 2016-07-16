@@ -124,6 +124,10 @@ export default class AbcViewer extends React.Component {
   }
 
   _midiEventListener(data) {
+    console.log(data);
+    if (data.message === 144) { //noteOn
+
+    }
     this.setState({playerProgress: (data.now / data.end) * 100});
   }
 
