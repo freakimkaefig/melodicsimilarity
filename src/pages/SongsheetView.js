@@ -7,6 +7,7 @@ import LoadingOverlay from '../components/LoadingOverlay';
 import SongsheetService from '../services/SongsheetService';
 import SongsheetStore from '../stores/SongsheetStore';
 import ImageZoom from '../components/ImageZoom';
+import { json2abc } from 'musicjson2abc';
 import AbcViewer from '../components/AbcViewer';
 import MetadataViewer from '../components/MetadataViewer';
 import FileGrid from '../components/FileGrid';
@@ -92,11 +93,10 @@ export default class SongsheetView extends React.Component {
 
   _getAbcViewer(file) {
     if (typeof file !== 'undefined') {
-      if (typeof file.abc !== 'undefined') {
-        return (
-          <AbcViewer abc={file.abc} itemKey={0} player={true} />
-        );
-      }
+      let abc = json2abc(JSON.stringify(file.json));
+      return (
+        <AbcViewer abc={abc} itemKey={0} player={true} />
+      );
     }
   }
 

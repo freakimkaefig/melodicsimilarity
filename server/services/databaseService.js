@@ -175,8 +175,7 @@ var addDocument = function(data, callback) {
       {
         signature: data.signature,
         name: data.name,
-        json: data.json,
-        abc: data.abc
+        json: data.json
       },
       { upsert: true, returnOriginal: false },
       function(err, result) {

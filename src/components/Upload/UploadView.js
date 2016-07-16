@@ -73,23 +73,7 @@ export default class UploadView extends React.Component {
         return function(e) {
           var content = e.target.result;
           var abc = json2abc(content);
-          var json = JSON.parse(content, function(key, value) {
-            if (key === 'line'
-              || key === 'fifths'
-              || key === 'beats'
-              || key === 'beat-type'
-              || key === 'duration'
-              || key === 'octave'
-              || key === 'alter') {
-              console.log(typeof value);
-              return parseInt(value);
-            }
-
-            if (value === 'true') return true;
-            if (value === 'false') return false;
-
-            return value;
-          });
+          var json = JSON.parse(content);
           var updatedFiles = this.state.files.concat({
             key: this.state.counter + 1,
             name: theFile.name,
@@ -199,7 +183,6 @@ export default class UploadView extends React.Component {
           delete n.$$hashKey;
         });
       });
-      uploadFile.abc = f.abc;
       uploadFile.name = f.name;
       UploadService.upload(uploadFile);
     });

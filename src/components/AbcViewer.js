@@ -34,11 +34,8 @@ export default class AbcViewer extends React.Component {
         paddingbottom: 30,
         paddingleft: 0,
         paddingright: 0,
-        add_classes: true,
-        listener: {
-          highlight: this._onHighlight,
-          modelChanged: this._modelChanged
-        }
+        editable: false,
+        add_classes: true
       },
       midiParams: {}
     };
@@ -143,10 +140,6 @@ export default class AbcViewer extends React.Component {
     this.state.player.stop();
     this.setState({playing: this.state.player.playing, playerProgress: 0});
   }
-
-  _onHighlight() {}
-
-  _modelChanged() {}
 
   render() {
     let key = this.props.itemKey;
