@@ -5,6 +5,7 @@ import {statistics} from '../../server/config/api.config.json';
 import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
 import vis from 'vis';
+import $ from 'jquery';
 import '../stylesheets/GraphPage.less';
 
 export default class SimilarityStatistics extends React.Component {
@@ -24,13 +25,14 @@ export default class SimilarityStatistics extends React.Component {
 
     this.onStatisticsStoreChange = this.onStatisticsStoreChange.bind(this);
     this.drawNetwork = this.drawNetwork.bind(this);
+    this.autoHeight = this.autoHeight.bind(this);
     this.neighbourhoodHighlight = this.neighbourhoodHighlight.bind(this);
   }
 
   componentDidMount() {
     StatisticsStore.addChangeListener(this.onStatisticsStoreChange);
 
-    StatisticsService.getGraph();
+    StatisticsService.getStatistics('similarity');
     this.drawNetwork();
   }
 
@@ -84,6 +86,8 @@ export default class SimilarityStatistics extends React.Component {
     // ]
     var container = document.getElementById('songsheet-network');
     var options = {
+      width: '100%',
+      height: '100%',
       nodes: {
         shape: 'dot',
         scaling: {
@@ -108,9 +112,9 @@ export default class SimilarityStatistics extends React.Component {
           type: 'continuous'
         }
       },
-      physics: false,
+      physics: true,
       interaction: {
-        tooltipDelay: 20,
+        tooltipDelay: 10,
         hideEdgesOnDrag: true
       }
     };
@@ -129,6 +133,7 @@ export default class SimilarityStatistics extends React.Component {
     });
 
     network.on('click', this.neighbourhoodHighlight);
+    this.autoHeight();
   }
 
   neighbourhoodHighlight(params) {
@@ -211,19 +216,23 @@ export default class SimilarityStatistics extends React.Component {
     });
   }
 
-  render() {
+  autoHeight() {
+    var $network = $('#songsheet-network');
+    var height = $network.height();
+    var newHeight = $(window).height() - $('.header').height() - $('.footer').height() - 200;
+    if (newHeight !== height) {
+      $network.height(newHeight);
+    }
+  }
 
+  render() {
     return (
       <DocumentTitle title={`Melodische Ähnlichkeit // Statistik // ${APP_NAME}`}>
         <div>
           <div className="row charts-container">
-            <div className="col-xs-12">
+            <div className="col-sm-10 col-sm-offset-1">
               <h1 className="text-center">Melodische Ähnlichkeit</h1>
-              <div className="row">
-                <div className="col-xs-12">
-                  <div id="songsheet-network" style={{height: '800px'}}/>
-                </div>
-              </div>
+              <div id="songsheet-network" />
             </div>
           </div>
         </div>

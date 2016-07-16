@@ -204,7 +204,7 @@ class SolrService {
           StatisticsActions.updateGraphNodes({
             id: doc.signature,
             label: doc.signature,
-            title: "Signatur: " + doc.signature + "<br>Landschaftsarchiv: " + doc.landscapeArchive,
+            title: "Signatur: " + doc.signature + "<br>Titel: " + doc.title + "<br>Landschaftsarchiv: " + doc.landscapeArchive,
             group: doc.landscapeArchive
           });
         }

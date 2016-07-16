@@ -29,8 +29,8 @@ class StatisticsService {
         return item.input === 'date' && item.statistic === true;
       });
       let queryString = '?q=*:*&rows=0&wt=json&facet=true';
-      for (var i = 0; i < fields.length; i++) {
-        queryString += '&facet.field=' + fields[i].name;
+      for (var field of fields) {
+        queryString += '&facet.field=' + field.name;
       }
       return this.handleTemporalStatisticsResponse(when(request({
         url: METADATA_QUERY_URL + queryString,
@@ -51,15 +51,13 @@ class StatisticsService {
         method: 'GET',
         crossOrigin: true
       })));
+    } else if (statistics[mode].datatype === 'graph') {
+      return this.handleGraphSimilarityResponse(when(request({
+        url: SIMILARITY_URL,
+        method: 'GET',
+        crossOrigin: true
+      })));
     }
-  }
-
-  getGraph() {
-    return this.handleGraphSimilarityResponse(when(request({
-      url: SIMILARITY_URL,
-      method: 'GET',
-      crossOrigin: true
-    })));
   }
 
   handleMelodicStatisticsResponse(promise) {
@@ -196,20 +194,35 @@ class StatisticsService {
         response.forEach(item => {
           let signature = item.signature;
           SolrService.findGraphDoc(signature);
-          for (var i = 0; i < item.distances.length; i++) {
-            let distance = item.distances[i];
-            let search = edges.filter(i => {
-              return (i.from === signature && i.to === distance.signature)
-                || (i.from === distance.signature && i.to === signature);
-            });
-            if (search.length === 0) {
-              edges.push({
-                from: signature,
-                to: distance.signature,
-                title: "Edit-Distance: " + distance.distance,
-                length: distance.distance * 10
+
+          // var data = item.distances;
+          // data.sort(function(a, b) {
+          //   return a.distance - b.distance;
+          // });
+          // var index = (75/100) * data.length;
+          // var q3;
+          // if (Math.floor(index) == index) {
+          //   q3 = (data[(index-1)].distance + data[index].distance)/2;
+          // }
+          // else {
+          //   q3 = data[Math.floor(index)].distance;
+          // }
+
+          for (var distance of item.distances) {
+            // if (distance.distance >= q3) {
+              let search = edges.filter(i => {
+                return (i.from === signature && i.to === distance.signature)
+                  || (i.from === distance.signature && i.to === signature);
               });
-            }
+              if (search.length === 0) {
+                edges.push({
+                  from: signature,
+                  to: distance.signature,
+                  title: "Edit-Distance (" + signature + " <> " + distance.signature + "): " + parseFloat(distance.distance).toFixed(2),
+                  length: distance.distance * 10
+                });
+              }
+            // }
           }
         });
         StatisticsActions.updateGraphEdges(edges);

@@ -27,8 +27,8 @@ class SongsheetService {
   handleListResponse(listPromise) {
     return listPromise
       .then(response => {
-        for (var i = 0; i < response.items.length; i++) {
-          SolrService.findDoc(response.items[i].signature);
+        for (var item of response.items) {
+          SolrService.findDoc(item.signature);
         }
         SongsheetActions.renderList(response.items, response.totalCount);
       })
