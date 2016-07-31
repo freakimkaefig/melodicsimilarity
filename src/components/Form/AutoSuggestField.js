@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import AutoSuggest from 'react-autosuggest';
+import fuzzy from 'fuzzy';
 import '../../stylesheets/AutoSuggestField.less';
 
 export default class AutoSuggestField extends React.Component {
@@ -26,9 +27,14 @@ export default class AutoSuggestField extends React.Component {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
-    return inputLength === 0 ? [] : this.props.facets.filter((suggest, index) => {
-      return suggest.toLowerCase().indexOf(inputValue) !== -1;
-    }).slice(0, 15);
+    if (inputLength === 0) {
+      return [];
+    } else {
+      let results = fuzzy.filter(inputValue, this.props.facets);
+      return results.map(item => {
+        return item.string;
+      }).slice(0, 15);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
