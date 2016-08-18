@@ -150,7 +150,7 @@ export default class Melody extends React.Component {
     let {melody, mode, abc, disabled, threshold, step, octave, accidental, rest, duration, dot} = this.state;
 
     let abcViewer;
-    if (mode === MODES.indexOf('MELODY')) {
+    if (mode === MODES.indexOf('MELODY') && melody.length > 0) {
       abcViewer = (
         <AbcViewer abc={abc} itemKey={1} />
       );
