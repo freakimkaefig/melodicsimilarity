@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
+import LoadingOverlay from '../components/LoadingOverlay';
 import {APP_NAME} from '../constants/AppConstants';
 import {statistics} from '../../server/config/api.config.json';
 import StatisticsService from '../services/StatisticsService';
@@ -320,6 +321,14 @@ export default class MelodyStatistics extends React.Component {
   render() {
     let {notes, intervals, durations, rests, keys, meters, counts} = this.state;
 
+    let ready = notes.values.length > 0
+      && intervals.values.length > 0
+      && durations.values.length > 0
+      && rests.values.length > 0
+      && keys.values.length > 0
+      && meters.values.length > 0
+      && counts.length > 0;
+
     const notesChart = this.getColumnChartConfig('notes', notes.labels, notes.values);
     const intervalsChart = this.getColumnChartConfig('intervals', intervals.labels, intervals.values);
     const durationsChart = this.getColumnChartConfig('durations', durations.labels, durations.values);
@@ -331,6 +340,7 @@ export default class MelodyStatistics extends React.Component {
     return (
       <DocumentTitle title={`Melodieinformationen // Statistik // ${APP_NAME}`}>
         <div>
+          <LoadingOverlay loading={!ready} />
           <div className="row charts-container">
             <div className="col-xs-12">
               <h1 className="text-center">Melodieinformationen</h1>

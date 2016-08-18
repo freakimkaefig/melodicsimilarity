@@ -176,7 +176,7 @@ var _resetStore = function() {
  */
 var _searchParson = function() {
   var parson = '*' + store.melodyQuery.parson;
-  var threshold = store.melodyQuery.threshold;
+  var threshold = store.melodyQuery.threshold / 100;
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
     0,
@@ -184,23 +184,24 @@ var _searchParson = function() {
     function(songsheets, count) {
       var results = [];
       for (var i = 0; i < count; i++) {
-        // Calculate distance between songsheets and search
-        var distance = MusicJsonToolbox.distanceParsonsNgrams(songsheets[i].json, parson);
+        // Calculate similarities between songsheets and search
+        var similarities = MusicJsonToolbox.parsonsNgramSimilarity(songsheets[i].json, parson);
 
-        // Determine minimum distance
-        var minDistance = Math.min(...distance.map(function(item) {
-          return item.distance;
+        // Determine maximum similarity
+        var maxSimilarity = Math.max(...similarities.map(function(item) {
+          return item.similarity;
         }));
 
+
         // only return results above threshold
-        if (100 - ((100 / parson.length) * minDistance) >= threshold) {
+        if (maxSimilarity >= threshold) {
           results.push({
             id: songsheets[i].signature,
             abc: songsheets[i].abc,
             json: songsheets[i].json,
-            melodic: distance,
-            minDistance: minDistance,
-            rank: minDistance
+            melodic: similarities,
+            maxSimilarity: maxSimilarity,
+            rank: 1 - maxSimilarity
           });
         }
       }
@@ -227,7 +228,7 @@ var _searchIntervals = function() {
   var intervals = defaultIntervals.concat(store.melodyQuery.intervals.split(' ').map(function(item) {
     return parseInt(item);
   }));
-  var threshold = store.melodyQuery.threshold;
+  var threshold = store.melodyQuery.threshold / 100;
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
     0,
@@ -235,23 +236,23 @@ var _searchIntervals = function() {
     function(songsheets, count) {
       var results = [];
       for (var i = 0; i < count; i++) {
-        // Calculate distance between songsheets and search
-        var distance = MusicJsonToolbox.distanceIntervalsNgrams(songsheets[i].json, intervals);
+        // Calculate similarities between songsheets and search
+        var similarities = MusicJsonToolbox.intervalNgramSimilarity(songsheets[i].json, intervals);
 
-        // Determine minimum distance
-        var minDistance = Math.min(...distance.map(function(item) {
-          return item.distance;
+        // Determine maximum similarity
+        var maxSimilarity = Math.max(...similarities.map(function(item) {
+          return item.similarity;
         }));
 
         // only return results above threshold
-        if (100 - ((100 / intervals.length) * minDistance) >= threshold) {
+        if (maxSimilarity >= threshold) {
           results.push({
             id: songsheets[i].signature,
             abc: songsheets[i].abc,
             json: songsheets[i].json,
-            melodic: distance,
-            minDistance: minDistance,
-            rank: minDistance
+            melodic: similarities,
+            maxSimilarity: maxSimilarity,
+            rank: 1 - maxSimilarity
           });
         }
       }
@@ -275,7 +276,7 @@ var _searchIntervals = function() {
  */
 var _searchMelody = function() {
   var melody = store.melodyQuery.melody;
-  var threshold = store.melodyQuery.threshold;
+  var threshold = store.melodyQuery.threshold / 100;
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
     0,
@@ -284,7 +285,7 @@ var _searchMelody = function() {
       var results = [];
       for (var i = 0; i < count; i++) {
         // Calculate distance between songsheets and search
-        var distance = MusicJsonToolbox.distancePitchDurationNgrams(
+        var similarities = MusicJsonToolbox.pitchDurationNgramSimilarity(
           songsheets[i].json,
           MusicJsonToolbox.pitchDurationValues(
             melody,
@@ -293,19 +294,19 @@ var _searchMelody = function() {
         );
 
         // Determine minimum distance
-        var minDistance = Math.min(...distance.map(function(item) {
-          return item.distance;
+        var maxSimilarity = Math.max(...similarities.map(function(item) {
+          return item.similarity;
         }));
 
         // only return results above threshold
-        if (100 - ((100 / melody.length) * minDistance) >= threshold) {
+        if (maxSimilarity >= threshold) {
           results.push({
             id: songsheets[i].signature,
             abc: songsheets[i].abc,
             json: songsheets[i].json,
-            melodic: distance,
-            minDistance: minDistance,
-            rank: minDistance
+            melodic: similarities,
+            maxSimilarity: maxSimilarity,
+            rank: 1 - maxSimilarity
           });
         }
       }
@@ -317,7 +318,6 @@ var _searchMelody = function() {
         }),
         rankingFactor: melody.length
       };
-      console.log(store);
       _handleResults();
     }
   );

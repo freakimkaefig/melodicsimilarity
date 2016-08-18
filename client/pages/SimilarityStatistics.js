@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
+import LoadingOverlay from '../components/LoadingOverlay';
 import {APP_NAME} from '../constants/AppConstants';
 import {statistics} from '../../server/config/api.config.json';
 import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
+import SettingsStore from '../stores/SettingsStore';
 import vis from 'vis';
 import $ from 'jquery';
 import '../stylesheets/GraphPage.less';
@@ -23,31 +25,32 @@ export default class SimilarityStatistics extends React.Component {
       highlightActive: false
     };
 
-    this.onStatisticsStoreChange = this.onStatisticsStoreChange.bind(this);
+    this.onStoreChange = this.onStoreChange.bind(this);
     this.drawNetwork = this.drawNetwork.bind(this);
     this.autoHeight = this.autoHeight.bind(this);
     this.neighbourhoodHighlight = this.neighbourhoodHighlight.bind(this);
   }
 
   componentDidMount() {
-    StatisticsStore.addChangeListener(this.onStatisticsStoreChange);
+    StatisticsStore.addChangeListener(this.onStoreChange);
+    SettingsStore.addChangeListener(this.onStoreChange);
 
     StatisticsService.getStatistics('similarity');
     this.drawNetwork();
   }
 
   componentWillUnmount() {
-    StatisticsStore.removeChangeListener(this.onStatisticsStoreChange);
+    StatisticsStore.removeChangeListener(this.onStoreChange);
+    SettingsStore.removeChangeListener(this.onStoreChange);
   }
 
-  onStatisticsStoreChange() {
+  onStoreChange() {
     let {
-      network,
-      graphData
+      network
     } = this.state;
     let nextGraphData = StatisticsStore.graph;
 
-    console.log(nextGraphData);
+    // console.log(nextGraphData, SettingsStore.settings['threshold'].value * 1000);
     network.setData({
       nodes: new vis.DataSet(nextGraphData.nodes),
       edges: new vis.DataSet(nextGraphData.edges)
@@ -60,30 +63,8 @@ export default class SimilarityStatistics extends React.Component {
 
   drawNetwork() {
     var nodesDataset = new vis.DataSet([]);
-    // [
-    //   {id: 'A 59141b', label: 'A 59141b', group: 'Bayern'},
-    //   {id: 'A 59116', label: 'A 59116', group: 'Bayern'},
-    //   {id: 'A 59115', label: 'A 59115', group: 'Deutschsprachiger Raum'},
-    //   {id: 'A 59142', label: 'A 59142', group: 'Deutschsprachiger Raum'},
-    //   {id: 'A 59143', label: 'A 59143', group: 'Deutschsprachiger Raum'},
-    //   {id: 'A 59144', label: 'A 59144', group: 'Hessen'},
-    //   {id: 'A 59114', label: 'A 59114', group: 'Hessen'},
-    //   {id: 'A 59122', label: 'A 59122', group: 'NRW'},
-    //   {id: 'A 59123', label: 'A 59123', group: 'Sonstiges'},
-    //   {id: 'A 59124', label: 'A 59124', group: 'NRW'}
-    // ]
     var edgesDataset = new vis.DataSet([]);
-    // [
-    //   {from: 'A 59141b', to: 'A 59116', length: 300},
-    //   {from: 'A 59141b', to: 'A 59115', length: 45},
-    //   {from: 'A 59116', to: 'A 59114', length: 84},
-    //   {from: 'A 59116', to: 'A 59142', length: 84},
-    //   {from: 'A 59116', to: 'A 59143', length: 84},
-    //   {from: 'A 59116', to: 'A 59144', length: 84},
-    //   {from: 'A 59114', to: 'A 59122', length: 86},
-    //   {from: 'A 59114', to: 'A 59123', length: 86},
-    //   {from: 'A 59114', to: 'A 59124', length: 86}
-    // ]
+
     var container = document.getElementById('songsheet-network');
     var options = {
       width: '100%',
@@ -226,9 +207,16 @@ export default class SimilarityStatistics extends React.Component {
   }
 
   render() {
+    let {
+      graphData
+    } = this.state;
+    let ready = graphData.nodes.length > 0
+      && graphData.edges.length > 0;
+
     return (
       <DocumentTitle title={`Melodische Ähnlichkeit // Statistik // ${APP_NAME}`}>
         <div>
+          <LoadingOverlay loading={!ready} />
           <div className="row charts-container">
             <div className="col-sm-10 col-sm-offset-1">
               <h1 className="text-center">Melodische Ähnlichkeit</h1>

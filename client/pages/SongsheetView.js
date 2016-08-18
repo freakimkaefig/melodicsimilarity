@@ -14,6 +14,7 @@ import FileGrid from '../components/FileGrid';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Breadcrumb } from 'react-bootstrap';
 import SettingsStore from '../stores/SettingsStore';
+import SearchStore from '../stores/SearchStore';
 import '../stylesheets/SongsheetView.less';
 
 export default class SongsheetView extends React.Component {
@@ -32,7 +33,8 @@ export default class SongsheetView extends React.Component {
       similarityScores: SongsheetStore.similarityScores,
       similarSongsheets: SongsheetStore.similarSongsheets,
       similarMetadata: SongsheetStore.similarMetadata,
-      loading: false
+      loading: false,
+      searchResults: SearchStore.results
     };
 
     this._init = this._init.bind(this);
@@ -173,8 +175,11 @@ export default class SongsheetView extends React.Component {
       similarityThreshold,
       similarityScores,
       similarSongsheets,
-      similarMetadata
+      similarMetadata,
+      searchResults
     } = this.state;
+
+    console.log(searchResults);
 
     let title = typeof metadata !== 'undefined' ? ' - ' + metadata.title : '';
 

@@ -195,34 +195,19 @@ class StatisticsService {
           let signature = item.signature;
           SolrService.findGraphDoc(signature);
 
-          // var data = item.distances;
-          // data.sort(function(a, b) {
-          //   return a.distance - b.distance;
-          // });
-          // var index = (75/100) * data.length;
-          // var q3;
-          // if (Math.floor(index) == index) {
-          //   q3 = (data[(index-1)].distance + data[index].distance)/2;
-          // }
-          // else {
-          //   q3 = data[Math.floor(index)].distance;
-          // }
-
           for (var distance of item.distances) {
-            // if (distance.distance >= q3) {
-              let search = edges.filter(i => {
-                return (i.from === signature && i.to === distance.signature)
-                  || (i.from === distance.signature && i.to === signature);
+            let search = edges.filter(i => {
+              return (i.from === signature && i.to === distance.signature)
+                || (i.from === distance.signature && i.to === signature);
+            });
+            if (search.length === 0) {
+              edges.push({
+                from: signature,
+                to: distance.signature,
+                title: "Edit-Distance (" + signature + " <> " + distance.signature + "): " + parseFloat(distance.distance).toFixed(2),
+                length: distance.distance * 1000
               });
-              if (search.length === 0) {
-                edges.push({
-                  from: signature,
-                  to: distance.signature,
-                  title: "Edit-Distance (" + signature + " <> " + distance.signature + "): " + parseFloat(distance.distance).toFixed(2),
-                  length: distance.distance * 1000
-                });
-              }
-            // }
+            }
           }
         });
         StatisticsActions.updateGraphEdges(edges);

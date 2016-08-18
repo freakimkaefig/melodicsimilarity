@@ -93,15 +93,13 @@ export default class SearchResultList extends React.Component {
     let highlightMelody = '';
     if (typeof result.melodic !== 'undefined' && typeof result.json !== 'undefined') {
       let melodic = result.melodic.sort((a, b) => {
-        return a.distance - b.distance;
+        return b.similarity - a.similarity;
       })[0].highlight.map(item => {
         return item.measure;
       }).filter((value, index, self) => {
         return self.indexOf(value) === index;
       });
-      // console.log(result.melodic.sort((a, b) => {
-      //   return a.distance - b.distance;
-      // })[0].highlight);
+      
       let highlightMeasures = [];
       for (var i = 0; i < melodic.length; i++) {
         highlightMeasures.push(result.json.measures[melodic[i]]);
@@ -115,7 +113,8 @@ export default class SearchResultList extends React.Component {
       highlightMelody = (
         <div>
           <AbcViewer abc={tempAbc} itemKey={itemKey} player={false} />
-          <p><span className="text-info">DEBUG</span> <span className="text-muted">Distance: {result.minDistance}</span></p>
+          <p><span className="text-info">DEBUG</span> <span className="text-muted">Similarity: {result.maxSimilarity}</span></p>
+          <p><span className="text-info">RANK</span> <span className="text-muted">Rank: {result.rank}</span></p>
         </div>
       );
     }

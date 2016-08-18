@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
+import LoadingOverlay from '../components/LoadingOverlay';
 import {APP_NAME} from '../constants/AppConstants';
 import {statistics} from '../../server/config/api.config.json';
 import StatisticsService from '../services/StatisticsService';
@@ -214,6 +215,10 @@ export default class MetadataStatistics extends React.Component {
   render() {
     let {dates, origin, archive} = this.state;
 
+    let ready = dates.length > 0
+      && origin !== false
+      && archive !== false;
+
     const temporalChart = this.getLineChartConfig('temporal', dates);
     const originChart = this.getBarChartConfig('origin', origin);
     const archiveChart = this.getBarChartConfig('archive', archive);
@@ -221,6 +226,7 @@ export default class MetadataStatistics extends React.Component {
     return (
       <DocumentTitle title={`Metadaten // Statistik // ${APP_NAME}`}>
         <div>
+          <LoadingOverlay loading={!ready} />
           <div className="row charts-container">
             <div className="col-xs-12">
               <h1 className="text-center">Metadaten</h1>
