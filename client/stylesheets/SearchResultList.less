@@ -1,0 +1,35 @@
+@import (reference) "~bootswatch/sandstone/variables.less";
+
+.breadcrumb {
+  .label-melody {
+    color: @gray-darker;
+    & > .abc-viewer {
+      display: inline-block;
+    }
+  }
+}
+
+.search-result-item {
+  margin: 30px 0;
+  .content {
+    background-color: #eee;
+    padding: 15px;
+  }
+  .header {
+    h3 {
+      font-weight: bold;
+    }
+  }
+  .highlighting {
+    * {
+      font-size: 14px !important;
+      em {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.empty-results {
+  margin: 120px 0 240px 0;
+}

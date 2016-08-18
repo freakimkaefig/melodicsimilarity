@@ -108,6 +108,45 @@ var addUser = function(username, password, callback) {
   });
 };
 
+// Retrieve setting
+var getSetting = function(field, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    var collection = db.collection(databaseConfig.collections.settings);
+    collection.find({key: field}).limit(1).next(function(err, result){
+      if (err) {
+        throw err;
+      }
+      callback(result);
+      db.close();
+    })
+  })
+};
+
+// Update or create setting
+var setSetting = function(field, value, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    var collection = db.collection(databaseConfig.collections.settings);
+    collection.findOneAndUpdate(
+      { key: field },
+      { $set: { value: value }, $currentDate: { lastUpdated: true } },
+      { upsert: true, returnOriginal: false },
+      function(err, result) {
+        if (err) {
+          return err;
+        }
+        callback(result);
+        db.close();
+      }
+    )
+  })
+};
+
 // Get statistic by mode
 var getStatistics = function(mode, callback) {
   that.getDocument(databaseConfig.collections.statistics, { mode: mode}, callback);
@@ -198,6 +237,8 @@ that.getCollection = getCollection;
 that.getDocuments = getDocuments;
 that.getDocument = getDocument;
 that.addUser = addUser;
+that.getSetting = getSetting;
+that.setSetting = setSetting;
 that.getStatistics = getStatistics;
 that.updateStatistics = updateStatistics;
 that.getSimilarity = getSimilarity;

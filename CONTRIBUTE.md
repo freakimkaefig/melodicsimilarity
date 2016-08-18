@@ -81,7 +81,7 @@ melodicsimilarity
  │   └── build/                  # WebPack builds dependencies in here
  ├── routes/
  │   └── routes.js                # Webserver routes are defined here
- ├── src/                        # Project structure for `Flux Application Architecture`
+ ├── client/                        # Project structure for `Flux Application Architecture`
  │   ├── actions/
  │   ├── components/
  │   ├── constants/

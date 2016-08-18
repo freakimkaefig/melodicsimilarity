@@ -1,6 +1,6 @@
 import React from 'react';
 import { renderIntoDocument, scryRenderedDOMComponentsWithTag } from 'react-addons-test-utils';
-import NavBar from '../../../src/components/Navbar';
+import NavBar from '../../../client/components/Navbar';
 import 'ignore-styles';
 import { expect } from 'chai';
 

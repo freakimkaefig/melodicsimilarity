@@ -27,7 +27,7 @@ var handleUpload = function(req, res) {
  * @param {object} req - request object
  * @param {object} res - response object
  */
-var getUploads = function(req, res) {
+var getSongsheets = function(req, res) {
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
     parseInt(req.query.start),
@@ -80,7 +80,7 @@ var getImageByName = function(req, res) {
 
 
 that.handleUpload = handleUpload;
-that.getUploads = getUploads;
+that.getSongsheets = getSongsheets;
 that.getSongsheetBySignature = getSongsheetBySignature;
 that.getImageByName = getImageByName;
 

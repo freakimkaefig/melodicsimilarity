@@ -178,8 +178,7 @@ var updateIntervals = function(callback) {
  * @param {updateCallback} callback - The callback function
  */
 var updateDurations = function(callback) {
-  var labels = apiConfig.statistics.durations.labels;
-  var values = apiConfig.statistics.durations.values;
+  var items = [];
 
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
@@ -192,27 +191,43 @@ var updateDurations = function(callback) {
           // get note duration
           var type = notes[j].type;
           var name = apiConfig.statistics.durations.translation[type];
+          var duration = eval(name);
           if (notes[j].dot === 'true' || notes[j].dot === true) {
             name = apiConfig.statistics.durations.dotted + name;
+            duration = duration * 1.5;
           }
 
           // increase or add value
-          var index = labels.indexOf(name);
-          if (index > -1) {
-            values[index]++;
+          var index = items.find(function(item) {
+            return item.label === name;
+          });
+          if (typeof index !== 'undefined') {
+            index.values++;
           } else {
-            labels.push(name);
-            values.push(1);
+            items.push({
+              label: name,
+              duration: duration,
+              values: 1
+            });
           }
         }
       }
+
+      // Sort data by duration (ascending)
+      items.sort(function(a, b) {
+        return a.duration - b.duration;
+      });
 
       // Update database entry for durations
       databaseService.updateStatistics(
         apiConfig.statistics.durations.mode,
         {
-          labels: labels,
-          values: values
+          labels: items.map(function(item) {
+            return item.label;
+          }),
+          values: items.map(function(item) {
+            return item.values;
+          })
         },
         callback
       );
@@ -260,8 +275,7 @@ var updateKeys = function(callback) {
  * @param {updateCallback} callback - The callback function
  */
 var updateRests = function(callback) {
-  var labels = apiConfig.statistics.rests.labels;
-  var values = apiConfig.statistics.rests.values;
+  var items = [];
 
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
@@ -275,28 +289,44 @@ var updateRests = function(callback) {
             // get rest duration
             var type = notes[j].type;
             var name = apiConfig.statistics.durations.translation[type];
+            var duration = eval(name);
             if (notes[j].dot === 'true' || notes[j].dot === true) {
               name = apiConfig.statistics.durations.dotted + name;
+              duration = duration * 1.5;
             }
 
             // increase or add value
-            var index = labels.indexOf(name);
-            if (index > -1) {
-              values[index]++;
+            var index = items.find(function(item) {
+              return item.label === name;
+            });
+            if (typeof index !== 'undefined') {
+              index.values++;
             } else {
-              labels.push(name);
-              values.push(1);
+              items.push({
+                label: name,
+                duration: duration,
+                values: 1
+              });
             }
           }
         }
       }
 
+      // Sort data by duration (ascending)
+      items.sort(function(a, b) {
+        return a.duration - b.duration;
+      });
+
       // Update database entry for rests
       databaseService.updateStatistics(
         apiConfig.statistics.rests.mode,
         {
-          labels: labels,
-          values: values
+          labels: items.map(function(item) {
+            return item.label;
+          }),
+          values: items.map(function(item) {
+            return item.values;
+          })
         },
         callback
       );
@@ -309,8 +339,7 @@ var updateRests = function(callback) {
  * @param {updateCallback} callback - The callback function
  */
 var updateMeters = function(callback) {
-  var labels = apiConfig.statistics.meters.labels;
-  var values = apiConfig.statistics.meters.values;
+  var items = [];
 
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
@@ -319,24 +348,40 @@ var updateMeters = function(callback) {
     function(songsheets, count) {
       for (var i = 0; i < count; i++) {
         // get meter from songsheet
-        var meter = songsheets[i].json.attributes.time.beats + '/' + songsheets[i].json.attributes.time['beat-type'];
+        var name = songsheets[i].json.attributes.time.beats + '/' + songsheets[i].json.attributes.time['beat-type'];
+        var fraction = eval(name);
 
         // increase or add value
-        var index = labels.indexOf(meter);
-        if (index > -1) {
-          values[index]++;
+        var index = items.find(function(item) {
+          return item.label === name;
+        });
+        if (typeof index !== 'undefined') {
+          index.values++;
         } else {
-          labels.push(meter);
-          values.push(1);
+          items.push({
+            label: name,
+            values: 1
+          });
         }
       }
+
+      // Sort data by fraction & denominator(ascending)
+      items.sort(function(a, b) {
+        var frac = eval(a.label) - eval(b.label);
+        var denom = parseInt(b.label.substr(b.label.indexOf('/') + 1)) - parseInt(a.label.substr(a.label.indexOf('/') + 1));
+        return frac || denom;
+      });
 
       // Update database entry for meters
       databaseService.updateStatistics(
         apiConfig.statistics.meters.mode,
         {
-          labels: labels,
-          values: values
+          labels: items.map(function(item) {
+            return item.label;
+          }),
+          values: items.map(function(item) {
+            return item.values;
+          })
         },
         callback
       );

@@ -16,6 +16,18 @@
       }
     }
   },
+
+  "settings": [
+    {
+      "key": "threshold",
+      "display": "Similarity-Threshold",
+      "type": "float",
+      "control": "range",
+      "value": 0,
+      "loading": false
+    }
+  ],
+
   "statistics": {
 
     "notes": {
@@ -54,9 +66,7 @@
         "512th": "1/512",
         "1024th": "1/1024"
       },
-      "dotted": "punktierte ",
-      "labels": [],
-      "values": []
+      "dotted": "punktierte "
     },
 
     "keys": {
@@ -64,7 +74,7 @@
       "datatype": "melodic",
       "title": "Tonarthäufigkeit",
       "yAxis": "Haufigkeit",
-      "labels": ["Db-Dur / B-Moll", "Ab-Dur / F-Moll", "Eb-Dur / C-Moll", "B-Dur / G-Moll", "F-Dur / D-Moll", "C-Dur / A-Moll", "G-Dur / E-Moll", "D-Dur / H-Moll", "A-Dur / F#-Moll", "E-Dur / C#-Moll", "H-Dur / G#-Moll", "F#-/Gb-Dur / D#-/Eb-Moll"],
+      "labels": ["C-Dur / A-Moll", "G-Dur / E-Moll", "D-Dur / H-Moll", "A-Dur / F#-Moll", "E-Dur / C#-Moll", "H-Dur / G#-Moll", "F#-/Gb-Dur / D#-/Eb-Moll", "Db-Dur / B-Moll", "Ab-Dur / F-Moll", "Eb-Dur / C-Moll", "B-Dur / G-Moll", "F-Dur / D-Moll"],
       "values": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
 
@@ -72,18 +82,14 @@
       "mode": "rests",
       "datatype": "melodic",
       "title": "Verteilung der Pausen",
-      "yAxis": "Häufigkeit",
-      "labels": [],
-      "values": []
+      "yAxis": "Häufigkeit"
     },
 
     "meters": {
       "mode": "meters",
       "datatype": "melodic",
       "title": "Verteilung der Taktarten",
-      "yAxis": "Häufigkeit",
-      "labels": [],
-      "values": []
+      "yAxis": "Häufigkeit"
     },
 
     "counts": {

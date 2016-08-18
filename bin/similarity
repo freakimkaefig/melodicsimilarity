@@ -1,0 +1,4 @@
+#!/usr/bin/env node
+'use strict';
+var similarityTask = require('../server/tasks/similarity');
+similarityTask.run();

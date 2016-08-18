@@ -7,7 +7,8 @@ var express = require('express');
 var multer = require('multer');
 
 var apiController = require('./controllers/apiController');
-var userController = require('./controllers/userController.js');
+var userController = require('./controllers/userController');
+var settingsController = require('./controllers/settingsController');
 var songsheetController = require('./controllers/songsheetController');
 var uploadController = require('./controllers/uploadController');
 var searchController = require('./controllers/searchController');
@@ -23,8 +24,11 @@ var upload = multer({ dest: 'public/uploads/' });
  * ======================================== */
 router.get('/api', apiController.getStats);
 
+/* Settings */
+router.get('/api/settings/:key', settingsController.getField);
+
 /* Songsheets */
-router.get('/api/songsheets', songsheetController.getUploads);
+router.get('/api/songsheets', songsheetController.getSongsheets);
 router.get('/api/songsheets/:signature', songsheetController.getSongsheetBySignature);
 router.get('/api/image/:name', songsheetController.getImageByName);
 router.post('/api/search', searchController.search);
@@ -51,6 +55,8 @@ router.put('/api/protected/scan/add', upload.any(), uploadController.postUpload)
 router.put('/api/protected/index/update/:mode', statisticController.putStats);
 router.put('/api/protected/similarity/update/:signature', similarityController.updateOne);
 
+/* Settings */
+router.put('/api/protected/settings/:key/:value', settingsController.setField);
 
 /* ========================================
  * ============ AUTHENTICATION ============

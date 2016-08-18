@@ -7,7 +7,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var config = {
   cache: true,
   entry: {
-    index: './src/index.js'
+    index: './client/index.js'
   },
   output: {
     path: 'public/build',
@@ -40,7 +40,7 @@ var config = {
     ])
   ],
   resolve: {
-    modules: ['node_modules', 'src'],
+    modules: ['node_modules', 'client '],
     alias: {
       'react-input-range-css': path.join(__dirname, './node_modules/react-input-range/dist/react-input-range.css')
     }

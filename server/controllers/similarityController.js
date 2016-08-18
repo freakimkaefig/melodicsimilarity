@@ -53,7 +53,9 @@ var updateOne = function(req, res) {
     function(search) {
       if (typeof search !== 'undefined') {
         // Update similarity values in database
-        _update(req, res, search);
+        update(search, function(result) {
+          res.json(result);
+        });
       } else {
         res.status(404).send('Songsheet not found!');
       }
@@ -63,11 +65,10 @@ var updateOne = function(req, res) {
 
 /**
  * Updates similarity data in Mongo DB.
- * @param {object} req - request object
- * @param {object} res - response object
  * @param {object} search - The specified document returned from Mongo DB
+ * @param {updateCallback} callback - The callback when data is updated
  */
-var _update = function(req, res, search) {
+var update = function(search, callback) {
   // Get all songsheets (except searched)
   databaseService.getDocuments(
     databaseConfig.collections.songsheets,
@@ -87,9 +88,7 @@ var _update = function(req, res, search) {
       databaseService.updateSimilarity(
         search.signature,
         distances,
-        function(result) {
-          res.json(result);
-        }
+        callback
       );
     }
   );
@@ -98,5 +97,6 @@ var _update = function(req, res, search) {
 that.getAll = getAll;
 that.getOne = getOne;
 that.updateOne = updateOne;
+that.update = update;
 
 module.exports = that;

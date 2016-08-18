@@ -287,7 +287,7 @@ var _searchMelody = function() {
         var distance = MusicJsonToolbox.distancePitchDurationNgrams(
           songsheets[i].json,
           MusicJsonToolbox.pitchDurationValues(
-            MusicJsonToolbox.notes(melody, false, true),
+            melody,
             0, 16, 4
           )
         );
@@ -317,6 +317,7 @@ var _searchMelody = function() {
         }),
         rankingFactor: melody.length
       };
+      console.log(store);
       _handleResults();
     }
   );
