@@ -219,7 +219,7 @@ class StatisticsService {
                   from: signature,
                   to: distance.signature,
                   title: "Edit-Distance (" + signature + " <> " + distance.signature + "): " + parseFloat(distance.distance).toFixed(2),
-                  length: distance.distance * 10
+                  length: distance.distance * 1000
                 });
               }
             // }
