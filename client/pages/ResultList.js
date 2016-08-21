@@ -14,6 +14,7 @@ import {
 import {
   Breadcrumb
 } from 'react-bootstrap';
+import QueryBreadcrumb from '../components/Search/QueryBreadcrumb';
 import AbcViewer from '../components/AbcViewer';
 import MelodyHelper from '../helpers/MelodyHelper';
 import {
@@ -77,6 +78,7 @@ export default class ResultList extends React.Component {
       metadataQueryFields: SearchStore.queryFields,
       parsonQuery: SearchStore.parsonQuery,
       intervalQuery: SearchStore.intervalQuery,
+      melodyQuery: SearchStore.melodyQuery,
       results: SearchStore.results,
       highlighting: SearchStore.highlighting,
       activePage: (SearchStore.start / SearchStore.rows) + 1,
@@ -151,7 +153,14 @@ export default class ResultList extends React.Component {
                 <LinkContainer to="/search" key={0}>
                   <Breadcrumb.Item>Suche</Breadcrumb.Item>
                 </LinkContainer>
-                <Breadcrumb.Item active>{this._renderQuery(metadataQueryFields, parsonQuery, intervalQuery, melodyQuery)}</Breadcrumb.Item>
+                <Breadcrumb.Item active>
+                  <QueryBreadcrumb
+                    metadataQuery={metadataQueryFields}
+                    parsonQuery={parsonQuery}
+                    intervalQuery={intervalQuery}
+                    melodyQuery={melodyQuery}
+                  />
+                </Breadcrumb.Item>
               </Breadcrumb>
             </div>
           </div>
