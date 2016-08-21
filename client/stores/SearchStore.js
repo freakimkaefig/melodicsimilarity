@@ -149,7 +149,7 @@ class SearchStore extends BaseStore {
             }
             SolrService.findDoc(item.id);
           }
-          item.url = '/songsheets/' + item.id;
+          item.url = '/search/result/' + item.id;
         });
         this.emitChange();
         break;

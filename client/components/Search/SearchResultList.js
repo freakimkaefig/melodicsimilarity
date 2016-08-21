@@ -17,8 +17,6 @@ export default class SearchResultList extends React.Component {
   }
 
   _getContainer(result, index) {
-    console.log(result);
-    
     let headline = '';
     let image = '';
     if (result.url) {
