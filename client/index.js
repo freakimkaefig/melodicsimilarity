@@ -14,7 +14,7 @@ import MelodyStatistics from './pages/MelodyStatistics';
 import MetadataStatistics from './pages/MetadataStatistics';
 import SimilarityStatistics from './pages/SimilarityStatistics';
 import SongsheetList from './pages/SongsheetList';
-import SongsheetView from './pages/SongsheetView';
+import SongsheetDetail from './pages/SongsheetDetail';
 import SearchIndex from './pages/SearchIndex';
 import ResultList from './pages/ResultList';
 import LoginPage from './pages/LoginPage';
@@ -34,7 +34,7 @@ var router = (
       <Route name="similarityStats" path="/statistics/similarity" component={SimilarityStatistics} />
 
       <Route name="songsheets" path="/songsheets" component={SongsheetList} />
-      <Route name="songsheet" path="/songsheets/:signature" component={SongsheetView} />
+      <Route name="songsheet" path="/songsheets/:signature" component={SongsheetDetail} />
 
       <Route name="search" path="/search" component={SearchIndex} />
       <Route name="search-results" path="/search/result" component={ResultList} />
