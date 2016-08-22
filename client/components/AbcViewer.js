@@ -1,43 +1,50 @@
 import React, { PropTypes } from 'react';
 import { Button } from 'react-bootstrap';
 import MidiStore from '../stores/MidiStore';
+// import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_2.3-min.js';
+// import ABCJS from 'exports?ABCJS!script!../../lib/abcjs_basic_midi_3.0b-min.js';
 import ABCJS from 'exports?ABCJS!script!../../lib/abcjs/bin/abcjs_basic_2.4.0.js';
 import '../stylesheets/AbcViewer.less';
-
 
 export default class AbcViewer extends React.Component {
 
   static propTypes = {
     abc: PropTypes.string,
     itemKey: PropTypes.number,
-    player: PropTypes.bool
+    player: PropTypes.bool,
+    highlight: PropTypes.arrayOf(PropTypes.object)
   };
 
   static defaultProps = {
-    player: true
+    player: true,
+    highlight: []
   };
 
   constructor(props) {
     super(props);
+
+    this.parserParams = {};
+    this.renderParams = {};
+    this.engraverParams = {
+      staffwidth: 600,
+      paddingtop: 5,
+      paddingbottom: 30,
+      paddingleft: 0,
+      paddingright: 0
+    };
+    this.midiParams = {
+      qpm: 120,
+      downloadLabel: 'MIDI herunterladen'
+    };
+
     this.state = {
       midiLoaded: false,
       abcRendered: false,
+      abcTunes: [],
       midiRendered: false,
       player: null,
       playerProgress: 0,
-      playing: false,
-      parserParams: {},
-      renderParams: {},
-      engraverParams: {
-        staffwidth: 600,
-        paddingtop: 5,
-        paddingbottom: 30,
-        paddingleft: 0,
-        paddingright: 0,
-        editable: false,
-        add_classes: true
-      },
-      midiParams: {}
+      playing: false
     };
     this.onPlayClick = () => this._onPlayClick();
     this.onStopClick = () => this._onStopClick();
@@ -93,12 +100,49 @@ export default class AbcViewer extends React.Component {
   }
 
   _renderAbc(abc, itemKey) {
-    ABCJS.renderAbc('notation-' + itemKey, abc, this.state.parserParams, this.state.engraverParams, this.state.renderParams);
-    this.setState({abcRendered: true});
+    let tuneObjectArray = ABCJS.renderAbc('notation-' + itemKey, abc, this.parserParams, this.engraverParams, this.renderParams);
+
+    // highlight finding, when highlight given
+    if (this.props.highlight.length > 0) {
+      // fill notesArray
+      let notesArray = [];
+      tuneObjectArray.forEach(tune => {
+        tune.lines.forEach(line => {
+          line.staff.forEach(staff => {
+            staff.voices.forEach(voice => {
+              console.log(voice);
+              let notes = voice.filter(el => {
+                return el.el_type === 'note';
+              });
+              notesArray = notesArray.concat(notes);
+            });
+          });
+        });
+      });
+
+      // clear highlighting
+      tuneObjectArray[0].engraver.clearSelection();
+
+      this.props.highlight.forEach(item => {
+        let highlight = item.highlight;
+
+        // highlight between start and end note
+        let startNote = highlight[0].noteAbsolute;
+        let endNote = highlight[highlight.length - 1].noteAbsolute;
+        let start = notesArray[startNote].startChar;
+        let end = notesArray[endNote].endChar;
+        tuneObjectArray[0].engraver.rangeHighlight(start, end);
+      });
+    }
+
+    this.setState({
+      abcRendered: true,
+      abcTunes: tuneObjectArray
+    });
   }
 
   _renderMidi(abc, itemKey, player) {
-    ABCJS.renderMidi('midi-' + itemKey, abc, this.state.parserParams, this.state.midiParams, this.state.renderParams);
+    ABCJS.renderMidi('midi-' + itemKey, abc, this.parserParams, this.midiParams, this.renderParams);
     this._midiPluginLoaded(player);
   }
 

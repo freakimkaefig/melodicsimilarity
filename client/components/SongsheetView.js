@@ -65,11 +65,11 @@ export default class SongsheetView extends React.Component {
     }
   }
 
-  _getAbcViewer(file) {
+  _getAbcViewer(file, highlighting) {
     if (typeof file !== 'undefined') {
       let abc = json2abc(JSON.stringify(file.json));
       return (
-        <AbcViewer abc={abc} itemKey={0} player={true} />
+        <AbcViewer abc={abc} itemKey={0} player={true} highlight={highlighting} />
       );
     }
   }
@@ -137,7 +137,7 @@ export default class SongsheetView extends React.Component {
             </div>
           </div>
           <div className="col-xs-12 col-md-7 col-md-offset-1">
-            { this._getAbcViewer(file) }
+            { this._getAbcViewer(file, highlighting) }
           </div>
         </div>
 

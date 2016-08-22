@@ -126,10 +126,6 @@ export default class ResultDetail extends React.Component {
     if (typeof searchResult !== 'undefined') {
       highlighting = searchResult.melodic.filter(item => {
         return item.similarity >= searchResult.maxSimilarity;
-      }).forEach(item => {
-        item.highlight.forEach(note => {
-
-        });
       });
     }
 
