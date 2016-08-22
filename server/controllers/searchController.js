@@ -49,8 +49,18 @@ var _mergeResults = function() {
 
   });
 
+  _.each(results, function(melodyResult) {
+    var find = _.find(store.solrResults, function(solrResult) {
+      return solrResult.id === melodyResult.id;
+    });
+
+    if (!find) {
+      melodyResult.rank += 0.1;
+    }
+  });
+
   return results.sort(function(a, b) {
-    return a.rank - b.rank;
+    return a.rank - b.rank || b.maxSimilarityCount - a.maxSimilarityCount;
   });
 };
 
@@ -124,7 +134,8 @@ var _handleSolrSearch = function(solrSearchPromise, callback) {
           highlighting: _.find(highlights, function(item) {
             return item.id === solrResponse.response.docs[i].id;
           }),
-          rank: i
+          maxSimilarityCount: 0,
+          rank: i / solrResponse.response.docs.length / 10
         });
       }
 
@@ -195,12 +206,16 @@ var _searchParson = function() {
 
         // only return results above threshold
         if (maxSimilarity >= threshold) {
+          let maxSimilarityCount = similarities.filter(function(item) {
+            return item.similarity === maxSimilarity;
+          }).length;
           results.push({
             id: songsheets[i].signature,
             abc: songsheets[i].abc,
             json: songsheets[i].json,
             melodic: similarities,
             maxSimilarity: maxSimilarity,
+            maxSimilarityCount: maxSimilarityCount,
             rank: 1 - maxSimilarity
           });
         }
@@ -211,7 +226,7 @@ var _searchParson = function() {
         results: results.sort(function(a, b) {
           return a.rank - b.rank;
         }),
-        rankingFactor: parson.length
+        rankingFactor: 1
       };
       _handleResults();
     }
@@ -246,12 +261,16 @@ var _searchIntervals = function() {
 
         // only return results above threshold
         if (maxSimilarity >= threshold) {
+          let maxSimilarityCount = similarities.filter(function(item) {
+            return item.similarity === maxSimilarity;
+          }).length;
           results.push({
             id: songsheets[i].signature,
             abc: songsheets[i].abc,
             json: songsheets[i].json,
             melodic: similarities,
             maxSimilarity: maxSimilarity,
+            maxSimilarityCount: maxSimilarityCount,
             rank: 1 - maxSimilarity
           });
         }
@@ -262,7 +281,7 @@ var _searchIntervals = function() {
         results: results.sort(function(a, b) {
           return a.rank - b.rank;
         }),
-        rankingFactor: intervals.length
+        rankingFactor: 1
       };
       _handleResults();
     }
@@ -300,12 +319,16 @@ var _searchMelody = function() {
 
         // only return results above threshold
         if (maxSimilarity >= threshold) {
+          let maxSimilarityCount = similarities.filter(function(item) {
+            return item.similarity === maxSimilarity;
+          }).length;
           results.push({
             id: songsheets[i].signature,
             abc: songsheets[i].abc,
             json: songsheets[i].json,
             melodic: similarities,
             maxSimilarity: maxSimilarity,
+            maxSimilarityCount: maxSimilarityCount,
             rank: 1 - maxSimilarity
           });
         }
@@ -316,7 +339,7 @@ var _searchMelody = function() {
         results: results.sort(function(a, b) {
           return a.rank - b.rank;
         }),
-        rankingFactor: melody.length
+        rankingFactor: 1
       };
       _handleResults();
     }
