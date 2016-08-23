@@ -7,6 +7,8 @@ var path = require('path');
 var request = require('sync-request');
 var databaseService = require('../services/databaseService');
 var databaseConfig = require('../config/database.config.json');
+var imageConfig = require('../config/image.config.json');
+var env = require('../../.env');
 
 var that = {};
 
@@ -64,11 +66,11 @@ var getSongsheetBySignature = function(req, res) {
  * @param {object} res - response object
  */
 var getImageByName = function(req, res) {
-  var placeholder = path.join(__dirname, '../assets/placeholder.jpg');
-  if (req.params.name == 'placeholder.jpg') {
+  var placeholder = path.join(__dirname, '../', imageConfig.placeholder_path + imageConfig.placeholder_name);
+  if (req.params.name == imageConfig.placeholder_name) {
     res.sendFile(placeholder);
   } else {
-    var url = 'http://localhost:8080/SolrInteractionServer/FrontEnd/img/jpegs/' + req.params.name
+    var url = env.SOLRINTERACTION_BASE_URI + imageConfig.base_path + req.params.name;
     var image = request('HEAD', url);
     if (image.statusCode === 200) {
       res.redirect(url);

@@ -15,6 +15,7 @@ var app = express();
 // Set Access-Control
 app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, Cache-Control, Accept, Options, Authorization, X-Requested-With');
   res.setHeader('Cache-Control', 'no-cache');
   next();
 });
