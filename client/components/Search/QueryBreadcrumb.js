@@ -3,6 +3,9 @@ import MelodyHelper from '../../helpers/MelodyHelper';
 import {
   MELODY_DEFAULT_ABC
 } from '../../constants/MelodyConstants';
+import {
+  FIELDS
+} from '../../constants/SolrConstants';
 
 export default class QueryBreadcrumb extends React.Component {
 
