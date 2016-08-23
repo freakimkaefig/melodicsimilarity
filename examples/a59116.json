@@ -235,7 +235,7 @@
          "notes":[
          	{
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"C",
@@ -326,7 +326,7 @@
          "notes":[
             {
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"C",
@@ -467,7 +467,7 @@
       	"notes":[
       		{
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch": {
                   "step":"D",

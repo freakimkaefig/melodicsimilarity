@@ -135,7 +135,7 @@
             },
             {
                "type":"eighth",
-               "duration":2,
+               "duration":3,
                "rest":false,
                "pitch":{
                   "step":"D",
@@ -226,7 +226,7 @@
             },
             {
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"A",

@@ -45,7 +45,7 @@
          "notes":[
             {
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"G",
@@ -146,7 +146,7 @@
          "notes":[
             {
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"A",
@@ -257,7 +257,7 @@
          "notes":[
          	{
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"B",
@@ -278,7 +278,7 @@
             },
             {
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"B",
@@ -379,7 +379,7 @@
          "notes":[
             {
                "type":"quarter",
-               "duration":4,
+               "duration":6,
                "rest":false,
                "pitch":{
                   "step":"A",
