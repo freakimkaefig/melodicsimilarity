@@ -1,3 +1,19 @@
 .metadata {
   margin-top: 25px;
+
+  tr {
+    &.highlight {
+      background-color: rgba(50, 93, 136, 0.75);
+      color: #fff;
+    }
+
+    td {
+      &.field-label {
+        text-transform: capitalize;
+      }
+      &.field-value {
+        white-space: pre-wrap;
+      }
+    }
+  }
 }

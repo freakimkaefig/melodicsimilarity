@@ -122,9 +122,9 @@ export default class ResultDetail extends React.Component {
       searchResult
     } = this.state;
 
-    let highlighting = [];
+    let melodicHighlighting = [];
     if (typeof searchResult !== 'undefined') {
-      highlighting = searchResult.melodic.filter(item => {
+      melodicHighlighting = searchResult.melodic.filter(item => {
         return item.similarity >= searchResult.maxSimilarity;
       });
     }
@@ -165,7 +165,8 @@ export default class ResultDetail extends React.Component {
             similarityScores={similarityScores}
             similarSongsheets={similarSongsheets}
             similarMetadata={similarMetadata}
-            highlighting={highlighting}
+            melodicHighlighting={melodicHighlighting}
+            metadataHighlighting={metadataQueryFields}
           />
         </div>
       </DocumentTitle>

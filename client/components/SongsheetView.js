@@ -16,7 +16,8 @@ export default class SongsheetView extends React.Component {
     similarityScores: PropTypes.arrayOf(PropTypes.object),
     similarSongsheets: PropTypes.arrayOf(PropTypes.object),
     similarMetadata: PropTypes.arrayOf(PropTypes.object),
-    highlighting: PropTypes.arrayOf(PropTypes.object)
+    melodicHighlighting: PropTypes.arrayOf(PropTypes.object),
+    metadataHighlighting: PropTypes.arrayOf(PropTypes.object)
   };
 
   constructor(props) {
@@ -74,10 +75,10 @@ export default class SongsheetView extends React.Component {
     }
   }
 
-  _getMetadataViewer(metadata) {
+  _getMetadataViewer(metadata, highlighting) {
     if (typeof metadata !== 'undefined') {
       return (
-        <MetadataViewer metadata={metadata} />
+        <MetadataViewer metadata={metadata} highlight={highlighting} />
       );
     }
   }
@@ -114,7 +115,8 @@ export default class SongsheetView extends React.Component {
       similarityScores,
       similarSongsheets,
       similarMetadata,
-      highlighting
+      melodicHighlighting,
+      metadataHighlighting
     } = this.props;
 
     let {
@@ -137,7 +139,7 @@ export default class SongsheetView extends React.Component {
             </div>
           </div>
           <div className="col-xs-12 col-md-7 col-md-offset-1">
-            { this._getAbcViewer(file, highlighting) }
+            { this._getAbcViewer(file, melodicHighlighting) }
           </div>
         </div>
 
@@ -148,7 +150,7 @@ export default class SongsheetView extends React.Component {
           </div>
           <div className="col-xs-12 col-md-7 col-md-offset-1">
             <h2>Metadaten</h2>
-            { this._getMetadataViewer(metadata) }
+            { this._getMetadataViewer(metadata, metadataHighlighting) }
           </div>
         </div>
 

@@ -9,14 +9,19 @@ export default class AbcViewer extends React.Component {
     metadata: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.object
-    ])
+    ]),
+    highlight: PropTypes.arrayOf(PropTypes.object)
+  };
+
+  static defaultProps = {
+    highlight: []
   };
 
   constructor(props) {
     super(props);
   }
 
-  _getTableRows(data) {
+  _getTableRows(data, highlight) {
     if (typeof data !== 'undefined') {
       return FIELDS.map(field => {
         let label = field.display;
@@ -26,12 +31,21 @@ export default class AbcViewer extends React.Component {
           value = data[field.name];
         }
 
+        let highlightClass = '';
+        if (typeof highlight !== 'undefined') {
+          let highlightItem = highlight.find(item => {
+            return item.name === field.name
+              && item.value === value;
+          });
+          highlightClass = typeof highlightItem !== 'undefined' ? 'highlight' : '';
+        }
+
         return (
-          <tr key={'label-' + field.name}>
-            <td style={{textTransform: 'capitalize'}}>{label}</td>
-            <td style={{ whiteSpace: 'pre-wrap'}}>{value}</td>
+          <tr key={'label-' + field.name} className={highlightClass}>
+            <td className="field-label">{label}</td>
+            <td className="field-value">{value}</td>
           </tr>
-        )
+        );
       });
     }
   }
@@ -41,7 +55,7 @@ export default class AbcViewer extends React.Component {
       <div className="metadata">
         <Table responsive>
           <tbody>
-            {this._getTableRows(this.props.metadata)}
+            {this._getTableRows(this.props.metadata, this.props.highlight)}
           </tbody>
         </Table>
       </div>
