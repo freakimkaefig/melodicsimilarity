@@ -27,9 +27,6 @@ class SearchService {
     return searchPromise
       .then(response => {
         SearchActions.updateResults(response);
-      })
-      .catch(error => {
-        console.log(error);
       });
   }
 

@@ -37,28 +37,36 @@ export default class ParsonsCode extends React.Component {
   }
   
   onSearchStoreChange() {
-    if (SearchStore.parsonQuery.length > 0) {
-      let parson = SearchStore.parsonQuery;
+    let parson = SearchStore.parsonQuery;
+    if (parson.length > 0) {
       while (parson.charAt(0) === '*') {
         parson = parson.substr(1);
       }
-      let disabled = true;
-      if (this.validateIntervalString(parson)) {
-        disabled = false;
-      }
-      this.setState({
-        parsons: parson,
-        threshold: SearchStore.threshold,
-        disabled: disabled
-      });
     }
+
+    let disabled = true;
+    if (this.validateParsonString(parson)) {
+      disabled = false;
+    }
+
+    this.setState({
+      parsons: parson,
+      threshold: SearchStore.threshold,
+      disabled: disabled
+    });
   }
 
-  validateIntervalString(value) {
+  validateParsonString(value) {
     let regex = new RegExp(this.INPUT_REGEX);
 
     var error = false;
     var errorMessage = '';
+
+    if (value.length <= 0) {
+      error = true;
+      errorMessage = 'Die Konturlinie ist zu kurz.';
+    }
+
     if (!regex.test(value)) {
       error = true;
       errorMessage = 'Die Konturlinie enthält ungültige Zeichen.';

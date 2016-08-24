@@ -22,7 +22,7 @@ export default class Intervals extends React.Component {
   constructor(props) {
     super(props);
 
-    this.INPUT_REGEX = /^(-?\d{1,2}){1}(\s{1}-?\d{0,2})*\s?$/;
+    this.INPUT_REGEX = /^-?(-?\d{1,2}){0,1}(\s{1}-?\d{0,2})*\s?$/;
     this.BASE_PITCH = MusicjsonToolbox.base12Pitch('C', 0, 4, 0, true);
     this.DEFAULT_ABC = 'X:1\nL:1/4\nM:none\nK:C\nK:treble\nC';
 
@@ -58,7 +58,6 @@ export default class Intervals extends React.Component {
   }
   
   generateAbc(intervals) {
-    console.log(this.validateIntervalString(intervals));
     if (this.validateIntervalString(intervals)) {
       return INTERVAL_DEFAULT_ABC + intervals.split(' ').map((item, index, items) => {
         let base = this.BASE_PITCH;
@@ -89,6 +88,15 @@ export default class Intervals extends React.Component {
         errorMessage = 'Die Intervalle dürfen keine Dezimalzahlen enthalten.'
       } else {
         errorMessage = 'Bitte überprüfen Sie ihre Eingabe.';
+      }
+
+      if (value.length < 1) {
+        error = true;
+        errorMessage = '';
+      }
+    } else {
+      if (value === '- ') {
+        error = true;
       }
     }
 

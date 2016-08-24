@@ -6,6 +6,7 @@ import {
 import {
   FIELDS
 } from '../../constants/SolrConstants';
+import AbcViewer from '../AbcViewer';
 
 export default class QueryBreadcrumb extends React.Component {
 
