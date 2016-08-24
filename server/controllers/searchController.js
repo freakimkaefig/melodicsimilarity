@@ -55,7 +55,7 @@ var _mergeResults = function() {
     });
 
     if (!find) {
-      melodyResult.rank += 0.1;
+      melodyResult.rank += 0.5;
     }
   });
 
@@ -135,7 +135,7 @@ var _handleSolrSearch = function(solrSearchPromise, callback) {
             return item.id === solrResponse.response.docs[i].id;
           }),
           maxSimilarityCount: 0,
-          rank: i / solrResponse.response.docs.length / 10
+          rank: i / solrResponse.response.docs.length / 2
         });
       }
 
