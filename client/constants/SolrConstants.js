@@ -1,8 +1,11 @@
-import { SOLR_URL } from './AppConstants';
+import {
+  APP_URL,
+  SOLR_URL
+} from './AppConstants';
 export const SEARCH_QUERY_URL = SOLR_URL + 'solr/searchableDocs/query';
 export const METADATA_QUERY_URL = SOLR_URL + 'solr/metaData/query';
 
-export const METADATA_IMAGE_BASE_URL = 'http://localhost:3000/api/image/';
+export const METADATA_IMAGE_BASE_URL = APP_URL + 'api/image/';
 export const METADATA_PLACEHOLDER_IMAGE = 'placeholder.jpg';
 export const METADATA_PLACEHOLDER_TITLE = 'Kein Incipit vorhanden';
 export const METADATA_PLACEHOLDER_TEXT = 'Kein Liedtext vorhanden';
