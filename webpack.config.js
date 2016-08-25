@@ -6,12 +6,11 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var env = {};
-env.HOST = typeof process.env.HOST !== 'undefined' ? process.env.HOST : '127.0.0.1';
-env.PORT = typeof process.env.PORT !== 'undefined' ? process.env.PORT : 3000;
-env.BASE_URL = 'http://' + env.HOST + ':' + env.PORT + '/';
-env.MONGO_URI = typeof process.env.MONGO_URI !== 'undefined' ? process.env.MONGO_URI : 'mongodb://127.0.0.1:27017/melodicsimilarity';
-env.SOLR_URI = typeof process.env.SOLR_URI !== 'undefined' ? process.env.SOLR_URI : 'http://127.0.0.1:8983/';
-env.SOLRINTERACTION_BASE_URI = typeof process.env.SOLRINTERACTION_BASE_URI !== 'undefined' ? process.env.SOLRINTERACTION_BASE_URI : 'http://127.0.0.1:8080/';
+env.HOST = process.env.HOST || '127.0.0.1';
+env.BASE_URL = 'http://' + env.HOST + ':80/';
+env.MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/melodicsimilarity';
+env.SOLR_URI = process.env.SOLR_URI || 'http://127.0.0.1:8983/';
+env.SOLRINTERACTION_BASE_URI = process.env.SOLRINTERACTION_BASE_URI || 'http://127.0.0.1:8080/';
 env.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 env.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 env.AWS_REGION = process.env.AWS_REGION;
