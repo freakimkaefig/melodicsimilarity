@@ -8,7 +8,7 @@ var request = require('sync-request');
 var databaseService = require('../services/databaseService');
 var databaseConfig = require('../config/database.config.json');
 var imageConfig = require('../config/image.config.json');
-var env = require('../../.env');
+var env = require('../../.env.json');
 
 var that = {};
 

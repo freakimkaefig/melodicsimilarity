@@ -12,7 +12,7 @@ var AWS = require('aws-sdk');
 var fs = require('fs');
 var path = require('path');
 var urljoin = require('url-join');
-var env = require('../../.env');
+var env = require('../../.env.json');
 var apiConfig = require('../config/api.config.json');
 
 var that = {};

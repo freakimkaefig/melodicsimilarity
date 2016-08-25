@@ -1,4 +1,4 @@
-var env = require('../.env');
+var env = require('../.env.json');
 var should = require('should');
 
 process.env.BASE_URL = env.BASE_URL;

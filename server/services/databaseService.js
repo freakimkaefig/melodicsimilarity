@@ -7,7 +7,7 @@ var mongo = require('mongodb');
 var databaseConfig = require('../config/database.config.json');
 var MongoClient = mongo.MongoClient;
 var bcrypt = require('bcryptjs');
-var env = require('../../.env');
+var env = require('../../.env.json');
 
 var that = {};
 

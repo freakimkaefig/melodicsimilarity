@@ -5,7 +5,7 @@ import {
   HOST,
   PORT,
   BASE_URL
-} from '../../.env';
+} from '../../.env.json';
 
 export default class HomePage extends React.Component {
   static propTypes = {};
