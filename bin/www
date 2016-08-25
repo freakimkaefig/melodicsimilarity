@@ -1,9 +1,18 @@
 #!/usr/bin/env node
 var debug = require('debug')('MODULE_NAME');
 var app = require('../server/app');
+var env = require('../.env');
 
-app.set('port', process.env.PORT || 3000);
+app.set('port', env.PORT);
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
+  console.log('');
+  console.log('Environment Variables:');
+  console.log('    HOST:', env.HOST);
+  console.log('    PORT:', env.PORT);
+  console.log('    BASE_URL:', env.BASE_URL);
+  console.log('    MONGO_URI:', env.MONGO_URI);
+  console.log('    SOLR_URI:', env.SOLR_URI);
+  console.log('    SOLRINTERACTION_BASE_URI:', env.SOLRINTERACTION_BASE_URI);
 });

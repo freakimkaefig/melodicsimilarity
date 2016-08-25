@@ -34,9 +34,9 @@ var upload = function(file, destFileName, type, callback) {
   switch(apiConfig.uploads.driver) {
     case apiConfig.uploads.connections.s3.driver:
       AWS.config.update({
-        accessKeyId: env.AWS_CONFIG.ACCESS_KEY_ID,
-        secretAccessKey: env.AWS_CONFIG.SECRET_ACCESS_KEY,
-        region: env.AWS_CONFIG.REGION
+        accessKeyId: env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
+        region: env.AWS_REGION
       });
       _uploadToS3(file, destFileName, type, callback);
       break;
