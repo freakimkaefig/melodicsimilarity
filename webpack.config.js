@@ -36,7 +36,8 @@ var config = {
     new webpack.optimize.OccurenceOrderPlugin(),
     new ExtractTextPlugin('[name].css'),
     new CopyWebpackPlugin([
-      {from: 'node_modules/midi/soundfont', to: 'soundfont'}
+      {from: 'node_modules/midi/soundfont', to: 'soundfont'},
+      {from: 'lib/abcjs/bin/abcjs_basic_2.4.0.js', to: '../../lib/abcjs.js'}
     ])
   ],
   resolve: {
