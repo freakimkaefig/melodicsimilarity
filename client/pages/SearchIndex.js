@@ -6,8 +6,8 @@ import { FIELDS } from '../constants/SolrConstants';
 import { MODES } from '../constants/MelodyConstants';
 import SearchService from '../services/SearchService';
 import SearchStore from '../stores/SearchStore';
-import MetadataSearchbox from '../components/search/MetadataSearchbox';
-import MelodicSearchbox from '../components/search/MelodicSearchbox';
+import MetadataSearchbox from '../components/Search/MetadataSearchbox';
+import MelodicSearchbox from '../components/Search/MelodicSearchbox';
 
 export default class SearchIndex extends React.Component {
 
