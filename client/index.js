@@ -24,6 +24,14 @@ import SettingsPage from './pages/SettingsPage';
 import UploadPage from './pages/UploadPage';
 import UploadProgressPage from './pages/UploadProgressPage';
 
+browserHistory.listen(location => {
+  setTimeout(() => {
+    if (location.action === 'POP') {
+      return;
+    }
+    window.scrollTo(0, 0);
+  });
+});
 
 var router = (
   <Router history={browserHistory}>
