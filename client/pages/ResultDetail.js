@@ -20,6 +20,7 @@ export default class ResultDetail extends React.Component {
 
     this.state = {
       metadataQueryFields: SearchStore.queryFields,
+      melodyMode: SearchStore.melodyMode,
       parsonQuery: SearchStore.parsonQuery,
       intervalQuery: SearchStore.intervalQuery,
       melodyQuery: SearchStore.melodyQuery,
@@ -96,6 +97,7 @@ export default class ResultDetail extends React.Component {
   onSearchStoreChange() {
     this.setState({
       metadataQueryFields: SearchStore.queryFields,
+      melodyMode: SearchStore.melodyMode,
       parsonQuery: SearchStore.parsonQuery,
       intervalQuery: SearchStore.intervalQuery,
       melodyQuery: SearchStore.melodyQuery,
@@ -110,6 +112,7 @@ export default class ResultDetail extends React.Component {
 
     let {
       metadataQueryFields,
+      melodyMode,
       parsonQuery,
       intervalQuery,
       melodyQuery,
@@ -146,6 +149,7 @@ export default class ResultDetail extends React.Component {
                   <Breadcrumb.Item>
                     <QueryBreadcrumb
                       metadataQuery={metadataQueryFields}
+                      melodyMode={melodyMode}
                       parsonQuery={parsonQuery}
                       intervalQuery={intervalQuery}
                       melodyQuery={melodyQuery}

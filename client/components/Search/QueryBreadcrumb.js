@@ -1,17 +1,22 @@
 import React, { PropTypes } from 'react';
 import MelodyHelper from '../../helpers/MelodyHelper';
 import {
+  MODES,
   MELODY_DEFAULT_ABC
 } from '../../constants/MelodyConstants';
 import {
   FIELDS
 } from '../../constants/SolrConstants';
+import {
+  search
+} from '../../../server/config/api.config.json';
 import AbcViewer from '../AbcViewer';
 
 export default class QueryBreadcrumb extends React.Component {
 
   static propTypes = {
     metadataQuery: PropTypes.arrayOf(PropTypes.object),
+    melodyMode: PropTypes.number,
     parsonQuery: PropTypes.string,
     intervalQuery: PropTypes.string,
     melodyQuery: PropTypes.arrayOf(PropTypes.object)
@@ -24,6 +29,7 @@ export default class QueryBreadcrumb extends React.Component {
   render() {
     let {
       metadataQuery,
+      melodyMode,
       parsonQuery,
       intervalQuery,
       melodyQuery
@@ -47,25 +53,32 @@ export default class QueryBreadcrumb extends React.Component {
       );
     });
 
-    let renderedParsonQuery = parsonQuery.length > 1 ? (
-      <span className="label label-default">{`Parsons Code: ${parsonQuery}`}</span>
-    ) : '';
+    let renderedMelodyQuery = '';
+    switch(melodyMode) {
+      case MODES.indexOf(search.melodyMode.melody.name):
+        renderedMelodyQuery = melodyQuery.length > 0 ? (
+          <span className="label label-melody">
+            Melodie: <AbcViewer abc={MelodyHelper.generateAbc(MELODY_DEFAULT_ABC, melodyQuery)} itemKey={-1} player={false} />
+          </span>
+        ) : '';
+        break;
 
-    let renderedIntervalQuery = intervalQuery.length > 1 ? (
-      <span className="label label-default">{`Intervalle: ${intervalQuery}`}</span>
-    ) : '';
+      case MODES.indexOf(search.melodyMode.intervals.name):
+        renderedMelodyQuery = intervalQuery.length > 1 ? (
+          <span className="label label-default">{`Intervalle: ${intervalQuery}`}</span>
+        ) : '';
+        break;
 
-    let renderedMelodyQuery = melodyQuery.length > 0 ? (
-      <span className="label label-melody">
-        Melodie: <AbcViewer abc={MelodyHelper.generateAbc(MELODY_DEFAULT_ABC, melodyQuery)} itemKey={-1} player={false} />
-      </span>
-    ) : '';
+      case MODES.indexOf(search.melodyMode.parsons.name):
+        renderedMelodyQuery = parsonQuery.length > 1 ? (
+          <span className="label label-default">{`Parsons Code: ${parsonQuery}`}</span>
+        ) : '';
+        break;
+    }
 
     return (
       <span>
         {renderedMetadataQuery}
-        {renderedParsonQuery}
-        {renderedIntervalQuery}
         {renderedMelodyQuery}
       </span>
     )

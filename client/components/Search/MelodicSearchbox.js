@@ -1,6 +1,14 @@
 import React, {PropTypes} from 'react';
-import { Tabs, Tab } from 'react-bootstrap';
-import { MODES } from '../../constants/MelodyConstants';
+import {
+  Tabs,
+  Tab
+} from 'react-bootstrap';
+import {
+  MODES
+} from '../../constants/MelodyConstants';
+import {
+  search
+} from '../../../server/config/api.config.json';
 import MelodyActions from '../../actions/MelodyActions';
 import SearchStore from '../../stores/SearchStore';
 import Melody from './MelodicSearchbox/Melody';
@@ -50,13 +58,13 @@ export default class MelodicSearchbox extends React.Component {
   render() {
     return (
       <Tabs activeKey={this.state.mode} id="melodicsearchbox" onSelect={this.handleSelect}>
-        <Tab eventKey={MODES.indexOf('MELODY')} title="Melodie">
+        <Tab eventKey={MODES.indexOf(search.melodyMode.melody.name)} title="Melodie">
           <Melody submit={this.handleSubmit} />
         </Tab>
-        <Tab eventKey={MODES.indexOf('INTERVALS')} title="Intervalle">
+        <Tab eventKey={MODES.indexOf(search.melodyMode.intervals.name)} title="Intervalle">
           <Intervals submit={this.handleSubmit} />
         </Tab>
-        <Tab eventKey={MODES.indexOf('PARSONS')} title="Parsons Code">
+        <Tab eventKey={MODES.indexOf(search.melodyMode.parsons.name)} title="Parsons Code">
           <ParsonsCode submit={this.handleSubmit} />
         </Tab>
       </Tabs>

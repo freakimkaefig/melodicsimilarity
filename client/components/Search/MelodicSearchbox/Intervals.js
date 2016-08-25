@@ -11,6 +11,9 @@ import {
   INTERVAL_DEFAULT_ABC,
   MODES
 } from '../../../constants/MelodyConstants';
+import {
+  search
+} from '../../../../server/config/api.config.json';
 import SearchStore from '../../../stores/SearchStore';
 import '../../../stylesheets/InputRange.less';
 
@@ -144,7 +147,7 @@ export default class Intervals extends React.Component {
     );
 
     let abcViewer;
-    if (mode === MODES.indexOf('INTERVALS')) {
+    if (mode === MODES.indexOf(search.melodyMode.intervals.name)) {
       abcViewer = (
         <AbcViewer abc={abc} itemKey={1} />
       )

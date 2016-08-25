@@ -16,6 +16,9 @@ import {
   NOTE_TYPES,
   ALTER_VALUES
 } from '../../../constants/MelodyConstants';
+import {
+  search
+} from '../../../../server/config/api.config.json';
 import SearchStore from '../../../stores/SearchStore';
 
 export default class Melody extends React.Component {
@@ -150,7 +153,7 @@ export default class Melody extends React.Component {
     let {melody, mode, abc, disabled, threshold, step, octave, accidental, rest, duration, dot} = this.state;
 
     let abcViewer;
-    if (mode === MODES.indexOf('MELODY') && melody.length > 0) {
+    if (mode === MODES.indexOf(search.melodyMode.melody.name) && melody.length > 0) {
       abcViewer = (
         <AbcViewer abc={abc} itemKey={1} />
       );

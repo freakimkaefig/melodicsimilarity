@@ -1,10 +1,15 @@
 import {APP_URL} from './AppConstants';
+import {search} from '../../server/config/api.config.json';
 
 export const BASE_URL = APP_URL;
 export const SEARCH_PARSON_URL = BASE_URL + 'api/search/parson/';
 export const SEARCH_INTERVAL_URL = BASE_URL + 'api/search/interval/';
 
-export const MODES = ['MELODY', 'INTERVALS', 'PARSONS'];
+export const MODES = [
+  search.melodyMode.melody.name,
+  search.melodyMode.intervals.name,
+  search.melodyMode.parsons.name
+];
 
 export const NOTE_TYPES = {
   1: '64th',

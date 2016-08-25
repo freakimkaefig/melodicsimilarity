@@ -8,6 +8,7 @@ var when = require('when');
 var _ = require('lodash');
 var MusicJsonToolbox = require('musicjson-toolbox');
 var databaseService = require('../services/databaseService');
+var apiConfig = require('../config/api.config.json');
 var databaseConfig = require('../config/database.config.json');
 
 var that = {};
@@ -77,21 +78,22 @@ var search = function(req, res) {
   store.solrQuery = req.body.solrQuery;
   store.melodyMode = req.body.melodyMode;
   store.melodyQuery = req.body.melodyQuery;
+
   store.res = res;
 
   // Determine callback by melody mode
   var callback = null;
   if (store.melodyQuery) {
     switch(store.melodyMode) {
-      case 'MELODY':
+      case apiConfig.search.melodyMode.melody.name:
         callback = _searchMelody;
         break;
 
-      case 'INTERVALS':
+      case apiConfig.search.melodyMode.intervals.name:
         callback = _searchIntervals;
         break;
 
-      case 'PARSONS':
+      case apiConfig.search.melodyMode.parsons.name:
         callback = _searchParson;
         break;
     }

@@ -28,6 +28,20 @@
     }
   ],
 
+  "search": {
+    "melodyMode": {
+      "melody": {
+        "name": "MELODY"
+      },
+      "intervals": {
+        "name": "INTERVALS"
+      },
+      "parsons": {
+        "name": "PARSONS"
+      }
+    }
+  },
+
   "statistics": {
 
     "notes": {
