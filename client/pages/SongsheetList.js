@@ -63,7 +63,9 @@ export default class SongsheetList extends React.Component {
         <div>
           <h1 className="text-center">Liedblatt-Galerie</h1>
           <LoadingOverlay loading={this.state.songsheets <= 0} />
-          <FileGrid files={this.state.songsheets} metadata={this.state.metadata} />
+          <div className="offset-container">
+            <FileGrid files={this.state.songsheets} metadata={this.state.metadata} />
+          </div>
           <div className="text-center">
             <Pagination
               prev

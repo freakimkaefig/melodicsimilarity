@@ -1,0 +1,144 @@
+@import (reference) "../../config/_variables.less";
+
+[class*="col-"],
+[class^="col-"] {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+.row {
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+}
+
+.text-muted {
+  color: @gray !important;
+}
+.text-primary {
+  color: @brand-primary !important;
+}
+.text-warning {
+  color: @brand-warning !important;
+}
+.text-danger {
+  color: @brand-danger !important;
+}
+.text-success {
+  color: @brand-success !important;
+}
+.text-info {
+  color: @brand-info !important;
+}
+
+#app {
+  padding-top: 100px;
+  padding-bottom: 80px;
+  background-color: @body-bg;
+}
+
+:focus {
+  //outline-color: @brand-primary !important;
+}
+.form-control:focus {
+  //outline: @brand-primary auto 5px !important;
+  //box-shadow: none !important;
+}
+.btn:focus,
+.btn:active:focus,
+.btn.active:focus,
+.btn.focus,
+.btn:active.focus,
+.btn.active.focus {
+  //outline: none !important;
+}
+.btn.btn-shy {
+  color: @gray-darker;
+  border-color: @gray-darker;
+  &:hover,
+  &:focus,
+  &.focus {
+    background-color: @gray-darker;
+    color: @body-bg;
+  }
+}
+
+.nav-tabs > li > a {
+  font-size: 20px;
+}
+.nav > li > a {
+  &:hover,
+  &:focus {
+    color: @body-bg;
+    outline: none;
+  }
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3 {
+  margin-bottom: @line-height-computed * 2;
+}
+
+svg text {
+  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.offset-container {
+  padding-left: 60px;
+  padding-right: 60px;
+}
+
+.box {
+  padding-left: 45px;
+  padding-right: 45px;
+  padding-bottom: 30px;
+  border: 1px solid @gray-light;
+  margin-bottom: 60px;
+  border-radius: 4px;
+
+  .heading {
+    background-color: @brand-primary;
+    margin-left: -45px;
+    margin-right: -45px;
+    margin-bottom: 60px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    h1, .h1,
+    h2, .h2,
+    h3, .h3 {
+      color: @body-bg;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.InputRange {
+  .InputRange-label {
+    color: @gray-darker;
+    font-family: @font-family-sans-serif;
+    font-size: 1.8rem;
+
+    &.InputRange-label--min,
+    &.InputRange-label--max {
+      bottom: -3.1rem;
+    }
+    &.InputRange-label--value {
+      top: -3.5rem;
+      font-weight: bold;
+    }
+  }
+
+  .InputRange-track {
+    height: 0.6rem;
+    background: lighten(@brand-primary, 35%);
+  }
+  .InputRange-track--active,
+  .InputRange-slider {
+    background: @brand-primary;
+  }
+  .InputRange-slider {
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-top: -0.95rem;
+    border-color: @brand-primary;
+  }
+}

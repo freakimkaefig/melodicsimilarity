@@ -24,7 +24,7 @@ export default class AbcViewer extends React.Component {
     this.parserParams = {};
     this.renderParams = {};
     this.engraverParams = {
-      staffwidth: 600,
+      staffwidth: 560,
       paddingtop: 5,
       paddingbottom: 30,
       paddingleft: 0,

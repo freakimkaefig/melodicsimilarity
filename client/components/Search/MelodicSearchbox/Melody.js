@@ -169,6 +169,12 @@ export default class Melody extends React.Component {
       </Popover>
     );
 
+    let thresholdTutorial = (
+      <Popover title="Threshold" id="melody-threshold-tutorial">
+        <p>Der Threshold legt den Schwellenwert für die Ähnlichkeitsberechnung fest, den die Suchergebnisse nicht unterschreiten dürfen.</p>
+      </Popover>
+    );
+
     return (
       <form onSubmit={this.handleSubmit} id="melody-form">
         <div className="container">
@@ -304,13 +310,17 @@ export default class Melody extends React.Component {
             </div>
           </div>
 
-          <div className="row">
+          <div className="row threshold">
             <div className="col-xs-12 col-sm-6 col-md-4">
+              <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={thresholdTutorial}>
+                <label>Threshold <small><i className="fa fa-question-circle" aria-hidden="true"></i></small></label>
+              </OverlayTrigger>
               <InputRange
                 maxValue={100}
-                minValue={30}
+                minValue={0}
                 step={10}
                 value={threshold}
+                labelSuffix="%"
                 onChange={this.handleThresholdChange.bind(this)} />
             </div>
           </div>

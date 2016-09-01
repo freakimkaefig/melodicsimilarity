@@ -48,9 +48,7 @@ export default class SongsheetView extends React.Component {
     if (typeof metadata !== 'undefined') {
       if (typeof metadata.imagename !== 'undefined') {
         return (
-          <div className="col-xs-12">
-            <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
-          </div>
+          <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
         );
       }
     }
@@ -97,13 +95,8 @@ export default class SongsheetView extends React.Component {
 
     if (similarItems.length > 0) {
       return (
-        <div className="row">
-          <div className="col-lg-8 col-lg-offset-2 text-center">
-            <h3>Ähnliche Liedblätter</h3>
-            <FileGrid files={similarItems} metadata={similarMetadata}
-                      itemClass="item col-xs-6 col-sm-3 text-center"/>
-          </div>
-        </div>
+        <FileGrid files={similarItems} metadata={similarMetadata}
+                  itemClass="item col-xs-6 col-sm-3 text-center"/>
       );
     }
   }
@@ -131,30 +124,72 @@ export default class SongsheetView extends React.Component {
 
         <div className="row">
           <div className="col-xs-12">
-            <h1 className="text-center">{`${signature}${title}`}</h1>
-          </div>
-          <div className="col-xs-12 col-md-4">
-            <div className="row">
-              { this._getImageView(metadata) }
+            <div className="box">
+              <div className="heading row">
+                <div className="col-xs-12">
+                  <h1 className="text-center">{`${signature}${title}`}</h1>
+                </div>
+              </div>
+              <div className="content row">
+                <div className="col-xs-12 col-md-5">
+                  { this._getImageView(metadata) }
+                </div>
+                <div className="col-xs-12 col-md-6 col-md-offset-1">
+                  { this._getAbcViewer(file, melodicHighlighting) }
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="col-xs-12 col-md-7 col-md-offset-1">
-            { this._getAbcViewer(file, melodicHighlighting) }
           </div>
         </div>
 
         <div className="row">
-          <div className="col-xs-12 col-md-4">
-            <h2>Liedtext</h2>
-            { this._getMetadataText(metadata) }
+          <div className="col-xs-12 col-md-6">
+            <div className="box">
+              <div className="heading row">
+                <div className="col-xs-12">
+                  <h2 className="text-center">Liedtext</h2>
+                </div>
+              </div>
+              <div className="content row">
+                <div className="col-xs-12">
+                  { this._getMetadataText(metadata) }
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="col-xs-12 col-md-7 col-md-offset-1">
-            <h2>Metadaten</h2>
-            { this._getMetadataViewer(metadata, metadataHighlighting) }
+          <div className="col-xs-12 col-md-6">
+            <div className="box">
+              <div className="heading row">
+                <div className="col-xs-12">
+                  <h2 className="text-center">Metadaten</h2>
+                </div>
+              </div>
+              <div className="content row">
+                <div className="col-xs-12">
+                  { this._getMetadataViewer(metadata, metadataHighlighting) }
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        { this._getSimilarSongsheets(similarityThreshold, similarityScores, similarSongsheets, similarMetadata) }
+        <div className="row">
+          <div className="col-xs-12 col-lg-8 col-lg-offset-2 text-center">
+            <div className="box">
+              <div className="heading row">
+                <div className="col-xs-12">
+                  <h3>Ähnliche Liedblätter</h3>
+                </div>
+              </div>
+              <div className="content row">
+                <div className="col-xs-12">
+                  { this._getSimilarSongsheets(similarityThreshold, similarityScores, similarSongsheets, similarMetadata) }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     );
   }

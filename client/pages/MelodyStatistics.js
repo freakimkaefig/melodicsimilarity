@@ -3,6 +3,7 @@ import DocumentTitle from 'react-document-title';
 import LoadingOverlay from '../components/LoadingOverlay';
 import {APP_NAME} from '../constants/AppConstants';
 import {statistics} from '../../server/config/api.config.json';
+import {COLORS} from '../constants/StatisticsConstants';
 import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
 import ReactHighcharts from 'react-highcharts';
@@ -20,6 +21,7 @@ export default class MelodyStatistics extends React.Component {
       chart: {
         type: 'column'
       },
+      colors: COLORS,
       title: {
         text: ''
       },
@@ -70,6 +72,7 @@ export default class MelodyStatistics extends React.Component {
         polar: true,
         type: 'column'
       },
+      colors: COLORS,
       title: {
         text: ''
       },
@@ -119,6 +122,7 @@ export default class MelodyStatistics extends React.Component {
       chart: {
         type: 'boxplot'
       },
+      colors: COLORS,
       title: {
         text: ''
       },

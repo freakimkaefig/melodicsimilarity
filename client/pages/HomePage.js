@@ -13,7 +13,8 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <DocumentTitle title={`Home // ${APP_NAME}`}>
-        <div>
+        <div className="offset-container">
+
           <div className="row">
             <div className="col-xs-12">
               <h1 className="text-center">{APP_NAME}</h1>
@@ -32,15 +33,6 @@ export default class HomePage extends React.Component {
               <h3>Drei</h3>
               <p>Schaung kost nix Sauakraud Edlweiss damischa nia need Griasnoggalsubbm, resch wui! Geh Edlweiss Heimatland dahoam, obandeln. Da auf’d Schellnsau scheans mim Schbozal. Liberalitas Bavariae Weibaleid Buam Biaschlegl, Klampfn imma: Blärrd Wiesn gfreit mi Schdarmbeaga See mogsd a Bussal Maibam zua i waar soweid measi mehra Mongdratzal. Haferl naa singan, d’. I bin a woschechta Bayer i sog ja nix, i red ja bloß do Biakriagal a ganze Schdeckalfisch sodala, heid oans, zwoa, gsuffa a und. I daad middn glacht wia im Beidl fias Schneid Brezn? Watschnbaam Gstanzl hoam oamoi g’hupft wia gsprunga Radi Diandldrahn Ramasuri auf gehds beim Schichtl owe. Glacht bitt wolln mechad i waar soweid, i sog ja nix, i red ja bloß. Vui huift vui i bin a woschechta Bayer gfreit mi Steckerleis, Buam Namidog.</p>
             </div>
-          </div>
-
-          <div className="row">
-            <h3>DEBUG</h3>
-            <pre>
-              {HOST}
-              {PORT}
-              {BASE_URL}
-            </pre>
           </div>
 
         </div>

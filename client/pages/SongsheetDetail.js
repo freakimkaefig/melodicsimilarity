@@ -90,28 +90,33 @@ export default class SongsheetDetail extends React.Component {
         <div>
           <LoadingOverlay loading={loading} />
 
-          <div className="row">
-            <div className="col-xs-12">
-              <Breadcrumb>
-                <LinkContainer to="/songsheets" key={0}>
-                  <Breadcrumb.Item>
-                    Liedblätter
+          <div className="offset-container">
+            <div className="row">
+              <div className="col-xs-12">
+                <Breadcrumb>
+                  <LinkContainer to="/songsheets" key={0}>
+                    <Breadcrumb.Item>
+                      Liedblätter
+                    </Breadcrumb.Item>
+                  </LinkContainer>
+                  <Breadcrumb.Item active>
+                    {signature}
                   </Breadcrumb.Item>
-                </LinkContainer>
-                <Breadcrumb.Item active>
-                  {signature}
-                </Breadcrumb.Item>
-              </Breadcrumb>
+                </Breadcrumb>
+              </div>
             </div>
           </div>
 
-          <SongsheetView
-            file={file}
-            metadata={metadata}
-            similarityScores={similarityScores}
-            similarSongsheets={similarSongsheets}
-            similarMetadata={similarMetadata}
-          />
+          <div className="offset-container">
+            <SongsheetView
+              file={file}
+              metadata={metadata}
+              similarityScores={similarityScores}
+              similarSongsheets={similarSongsheets}
+              similarMetadata={similarMetadata}
+            />
+          </div>
+
         </div>
       </DocumentTitle>
     )

@@ -260,7 +260,7 @@ export default class MetadataSearchbox extends React.Component {
                 onText="UND"
                 onColor="info"
                 offText="ODER"
-                offColor="success"
+                offColor="primary"
                 state={operator}
                 labelText="Suchoperator"
                 onChange={this.onSwitchChange.bind(this)} />

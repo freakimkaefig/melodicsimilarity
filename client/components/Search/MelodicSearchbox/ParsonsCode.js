@@ -4,7 +4,6 @@ import {OverlayTrigger, Popover} from 'react-bootstrap';
 import InputRange from 'react-input-range';
 import MelodyActions from '../../../actions/MelodyActions';
 import SearchStore from '../../../stores/SearchStore';
-import '../../../stylesheets/InputRange.less';
 
 export default class ParsonsCode extends React.Component {
   static propTypes = {
@@ -112,6 +111,12 @@ export default class ParsonsCode extends React.Component {
       </Popover>
     );
 
+    let thresholdTutorial = (
+      <Popover title="Threshold" id="parsons-threshold-tutorial">
+        <p>Der Threshold legt den Schwellenwert für die Ähnlichkeitsberechnung fest, den die Suchergebnisse nicht unterschreiten dürfen.</p>
+      </Popover>
+    );
+
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="container">
@@ -130,7 +135,7 @@ export default class ParsonsCode extends React.Component {
                     type="text"
                     name="parsons"
                     value={parsons}
-                    className="form-control"
+                    className="react-autosuggest__input"
                     aria-describedby="parsons-addon"
                     onChange={this.onSearchChange.bind(this)} />
                   <span className="input-group-btn">
@@ -143,18 +148,22 @@ export default class ParsonsCode extends React.Component {
                     </OverlayTrigger>
                   </span>
                 </div>
-                <span id="parsons-error" className="help-block">{errorMessage}</span>
+                <span id="parsons-error" className="help-block text-danger">{errorMessage}</span>
               </div>
             </div>
           </div>
 
-          <div className="row">
+          <div className="row threshold">
             <div className="col-xs-12 col-sm-6 col-md-4">
+              <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={thresholdTutorial}>
+                <label>Threshold <small><i className="fa fa-question-circle" aria-hidden="true"></i></small></label>
+              </OverlayTrigger>
               <InputRange
                 maxValue={100}
-                minValue={30}
+                minValue={0}
                 step={10}
                 value={this.state.threshold}
+                labelSuffix="%"
                 onChange={this.handleThresholdChange.bind(this)} />
             </div>
           </div>

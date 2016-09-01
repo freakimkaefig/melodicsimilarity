@@ -14,7 +14,7 @@ export default class ImageZoom extends React.Component {
   static defaultProps = {
     ...React.Component.defaultProps,
     image: '',
-    scale: 2.4,
+    scale: 4.0,
     store: null
   };
 

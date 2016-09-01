@@ -40,7 +40,7 @@ export default class InputField extends React.Component {
       <div className="form-group">
         <label htmlFor={name}>{title}</label>
         <input
-          className="form-control"
+          className="react-autosuggest__input"
           onChange={this.handleChange.bind(this)}
           {...opts} />
       </div>
