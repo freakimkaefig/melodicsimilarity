@@ -15,6 +15,7 @@ env.AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 env.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 env.AWS_REGION = process.env.AWS_REGION;
 console.log(env);
+console.log('');
 fs.writeFileSync(path.join(__dirname, '.env.json'), JSON.stringify(env));
 
 var config = {
@@ -51,10 +52,13 @@ var config = {
     new CopyWebpackPlugin([
       {from: 'node_modules/midi/soundfont', to: 'soundfont'},
       {from: 'lib/abcjs/bin/abcjs_basic_2.4.0.js', to: '../../lib/abcjs.js'}
-    ])
+    ]),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': process.env.NPM_CONFIG_PRODUCTION ? '"production"' : '"development"'
+    })
   ],
   resolve: {
-    modules: ['node_modules', 'client '],
+    modules: ['node_modules', 'client', 'config'],
     alias: {
       'react-input-range-css': path.join(__dirname, './node_modules/react-input-range/dist/react-input-range.css')
     }
