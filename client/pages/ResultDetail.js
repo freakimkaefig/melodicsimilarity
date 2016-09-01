@@ -127,9 +127,11 @@ export default class ResultDetail extends React.Component {
 
     let melodicHighlighting = [];
     if (typeof searchResult !== 'undefined') {
-      melodicHighlighting = searchResult.melodic.filter(item => {
-        return item.similarity >= searchResult.maxSimilarity;
-      });
+      if (typeof searchResult.melodic !== 'undefined') {
+        melodicHighlighting = searchResult.melodic.filter(item => {
+          return item.similarity >= searchResult.maxSimilarity;
+        });
+      }
     }
 
     return (

@@ -10,4 +10,5 @@ vendor/
 
 public/build/
 public/uploads/
+dump/
 .env.json

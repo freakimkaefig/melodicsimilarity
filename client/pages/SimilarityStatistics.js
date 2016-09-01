@@ -49,12 +49,17 @@ export default class SimilarityStatistics extends React.Component {
       network
     } = this.state;
     let nextGraphData = StatisticsStore.graph;
+    let threshold = SettingsStore.settings['threshold'].value;
 
-    // console.log(nextGraphData, SettingsStore.settings['threshold'].value * 1000);
-    network.setData({
-      nodes: new vis.DataSet(nextGraphData.nodes),
-      edges: new vis.DataSet(nextGraphData.edges)
-    });
+    if (network) {
+      network.setData({
+        nodes: new vis.DataSet(nextGraphData.nodes),
+        edges: new vis.DataSet(nextGraphData.edges.filter(item => {
+          console.log(item.length, threshold * 1000)
+          return item.length > threshold * 1000;
+        }))
+      });
+    }
 
     this.setState({
       graphData: nextGraphData

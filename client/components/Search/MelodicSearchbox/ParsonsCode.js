@@ -13,7 +13,7 @@ export default class ParsonsCode extends React.Component {
   constructor(props) {
     super(props);
 
-    this.INPUT_REGEX = /^[udr]+$/;
+    this.INPUT_REGEX = /^[udr]*$/;
 
     this.state = {
       parsons: SearchStore.parsonQuery,
@@ -36,22 +36,10 @@ export default class ParsonsCode extends React.Component {
   }
   
   onSearchStoreChange() {
-    let parson = SearchStore.parsonQuery;
-    if (parson.length > 0) {
-      while (parson.charAt(0) === '*') {
-        parson = parson.substr(1);
-      }
-    }
-
-    let disabled = true;
-    if (this.validateParsonString(parson)) {
-      disabled = false;
-    }
-
     this.setState({
-      parsons: parson,
+      parsons: SearchStore.parsonQuery,
       threshold: SearchStore.threshold,
-      disabled: disabled
+      disabled: SearchStore.intervalQuery.length === 0
     });
   }
 
@@ -61,14 +49,14 @@ export default class ParsonsCode extends React.Component {
     var error = false;
     var errorMessage = '';
 
-    if (value.length <= 0) {
-      error = true;
-      errorMessage = 'Die Konturlinie ist zu kurz.';
-    }
-
     if (!regex.test(value)) {
       error = true;
       errorMessage = 'Die Konturlinie enthält ungültige Zeichen.';
+
+      if (value.length < 1) {
+        error = true;
+        errorMessage = '';
+      }
     }
 
     this.setState({
@@ -81,7 +69,9 @@ export default class ParsonsCode extends React.Component {
 
   onSearchChange(event) {
     let parsons = event.target.value;
-    MelodyActions.updateParsonQuery(parsons);
+    if (this.validateParsonString(parsons)) {
+      MelodyActions.updateParsonQuery(parsons);
+    }
   }
 
   handleThresholdChange(component, value) {
