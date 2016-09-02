@@ -8,6 +8,7 @@ import {
 } from '../../.env.json';
 
 export default class HomePage extends React.Component {
+  static displayName = 'HomePage';
   static propTypes = {};
 
   render() {

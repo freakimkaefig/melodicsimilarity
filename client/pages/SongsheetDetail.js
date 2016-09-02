@@ -9,6 +9,7 @@ import SongsheetStore from '../stores/SongsheetStore';
 import SongsheetService from '../services/SongsheetService';
 
 export default class SongsheetDetail extends React.Component {
+  static displayName = 'SongsheetDetail';
 
   constructor(props) {
     super(props);

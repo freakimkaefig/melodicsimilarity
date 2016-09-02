@@ -12,6 +12,7 @@ import _ from 'lodash';
 import '../stylesheets/GraphPage.less';
 
 export default class MelodyStatistics extends React.Component {
+  static displayName = 'HomePage';
   static propTypes = {};
 
   constructor(props) {

@@ -10,6 +10,8 @@ import {Pagination} from 'react-bootstrap';
 
 
 export default class SongsheetList extends React.Component {
+  static displayName = 'SongsheetList';
+
   constructor(props) {
     super(props);
 

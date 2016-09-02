@@ -14,6 +14,7 @@ import SongsheetService from '../services/SongsheetService';
 import SearchStore from '../stores/SearchStore';
 
 export default class ResultDetail extends React.Component {
+  static displayName = 'ResultDetail';
 
   constructor(props) {
     super(props);

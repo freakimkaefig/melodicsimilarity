@@ -4,6 +4,7 @@ import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
 
 export default class LogoutPage extends React.Component {
+  static displayName = 'HomePage';
   
   componentDidMount() {
     Auth.logout();

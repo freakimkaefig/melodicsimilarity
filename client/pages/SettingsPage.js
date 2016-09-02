@@ -19,6 +19,7 @@ import SettingsStore from '../stores/SettingsStore';
 import '../stylesheets/SettingsPage.less';
 
 export default AuthenticatedComponent(class SettingsPage extends React.Component {
+  static displayName = 'SettingsPage';
 
   constructor(props) {
     super(props);

@@ -12,6 +12,7 @@ import _ from 'lodash';
 import '../stylesheets/GraphPage.less';
 
 export default class MetadataStatistics extends React.Component {
+  static displayName = 'MetadataStatistics';
   static propTypes = {};
 
   constructor(props) {

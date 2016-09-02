@@ -5,6 +5,7 @@ import { APP_NAME } from '../constants/AppConstants';
 import UploadView from '../components/Upload/UploadView';
 
 export default AuthenticatedComponent(class UploadPage extends React.Component {
+  static displayName = 'UploadPage';
 
   constructor(props) {
     super(props);

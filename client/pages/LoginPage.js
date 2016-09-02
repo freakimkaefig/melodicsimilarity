@@ -5,6 +5,7 @@ import Auth from '../services/AuthService';
 
 
 export default class LoginPage extends React.Component {
+  static displayName = 'HomePage';
 
   constructor() {
     super();

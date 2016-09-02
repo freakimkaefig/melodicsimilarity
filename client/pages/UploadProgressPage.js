@@ -8,6 +8,7 @@ import { browserHistory } from 'react-router';
 
 
 export default AuthenticatedComponent(class UploadProgressPage extends React.Component {
+  static displayName = 'UploadProgressPage';
 
   constructor(props) {
     super(props);

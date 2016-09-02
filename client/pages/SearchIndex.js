@@ -10,6 +10,7 @@ import MetadataSearchbox from '../components/Search/MetadataSearchbox';
 import MelodicSearchbox from '../components/Search/MelodicSearchbox';
 
 export default class SearchIndex extends React.Component {
+  static displayName = 'SearchIndex';
 
   constructor(props) {
     super(props);

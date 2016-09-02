@@ -31,6 +31,8 @@ import {
 import '../stylesheets/ResultList.less';
 
 export default class ResultList extends React.Component {
+  static displayName = 'ResultList';
+
   constructor(props) {
     super(props);
 

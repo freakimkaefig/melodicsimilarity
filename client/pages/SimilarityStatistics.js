@@ -11,6 +11,7 @@ import $ from 'jquery';
 import '../stylesheets/GraphPage.less';
 
 export default class SimilarityStatistics extends React.Component {
+  static displayName = 'SimilarityStatistics';
   static propTypes = {};
 
   constructor(props) {
