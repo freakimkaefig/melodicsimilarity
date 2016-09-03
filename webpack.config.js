@@ -7,7 +7,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var env = {};
 env.HOST = process.env.HOST || '127.0.0.1';
-env.BASE_URL = 'http://' + env.HOST + ':80/';
+env.PORT = process.env.PORT || 3000;
+env.BASE_URL = 'http://' + env.HOST + ':' + env.PORT + '/';
 env.MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/melodicsimilarity';
 env.SOLR_URI = process.env.SOLR_URI || 'http://127.0.0.1:8983/';
 env.SOLRINTERACTION_BASE_URI = process.env.SOLRINTERACTION_BASE_URI || 'http://127.0.0.1:8080/';
