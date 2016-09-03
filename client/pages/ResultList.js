@@ -15,15 +15,6 @@ import {
   Breadcrumb
 } from 'react-bootstrap';
 import QueryBreadcrumb from '../components/Search/QueryBreadcrumb';
-import AbcViewer from '../components/AbcViewer';
-import MelodyHelper from '../helpers/MelodyHelper';
-import {
-  MELODY_DEFAULT_ABC
-} from '../constants/MelodyConstants';
-import {
-  FIELDS
-} from '../constants/SolrConstants';
-import LoadingItem from '../components/LoadingItem';
 import SearchResultList from '../components/Search/SearchResultList';
 import {
   Pagination

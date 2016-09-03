@@ -20,7 +20,7 @@ var headerLinks = [
   { title: 'Statistik', nav: true, auth: false, dropdown: true, children: [
     { path: '/statistics/melody', title: 'Melodie' },
     { path: '/statistics/metadata', title: 'Metadaten' },
-    { path: '/statistics/similarity', title: 'Ähnlichkeit' }
+    { path: '/statistics/similarity', title: 'Melodic Similarity' }
   ]},
   { path: '/songsheets', title: 'Liedblätter', nav: true, auth: false, dropdown: false },
   { path: '/search', title: 'Suche', nav: true, auth: false, dropdown: false }
