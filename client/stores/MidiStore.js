@@ -16,9 +16,6 @@ class MidiStore extends BaseStore {
         this._midiPlayer = action.player;
         this.emitChange();
         break;
-
-      default:
-        break;
     }
   }
 

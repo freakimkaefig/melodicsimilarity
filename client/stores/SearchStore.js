@@ -3,7 +3,6 @@ import {
   SEARCH_QUERY_URL,
   UPDATE_FACETS,
   UPDATE_METADATA_QUERY,
-  UPDATE_RESULT_IMAGE,
   UPDATE_METADATA
 } from '../constants/SolrConstants';
 import {
@@ -152,17 +151,6 @@ class SearchStore extends BaseStore {
           item.url = '/search/result/' + item.id;
         });
         this.emitChange();
-        break;
-
-      case UPDATE_RESULT_IMAGE:
-        let result = this._results.find(result => {
-          return result.id === action.signature;
-        });
-        // result.image = action.image;
-        this.emitChange();
-        break;
-
-      default:
         break;
     }
   }

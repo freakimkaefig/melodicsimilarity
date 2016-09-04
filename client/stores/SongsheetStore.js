@@ -85,9 +85,6 @@ class SongsheetStore extends BaseStore {
       case UPDATE_SIMILAR_METADATA:
         ArrayHelper.mergeByProperty(this._similarMetadata, [action.response.response.docs[0]], 'signature');
         break;
-
-      default:
-        break;
     }
   }
 

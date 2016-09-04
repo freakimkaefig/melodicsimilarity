@@ -46,9 +46,6 @@ class SettingsStore extends BaseStore {
 
         this.emitChange();
         break;
-
-      default:
-        break;
     }
   }
 

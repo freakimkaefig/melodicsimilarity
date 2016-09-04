@@ -135,24 +135,6 @@ class SolrService {
     return query;
   }
 
-  findSongsheet(signature) {
-    return this.handleSearchSongsheetResponse(when(request({
-      url: ITEM_URL + signature,
-      method: 'GET',
-      crossOrigin: true
-    })));
-  }
-
-  handleSearchSongsheetResponse(searchPromise) {
-    return searchPromise
-      .then(response => {
-        SolrActions.updateResultImage(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
   findSimilarDoc(signature) {
     let requestObject = request({
       url: SEARCH_QUERY_URL,

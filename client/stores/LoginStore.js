@@ -24,8 +24,6 @@ class LoginStore extends BaseStore {
         this._jwt = null;
         this.emitChange();
         break;
-      default:
-        break;
     }
   }
 

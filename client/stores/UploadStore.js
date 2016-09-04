@@ -48,9 +48,6 @@ class UploadStore extends BaseStore {
         this._responses.push(action.response);
         this.emitChange();
         break;
-
-      default:
-        break;
     }
   }
 

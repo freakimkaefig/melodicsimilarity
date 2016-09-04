@@ -67,9 +67,6 @@ class StatisticsStore extends BaseStore {
         this._graph.edges = action.edges;
         this.emitChange();
         break;
-
-      default:
-        break;
     }
   }
 

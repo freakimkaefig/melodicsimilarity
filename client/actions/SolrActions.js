@@ -33,14 +33,6 @@ export default {
     });
   },
 
-  updateResultImage: (songsheet) => {
-    AppDispatcher.dispatch({
-      actionType: UPDATE_RESULT_IMAGE,
-      signature: songsheet.signature,
-      image: songsheet.image,
-    });
-  },
-
   updateSimilarMetadata: (response) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_SIMILAR_METADATA,
