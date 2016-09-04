@@ -1,3 +1,9 @@
 [submodule "lib/abcjs"]
 	path = lib/abcjs
 	url = https://github.com/freakimkaefig/abcjs
+[submodule "lib/solr"]
+	path = lib/solr
+	url = git@github.com:freakimkaefig/melodisimilarity-solr.git
+[submodule "lib/tomcat"]
+	path = lib/tomcat
+	url = git@github.com:freakimkaefig/melodisimilarity-tomcat.git

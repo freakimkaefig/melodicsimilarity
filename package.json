@@ -78,6 +78,7 @@
     "css-loader": "0.23.1",
     "exports-loader": "0.6.3",
     "expose-loader": "0.7.1",
+    "forever": "^0.15.2",
     "ignore-styles": "^1.2.0",
     "imports-loader": "^0.6.5",
     "isomorphic-style-loader": "0.0.12",
@@ -101,11 +102,21 @@
     "webpack-cleanup-plugin": "0.2.0"
   },
   "scripts": {
-    "postinstall": "./node_modules/.bin/webpack --progress --colors -p",
-    "start": "node bin/www",
-    "build-dev": "./node_modules/.bin/webpack -d",
+    "postinstall": "npm run bundle",
+    "start": "npm run production",
+    "stop": "npm run tomcat-stop && npm run solr-stop",
+    "production": "npm run solr && npm run tomcat && npm run server",
+    "develop": "npm run solr && npm run tomcat && npm run server-dev & npm run watch",
+    "solr": "npm run solr-stop && ./lib/solr/bin/solr start",
+    "solr-stop": "./lib/solr/bin/solr stop -all",
+    "tomcat": "npm run tomcat-stop && ./lib/tomcat/bin/startup.sh",
+    "tomcat-stop": "./lib/tomcat/bin/shutdown.sh",
+    "bundle": "./node_modules/.bin/webpack --progress --colors -p",
+    "bundle-dev": "./node_modules/.bin/webpack -d",
     "watch": "./node_modules/.bin/webpack --progress --colors --watch -d",
-    "dev-server": "./node_modules/.bin/nodemon bin/www",
+    "server": "./node_modules/.bin/forever start -m 1 -l ./melodicsimilarity-react.log -a bin/www",
+    "server-stop": "./node_modules/.bin/forever stop bin/www",
+    "server-dev": "./node_modules/.bin/nodemon bin/www",
     "test": "jest --verbose"
   },
   "jest": {
