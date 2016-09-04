@@ -5,7 +5,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import _ from 'lodash';
 
-describe('LoginStore', function() {
+describe('LoginStore', () => {
 
   var actionLoginUser = {
     actionType: LOGIN_USER,
@@ -18,39 +18,35 @@ describe('LoginStore', function() {
     actionType: LOGOUT_USER
   };
 
-  // beforeEach(function() {
-    // AppDispatcher = require('../../dispatchers/AppDispatcher');
-    // LoginStore = require('../LoginStore');
-    // console.log(AppDispatcher.register);
-    // callback = AppDispatcher.register.mock.calls[0][0];
-    // this.dispatcher = new AppDispatcher();
-    // this.store = new LoginStore({ dispatcher: AppDispatcher });
-  // });
+  it('should initialize with no user and no jwt', () => {
+    let {
+      user,
+      jwt
+    } = LoginStore;
 
-  // it('registers a callback with the dispatcher', function() {
-  //   expect(AppDispatcher.register.mock.calls.length).toBe(1);
-  // });
-
-  it('should initialize with no user and no jwt', function() {
-    var user = LoginStore.user;
-    var jwt = LoginStore.jwt;
-    expect(user).toEqual(null);
-    expect(jwt).toEqual(null);
+    expect(user).toBeNull();
+    expect(jwt).toBeNull();
   });
 
-  it('logs in user', function() {
+  it('logs in user', () => {
     AppDispatcher.dispatch(actionLoginUser);
-    var user = LoginStore.user;
+    let {
+      user
+    } = LoginStore;
 
     expect(user.username).toEqual('admin');
     expect(bcrypt.compareSync('admin', user.hash)).toBe(true);
   });
 
-  it('logs out user', function() {
+  it('logs out user', () => {
     AppDispatcher.dispatch(actionLogoutUser);
-    var user = LoginStore.user;
-    var jwt = LoginStore.user;
-    expect(user).toEqual(null);
-    expect(jwt).toEqual(null);
+    let {
+      user,
+      jwt
+    } = LoginStore;
+
+    expect(user).toBeNull();
+    expect(jwt).toBeNull();
   });
+
 });

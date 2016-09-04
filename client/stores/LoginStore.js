@@ -21,6 +21,7 @@ class LoginStore extends BaseStore {
         break;
       case LOGOUT_USER:
         this._user = null;
+        this._jwt = null;
         this.emitChange();
         break;
       default:

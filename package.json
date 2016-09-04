@@ -117,7 +117,7 @@
     "server": "./node_modules/.bin/forever start -m 1 -l ./melodicsimilarity-react.log -a bin/www",
     "server-stop": "./node_modules/.bin/forever stop bin/www",
     "server-dev": "./node_modules/.bin/nodemon bin/www",
-    "test": "jest --verbose"
+    "test": "jest --verbose --coverage"
   },
   "jest": {
     "rootDir": "./client"
