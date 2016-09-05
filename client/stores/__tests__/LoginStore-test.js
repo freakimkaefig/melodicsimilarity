@@ -1,11 +1,15 @@
 import {LOGIN_USER, LOGOUT_USER} from '../../constants/LoginConstants';
-import AppDispatcher from '../../dispatchers/AppDispatcher';
-import LoginStore from '../LoginStore';
 import jsonwebtoken from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import _ from 'lodash';
 
+jest.mock('../../dispatchers/AppDispatcher');
+
 describe('LoginStore', () => {
+
+  var AppDispatcher;
+  var LoginStore;
+  var callback;
 
   var actionLoginUser = {
     actionType: LOGIN_USER,
@@ -14,39 +18,44 @@ describe('LoginStore', () => {
       hash: '$2a$10$fa5PEv5KiADJtD5jlL8b1e48vbcVmTW4mSObSH/rgKqplquA7mJki'
     }, 'password'), 'admin', { expiresIn: 60*60*5 })
   };
+
   var actionLogoutUser = {
     actionType: LOGOUT_USER
   };
 
-  it('should initialize with no user and no jwt', () => {
-    let {
-      user,
-      jwt
-    } = LoginStore;
+  beforeEach(() => {
+    jest.resetModules();
+    AppDispatcher = require('../../dispatchers/AppDispatcher').default;
+    LoginStore = require('../LoginStore').default;
+    callback = AppDispatcher.register.mock.calls[0][0];
+  });
 
-    expect(user).toBeNull();
-    expect(jwt).toBeNull();
+  it('registers a callback with the dispatcher', () => {
+    expect(AppDispatcher.register.mock.calls.length).toBe(1);
+  });
+
+  it('should initialize with no user and no jwt', () => {
+    expect(LoginStore.user).toBeNull();
+    expect(LoginStore.jwt).toBeNull();
   });
 
   it('logs in user', () => {
-    AppDispatcher.dispatch(actionLoginUser);
-    let {
-      user
-    } = LoginStore;
-
-    expect(user.username).toEqual('admin');
-    expect(bcrypt.compareSync('admin', user.hash)).toBe(true);
+    callback(actionLoginUser);
+    expect(LoginStore.user.username).toEqual('admin');
+    expect(bcrypt.compareSync('admin', LoginStore.user.hash)).toBe(true);
   });
 
   it('logs out user', () => {
-    AppDispatcher.dispatch(actionLogoutUser);
-    let {
-      user,
-      jwt
-    } = LoginStore;
+    callback(actionLogoutUser);
+    expect(LoginStore.user).toBeNull();
+    expect(LoginStore.jwt).toBeNull();
+  });
 
-    expect(user).toBeNull();
-    expect(jwt).toBeNull();
+  it('should return login status', () => {
+    expect(LoginStore.isLoggedIn()).toBe(false);
+
+    callback(actionLoginUser);
+    expect(LoginStore.isLoggedIn()).toBe(true);
   });
 
 });

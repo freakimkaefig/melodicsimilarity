@@ -21,10 +21,14 @@ import {
   UPDATE_MELODY_QUERY,
   UPDATE_THRESHOLD
 } from '../../constants/MelodyConstants';
-import AppDispatcher from '../../dispatchers/AppDispatcher';
-import SearchStore from '../SearchStore';
+
+jest.mock('../../dispatchers/AppDispatcher');
 
 describe('SearchStore', () => {
+
+  var AppDispatcher;
+  var SearchStore;
+  var callback;
 
   var actionStartSearch = {
     actionType: START_SEARCH
@@ -125,6 +129,17 @@ describe('SearchStore', () => {
     ]
   };
 
+  beforeEach(() => {
+    jest.resetModules();
+    AppDispatcher = require('../../dispatchers/AppDispatcher').default;
+    SearchStore = require('../SearchStore').default;
+    callback = AppDispatcher.register.mock.calls[0][0];
+  });
+
+  it('registers a callback with the dispatcher', () => {
+    expect(AppDispatcher.register.mock.calls.length).toBe(1);
+  });
+
   it('should initialize correctly', () => {
     let {
       fields,
@@ -145,7 +160,6 @@ describe('SearchStore', () => {
       threshold,
       submit
     } = SearchStore;
-
     expect(fields).toEqual({});
     expect(operator).toBe(false);
     expect(start).toBe(0);
@@ -169,39 +183,25 @@ describe('SearchStore', () => {
   });
 
   it('should start search', () => {
-    let results;
+    callback(actionUpdateResults);
+    expect(SearchStore.results.length).toBe(2);
 
-    AppDispatcher.dispatch(actionUpdateResults);
-    results = SearchStore.results;
-
-    expect(results.length).toBe(2);
-
-    AppDispatcher.dispatch(actionStartSearch);
-    results = SearchStore.results;
-
-    expect(results.length).toBe(0);
+    callback(actionStartSearch);
+    expect(SearchStore.results.length).toBe(0);
   });
 
   it('should update field value', () => {
-    AppDispatcher.dispatch(actionUpdateFieldValue);
-    let {
-      fields
-    } = SearchStore;
-
-    expect(fields).toEqual({ key: 'value' });
+    callback(actionUpdateFieldValue);
+    expect(SearchStore.fields).toEqual({ key: 'value' });
   });
 
   it('should update operator', () => {
-    AppDispatcher.dispatch(actionUpdateOperator);
-    let {
-      operator
-    } = SearchStore;
-
-    expect(operator).toBe(true);
+    callback(actionUpdateOperator);
+    expect(SearchStore.operator).toBe(true);
   });
 
   it('should reset search', () => {
-    AppDispatcher.dispatch(actionResetSearch);
+    callback(actionResetSearch);
     let {
       fields,
       operator,
@@ -219,7 +219,6 @@ describe('SearchStore', () => {
       threshold,
       submit
     } = SearchStore;
-
     expect(fields).toEqual({});
     expect(operator).toBe(false);
     expect(start).toBe(0);
@@ -241,32 +240,23 @@ describe('SearchStore', () => {
   });
 
   it('should update start', () => {
-    AppDispatcher.dispatch(actionUpdateStart);
-    let {
-      start
-    } = SearchStore;
-
-    expect(start).toBe(8);
+    callback(actionUpdateStart);
+    expect(SearchStore.start).toBe(8);
   });
 
   it('should update facets', () => {
-    AppDispatcher.dispatch(actionUpdateFacets);
-    let {
-      facets
-    } = SearchStore;
-
-    expect(facets.key).toEqual('value');
+    callback(actionUpdateFacets);
+    expect(SearchStore.facets.key).toEqual('value');
   });
 
   it('should update metadata query', () => {
-    AppDispatcher.dispatch(actionUpdateMetadataQuery);
+    callback(actionUpdateMetadataQuery);
     let {
       queryFields,
       query,
       results,
       highlighting
     } = SearchStore;
-
     expect(queryFields).toEqual([ { key1: 'value1' }, { key2: 'value2' } ]);
     expect(query).toEqual(SEARCH_QUERY_URL + '?wt=json&q=key1:value1,key2:value2');
     expect(results.length).toBe(0);
@@ -274,94 +264,62 @@ describe('SearchStore', () => {
   });
 
   it('should update melody mode', () => {
-    AppDispatcher.dispatch(actionUpdateMode);
-    let {
-      melodyMode
-    } = SearchStore;
-
-    expect(melodyMode).toBe(1);
+    callback(actionUpdateMode);
+    expect(SearchStore.melodyMode).toBe(1);
   });
 
   it('should update threshold', () => {
-    AppDispatcher.dispatch(actionUpdateThreshold);
-    let {
-      threshold
-    } = SearchStore;
-
-    expect(threshold).toBe(90);
+    callback(actionUpdateThreshold);
+    expect(SearchStore.threshold).toBe(90);
   });
 
   it('should update parson query', () => {
-    AppDispatcher.dispatch(actionUpdateParsonQuery);
-    let {
-      parsonQuery
-    } = SearchStore;
-
-    expect(parsonQuery).toBe('*udr');
+    callback(actionUpdateParsonQuery);
+    expect(SearchStore.parsonQuery).toBe('*udr');
   });
 
   it('should update interval query', () => {
-    AppDispatcher.dispatch(actionUpdateIntervalQuery);
-    let {
-      intervalQuery,
-      intervalAbc
-    } = SearchStore;
-
-    expect(intervalQuery).toBe('* -2 4 -6');
-    expect(intervalAbc).toBe(INTERVAL_DEFAULT_ABC + '^A,D^G,');
+    callback(actionUpdateIntervalQuery);
+    expect(SearchStore.intervalQuery).toBe('* -2 4 -6');
+    expect(SearchStore.intervalAbc).toBe(INTERVAL_DEFAULT_ABC + '^A,D^G,');
   });
 
   it('should update melody query', () => {
-    AppDispatcher.dispatch(actionUpdateMelodyQuery);
-    let {
-      melodyQuery,
-      melodyAbc
-    } = SearchStore;
-
-    expect(melodyQuery.length).toBe(3);
-    expect(melodyQuery).toEqual([
+    callback(actionUpdateMelodyQuery);
+    expect(SearchStore.melodyQuery.length).toBe(3);
+    expect(SearchStore.melodyQuery).toEqual([
       { pitch: { step: 'C', octave: 4, accidental: '' }, rest: false, duration: 8, type: 'eighth', dot: false },
       { pitch: { step: 'D', octave: 4, accidental: '' }, rest: false, duration: 8, type: 'eighth', dot: false },
       { pitch: { step: 'F', octave: 4, accidental: 'sharp' }, rest: false, duration: 24, type: 'quarter', dot: true }
     ]);
-    expect(melodyAbc).toBe(MELODY_DEFAULT_ABC + 'C8D8^F16>');
+    expect(SearchStore.melodyAbc).toBe(MELODY_DEFAULT_ABC + 'C8D8^F16>');
   });
 
   it('should update metadata', () => {
-    let results;
+    callback(actionUpdateMetadataEmpty);
+    expect(SearchStore.results.length).toBe(0);
 
-    AppDispatcher.dispatch(actionUpdateMetadataEmpty);
-    results = SearchStore.results;
-    expect(results.length).toBe(0);
+    callback(actionUpdateMetadata);
+    expect(SearchStore.results.length).toBe(0);
 
-    AppDispatcher.dispatch(actionUpdateMetadata);
-    results = SearchStore.results;
-    expect(results.length).toBe(0);
-
-    AppDispatcher.dispatch(actionUpdateResults);
-    results = SearchStore.results;
-    expect(results.length).toBe(2);
-    expect(results).toEqual([
+    callback(actionUpdateResults);
+    expect(SearchStore.results.length).toBe(2);
+    expect(SearchStore.results).toEqual([
       { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } },
       { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
     ]);
 
-    AppDispatcher.dispatch(actionUpdateMetadata);
-    results = SearchStore.results;
-    expect(results).toEqual([
+    callback(actionUpdateMetadata);
+    expect(SearchStore.results).toEqual([
       { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { key1: 'value1', key2: 'value2', signature: 'xyz123' } },
       { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
     ]);
   });
 
   it('should update results', () => {
-    AppDispatcher.dispatch(actionUpdateResults);
-    let {
-      results
-    } = SearchStore;
-
-    expect(results.length).toBe(2);
-    expect(results).toEqual([
+    callback(actionUpdateResults);
+    expect(SearchStore.results.length).toBe(2);
+    expect(SearchStore.results).toEqual([
       { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { key1: 'value1', key2: 'value2', signature: 'xyz123' } },
       { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
     ]);

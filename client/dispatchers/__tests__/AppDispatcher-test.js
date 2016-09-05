@@ -1,6 +1,11 @@
-import AppDispatcher from '../AppDispatcher';
-
 describe('AppDispatcher', function() {
+
+  var AppDispatcher;
+
+  beforeEach(() => {
+    // jest.resetModules();
+    AppDispatcher = require('../AppDispatcher').default;
+  });
 
   it('sends actions to subscribers', function() {
     var listener = jest.genMockFunction();
