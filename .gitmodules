@@ -3,7 +3,7 @@
 	url = https://github.com/freakimkaefig/abcjs
 [submodule "lib/solr"]
 	path = lib/solr
-	url = git@github.com:freakimkaefig/melodisimilarity-solr.git
+	url = git@github.com:freakimkaefig/melodicsimilarity-solr.git
 [submodule "lib/tomcat"]
 	path = lib/tomcat
-	url = git@github.com:freakimkaefig/melodisimilarity-tomcat.git
+	url = git@github.com:freakimkaefig/melodicsimilarity-tomcat.git
