@@ -2,10 +2,17 @@ language: node_js
 node_js:
   - "5.11.0"
 
+git:
+  submodules: false
+
 addons:
   apt:
     packages:
       - oracle-java8-installer
+
+before_install:
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init --recursive
 
 before_script:
   - chmod +x solr/bin/solr
