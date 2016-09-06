@@ -14,13 +14,6 @@ before_install:
   - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
   - git submodule update --init --recursive
 
-before_script:
-  - chmod +x solr/bin/solr
-  - solr/bin/solr start
-
-after_script:
-  - solr/bin/solr stop -all
-
 deploy:
   provider: heroku
   api_key:
