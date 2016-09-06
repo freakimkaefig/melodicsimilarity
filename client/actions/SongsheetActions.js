@@ -30,13 +30,6 @@ export default {
       songsheet: songsheet
     });
   },
-
-  renderMetadata: (response) => {
-    AppDispatcher.dispatch({
-      actionType: RENDER_METADATA,
-      response: response
-    });
-  },
   
   updateSimilar: (similar) => {
     AppDispatcher.dispatch({
