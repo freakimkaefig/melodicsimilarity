@@ -1,5 +1,4 @@
 var webpack = require('webpack');
-var fs = require('fs');
 var path = require('path');
 var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');

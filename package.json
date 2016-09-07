@@ -102,7 +102,7 @@
     "webpack-cleanup-plugin": "0.2.0"
   },
   "scripts": {
-    "postinstall": "npm run bundle:production",
+    "postinstall": "npm run bundle:env && npm run bundle:production",
     "start": "npm run start:production",
     "stop": "npm run tomcat:stop && npm run solr:stop",
     "start:production": "npm run solr:start && npm run tomcat:start && npm run server:start",
@@ -111,6 +111,7 @@
     "solr:stop": "./lib/solr/bin/solr stop -all",
     "tomcat:start": "npm run tomcat:stop && ./lib/tomcat/bin/startup.sh",
     "tomcat:stop": "./lib/tomcat/bin/shutdown.sh",
+    "bundle:env": "bin/env",
     "bundle:production": "./node_modules/.bin/webpack --progress --colors -p",
     "bundle:dev": "./node_modules/.bin/webpack -d",
     "bundle:watch": "./node_modules/.bin/webpack --progress --colors --watch -d",
