@@ -1,11 +1,6 @@
 import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
-import {
-  HOST,
-  PORT,
-  BASE_URL
-} from '../../.env.json';
 
 export default class HomePage extends React.Component {
   static displayName = 'HomePage';
