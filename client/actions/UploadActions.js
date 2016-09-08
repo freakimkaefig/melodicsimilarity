@@ -1,5 +1,5 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { LIST_ACTIVE_CHANGE, SAVE_FILES_TO_UPLOAD, RENDER_METADATA, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import { LIST_ACTIVE_CHANGE, SAVE_FILES_TO_UPLOAD, UPLOAD_FINISHED } from '../constants/UploadConstants';
 
 export default {
   setListActive: (key) => {
@@ -14,13 +14,6 @@ export default {
       actionType: SAVE_FILES_TO_UPLOAD,
       files: files,
       metadata: metadata
-    });
-  },
-
-  renderMetadata: (response) => {
-    AppDispatcher.dispatch({
-      actionType: RENDER_METADATA,
-      response: response
     });
   },
   
