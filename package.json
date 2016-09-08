@@ -76,6 +76,7 @@
     "chai": "^3.5.0",
     "copy-webpack-plugin": "1.1.1",
     "css-loader": "0.23.1",
+    "enzyme": "^2.4.1",
     "exports-loader": "0.6.3",
     "expose-loader": "0.7.1",
     "forever": "^0.15.2",
@@ -104,7 +105,7 @@
   "scripts": {
     "postinstall": "npm run bundle:env && npm run bundle:production",
     "start": "npm run start:production",
-    "stop": "npm run tomcat:stop && npm run solr:stop",
+    "stop": "npm run tomcat:stop && npm run solr:stop && npm run server:stop",
     "start:production": "npm run solr:start && npm run tomcat:start && npm run server:start",
     "start:develop": "npm run solr:start && npm run tomcat:start && npm run server:dev & npm run bundle:watch",
     "solr:start": "npm run solr:stop && ./lib/solr/bin/solr start",
