@@ -21,14 +21,22 @@ export default class ImprintPage extends React.Component {
               <h2>Vertreten durch:</h2>
               <p>[Vertreten durch: Name, Anschrift]</p>
               <h2>Kontakt:</h2>
-              <table><tr>
-                <td>Telefon:</td>
-                <td>+49 941 943-01</td></tr>
-                <tr><td>Telefax:</td>
-                  <td>+49 941 943-2305</td></tr>
-                <tr><td>E-Mail:</td>
-                  <td>kontakt@ur.de</td>
-                </tr></table>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Telefon:</td>
+                    <td>+49 941 943-01</td>
+                  </tr>
+                  <tr>
+                    <td>Telefax:</td>
+                    <td>+49 941 943-2305</td>
+                  </tr>
+                  <tr>
+                    <td>E-Mail:</td>
+                    <td>kontakt@ur.de</td>
+                  </tr>
+                </tbody>
+              </table>
               <p> </p>
               <p>Quelle: <em><a href="https://www.e-recht24.de">https://www.e-recht24.de</a></em></p>
 
