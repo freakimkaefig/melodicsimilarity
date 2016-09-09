@@ -123,6 +123,10 @@
     "test": "jest --verbose"
   },
   "jest": {
-    "rootDir": "./client"
+    "rootDir": "./client",
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss)$": "<rootDir>/test/styleMock.js",
+      "^.+\\.(png|woff|woff2|ttf|eot|svg|mp3)$": "<rootDir>/test/fileMock.js"
+    }
   }
 }
