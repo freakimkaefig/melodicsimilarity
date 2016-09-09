@@ -12,7 +12,7 @@ export default class LogoutPage extends React.Component {
   
   render() {
     return (
-      <DocumentTitle title={`Admin // ${APP_NAME}`}>
+      <DocumentTitle title={`Logout // ${APP_NAME}`}>
         <h1>You're successfully logged out!</h1>
       </DocumentTitle>
     );
