@@ -8,7 +8,7 @@ export default class AutoSuggestField extends React.Component {
     name: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     input: PropTypes.string.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.string.isRequired,
     facets: PropTypes.arrayOf(PropTypes.string),
     onChange: PropTypes.func
   };
@@ -17,7 +17,7 @@ export default class AutoSuggestField extends React.Component {
     super(props);
 
     this.state = {
-      suggestions: this.getSuggestions(''),
+      suggestions: this.getSuggestions(props.value),
       value: props.value
     };
 
@@ -62,6 +62,7 @@ export default class AutoSuggestField extends React.Component {
   }
 
   handleChange(event, { newValue }) {
+    console.log("CHANGE");
     this.setState({
       value: newValue
     });
