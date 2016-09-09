@@ -75,7 +75,7 @@ describe('StatisticsStore', () => {
     }
   };
 
-  var actionUpdateGrpahEdges = {
+  var actionUpdateGraphEdges = {
     actionType: UPDATE_GRAPH_EDGES,
     edges: graphDummyEdges
   };
@@ -182,7 +182,7 @@ describe('StatisticsStore', () => {
   });
 
   it('should update graph edges', () => {
-    callback(actionUpdateGrpahEdges);
+    callback(actionUpdateGraphEdges);
     expect(StatisticsStore.graph.edges.length).toBe(2);
     expect(StatisticsStore.graph.edges).toEqual(graphDummyEdges);
   });
