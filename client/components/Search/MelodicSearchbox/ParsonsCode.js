@@ -39,7 +39,7 @@ export default class ParsonsCode extends React.Component {
     this.setState({
       parsons: SearchStore.parsonQuery,
       threshold: SearchStore.threshold,
-      disabled: SearchStore.intervalQuery.length === 0
+      disabled: SearchStore.parsonQuery.length === 0
     });
   }
 
