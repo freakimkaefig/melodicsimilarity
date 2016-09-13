@@ -23,6 +23,7 @@ import LogoutPage from './pages/LogoutPage';
 import SettingsPage from './pages/SettingsPage';
 import UploadPage from './pages/UploadPage';
 import UploadProgressPage from './pages/UploadProgressPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 browserHistory.listen(location => {
   setTimeout(() => {
@@ -58,6 +59,8 @@ var router = (
       <Route name="upload-progress" path="/upload/progress" component={UploadProgressPage} onEnter={UploadProgressPage.willTransitionTo} />
 
       <Route name="imprint" path="/imprint" component={ImprintPage} />
+
+      <Route name="notFound" path="*" component={NotFoundPage} />
     </Route>
   </Router>
 );
