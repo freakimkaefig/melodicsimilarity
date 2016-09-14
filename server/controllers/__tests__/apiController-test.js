@@ -1,5 +1,7 @@
 import request from 'supertest';
 
+jest.mock('../../services/databaseService');
+
 describe('apiController', () => {
 
   var server;
@@ -20,7 +22,7 @@ describe('apiController', () => {
         expect(res.status).toBe(200);
         expect(res.headers['content-type']).toMatch(/json/);
         expect(res.body.version).toBeDefined();
-        expect(res.body.db).toBeDefined();
+        expect(res.body.db.key).toBe('value');
         done();
       });
   });

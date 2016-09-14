@@ -1,5 +1,7 @@
 import request from 'supertest';
 
+jest.mock('../../services/databaseService');
+
 describe('settingsController', () => {
 
   var server;
@@ -16,14 +18,14 @@ describe('settingsController', () => {
 
   it('should get setting', (done) => {
     request(server)
-      .get('/api/settings/threshold')
+      .get('/api/settings/key')
       .end((err, res) => {
         expect(err).toEqual(null);
         expect(res.status).toBe(200);
         expect(res.headers['content-type']).toMatch(/json/);
-        expect(res.body.type).toBeDefined();
-        expect(res.body.key).toBeDefined();
-        expect(res.body.value).toBeDefined();
+        expect(res.body.type).toBe('type');
+        expect(res.body.key).toBe('key');
+        expect(res.body.value).toBe('value');
         done();
       });
   });
@@ -43,17 +45,16 @@ describe('settingsController', () => {
       expect(err).toEqual(null);
       expect(res.status).toBe(200);
       expect(res.body.ok).toBe(1);
-      expect(res.body.value).toBeDefined();
-      expect(res.body.value.type).toBeDefined();
-      expect(res.body.value.key).toBeDefined();
-      expect(res.body.value.value).toBeDefined();
+      expect(res.body.value.type).toBe('type');
+      expect(res.body.value.key).toBe('key');
+      expect(res.body.value.value).toBe('value');
       done();
     };
 
     auth.authenticatedRequest(
       server,
       request(server)
-        .put('/api/protected/settings/threshold/20'),
+        .put('/api/protected/settings/key/value'),
       resolve);
   });
 

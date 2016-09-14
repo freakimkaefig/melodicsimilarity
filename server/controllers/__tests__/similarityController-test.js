@@ -1,11 +1,11 @@
 import request from 'supertest';
 
+jest.mock('../../services/databaseService');
+
 describe('similarityController', () => {
 
   var server;
   var auth;
-
-  var signature = 'A 59124';
 
   beforeEach(() => {
     server = require('../../test/server-helper');
@@ -23,7 +23,7 @@ describe('similarityController', () => {
         expect(err).toEqual(null);
         expect(res.status).toBe(200);
         expect(res.headers['content-type']).toMatch(/json/);
-        expect(res.body.length).toBeGreaterThanOrEqual(0);
+        expect(res.body.length).toBe(2);
         done();
       });
   });
@@ -42,20 +42,20 @@ describe('similarityController', () => {
 
   it('should return one specific similarity score', (done) => {
     request(server)
-      .get('/api/similarity/' + encodeURI(signature))
+      .get('/api/similarity/test1')
       .end((err, res) => {
         expect(err).toEqual(null);
         expect(res.status).toBe(200);
         expect(res.headers['content-type']).toMatch(/json/);
-        expect(res.body.signature).toBe(signature);
-        expect(res.body.distances.length).toBeGreaterThan(0);
+        expect(res.body.signature).toBe('test1');
+        expect(res.body.distances.length).toBe(1);
         done();
       });
   });
 
   it('should disable similarity update when unauthorized', (done) => {
     request(server)
-      .put('/api/protected/similarity/update/' + encodeURI(signature))
+      .put('/api/protected/similarity/update/test1')
       .end((err, res) => {
         expect(err).toEqual(null);
         expect(res.status).toBe(401);
@@ -84,16 +84,15 @@ describe('similarityController', () => {
       expect(err).toEqual(null);
       expect(res.status).toBe(200);
       expect(res.body.ok).toBe(1);
-      expect(res.body.value).toBeDefined();
-      expect(res.body.value.signature).toBe(signature);
-      expect(res.body.value.distances.length).toBeGreaterThan(0);
+      expect(res.body.value.signature).toBe('test1');
+      expect(res.body.value.distances.length).toBe(1);
       done();
     };
 
     auth.authenticatedRequest(
       server,
       request(server)
-        .put('/api/protected/similarity/update/' + encodeURI(signature)),
+        .put('/api/protected/similarity/update/test1'),
       resolve);
   });
 
