@@ -203,7 +203,6 @@ var updateSimilarity = function(signature, distances, callback) {
 
 // Add songsheet to database
 var addDocument = function(data, callback) {
-  console.log(typeof data.json.attributes.divisions);
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
