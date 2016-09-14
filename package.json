@@ -113,7 +113,7 @@
     "solr:stop": "./lib/solr/bin/solr stop -all",
     "tomcat:start": "npm run tomcat:stop && ./lib/tomcat/bin/startup.sh",
     "tomcat:stop": "./lib/tomcat/bin/shutdown.sh",
-    "bundle:env": "bin/env",
+    "bundle:env": "./bin/env",
     "bundle:production": "./node_modules/.bin/webpack --progress --colors -p",
     "bundle:dev": "./node_modules/.bin/webpack -d",
     "bundle:watch": "./node_modules/.bin/webpack --progress --colors --watch -d",
