@@ -39,22 +39,22 @@ describe('settingsController', () => {
   });
 
   it('should allow set setting when authorized', (done) => {
-    return auth.authenticate(server)
-      .then((token) => {
-        request(server)
-          .put('/api/protected/settings/threshold/20')
-          .set('Authorization', 'Bearer ' + token)
-          .end((err, res) => {
-            expect(err).toEqual(null);
-            expect(res.status).toBe(200);
-            expect(res.body.ok).toBe(1);
-            expect(res.body.value).toBeDefined();
-            expect(res.body.value.type).toBeDefined();
-            expect(res.body.value.key).toBeDefined();
-            expect(res.body.value.value).toBeDefined();
-            done();
-          });
-      });
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.body.ok).toBe(1);
+      expect(res.body.value).toBeDefined();
+      expect(res.body.value.type).toBeDefined();
+      expect(res.body.value.key).toBeDefined();
+      expect(res.body.value.value).toBeDefined();
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/settings/threshold/20'),
+      resolve);
   });
 
 });
