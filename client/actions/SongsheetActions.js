@@ -4,7 +4,6 @@ import {
   LOAD_LIST,
   LOAD_ITEM,
   UPDATE_SIMILAR,
-  RENDER_METADATA,
   LOAD_SIMILAR_ITEM
 } from '../constants/SongsheetConstants';
 

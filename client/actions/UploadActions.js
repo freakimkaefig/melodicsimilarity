@@ -1,5 +1,9 @@
 import AppDispatcher from '../dispatchers/AppDispatcher';
-import { LIST_ACTIVE_CHANGE, SAVE_FILES_TO_UPLOAD, UPLOAD_FINISHED } from '../constants/UploadConstants';
+import {
+  LIST_ACTIVE_CHANGE,
+  SAVE_FILES_TO_UPLOAD,
+  UPLOAD_FINISHED
+} from '../constants/UploadConstants';
 
 export default {
   setListActive: (key) => {
