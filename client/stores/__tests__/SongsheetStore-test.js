@@ -7,9 +7,6 @@ import {
 } from '../../constants/SongsheetConstants';
 import {
   UPDATE_METADATA,
-  METADATA_PLACEHOLDER_IMAGE,
-  METADATA_PLACEHOLDER_TITLE,
-  METADATA_PLACEHOLDER_TEXT,
   UPDATE_SIMILAR_METADATA
 } from '../../constants/SolrConstants';
 
