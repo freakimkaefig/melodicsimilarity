@@ -42,8 +42,6 @@ describe('<InputField/>', () => {
     const input = wrapper.find('input');
     input.simulate('change', { target: { value: value } });
     expect(changeSpy.callCount).toBe(1);
-    // expect(changeSpy.args).toBe('test');
-    console.log(changeSpy.args[0][1]);
     expect(changeSpy.args[0][1]).toBe(value);
   });
 
