@@ -120,13 +120,21 @@
     "server:start": "./node_modules/.bin/forever start -m 1 -l ./melodicsimilarity-react.log -a bin/www",
     "server:stop": "./node_modules/.bin/forever stop bin/www",
     "server:dev": "./node_modules/.bin/nodemon bin/www",
-    "test": "jest --verbose"
+    "test": "jest --runInBand",
+    "coverage": "jest --runInBand --coverage"
   },
   "jest": {
     "rootDir": "./",
     "moduleNameMapper": {
-      "^.+\\.(css|less|scss)$": "<rootDir>/client/test/styleMock.js",
-      "^.+\\.(png|woff|woff2|ttf|eot|svg|mp3)$": "<rootDir>/client/test/fileMock.js"
-    }
+      "^.+\\.(css|less|scss)$": "<rootDir>/client/__mocks__/styleMock.js",
+      "^.+\\.(png|woff|woff2|ttf|eot|svg|mp3)$": "<rootDir>/client/__mocks__/fileMock.js"
+    },
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/node_modules",
+      "<rootDir>/bin",
+      "<rootDir>/config",
+      "<rootDir>/examples",
+      "<rootDir>/public"
+    ]
   }
 }
