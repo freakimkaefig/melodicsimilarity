@@ -63,7 +63,21 @@ databaseService.getDocument = (collection, query, callback) => {
   }
 };
 
-databaseService.addUser = (username, password, callback) => {};
+databaseService.addUser = (username, password, callback) => {
+  if (username !== 'fail') {
+    callback({
+      value: {
+        username: username,
+        password: password
+      },
+      ok: 1
+    });
+  } else {
+    callback({
+      message: "Username is to short"
+    });
+  }
+};
 
 databaseService.getSetting = (key, callback) => {
   callback({
