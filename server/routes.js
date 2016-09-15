@@ -4,19 +4,16 @@
 
 'use strict';
 var express = require('express');
-var multer = require('multer');
 
 var apiController = require('./controllers/apiController');
 var userController = require('./controllers/userController');
 var settingsController = require('./controllers/settingsController');
 var songsheetController = require('./controllers/songsheetController');
-var uploadController = require('./controllers/uploadController');
 var searchController = require('./controllers/searchController');
 var statisticController = require('./controllers/statisticController');
 var similarityController = require('./controllers/similarityController');
 
 var router = express.Router();
-var upload = multer({ dest: 'public/uploads/' });
 
 
 /* ========================================
@@ -49,7 +46,6 @@ router.get('/api/protected/users', userController.getUsers);
 
 /* Songsheets */
 router.put('/api/protected/songsheet/add', songsheetController.handleUpload);
-router.put('/api/protected/scan/add', upload.any(), uploadController.postUpload);
 
 /* Statistics */
 router.put('/api/protected/index/update/:mode', statisticController.putStats);
