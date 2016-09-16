@@ -254,6 +254,7 @@ export default class MelodyStatistics extends React.Component {
    * @param {Array} data - The new data
    */
   updateChart(ref, labels, data) {
+    console.log("updateChart", ref);
     let chart = ref.getChart();
     chart.xAxis.categories = labels;
     chart.series[0].setData(data, true);
