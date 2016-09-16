@@ -15,15 +15,8 @@ export default class SongsheetDetail extends React.Component {
     super(props);
 
     this.state = {
-      file: SongsheetStore.songsheets.find(item => {
-        return item.signature === props.params.signature;
-      }),
-      metadata: SongsheetStore.metadata.find(item => {
-        return item.signature === props.params.signature;
-      }),
+      songsheets: SongsheetStore.songsheets,
       similarityScores: SongsheetStore.similarityScores,
-      similarSongsheets: SongsheetStore.similarSongsheets,
-      similarMetadata: SongsheetStore.similarMetadata,
       loading: false,
     };
 
@@ -33,14 +26,11 @@ export default class SongsheetDetail extends React.Component {
   componentDidMount() {
     SongsheetStore.addChangeListener(this.onSongsheetStoreChange);
 
-    if (!this.state.file) {
+    if (!this.state.songsheet) {
       this.setState({
         loading: true
       });
       SongsheetService.loadItem(this.props.params.signature);
-    }
-
-    if (this.state.similarSongsheets.length <= 0 || this.state.similarMetadata.length <= 0) {
       SongsheetService.loadSimilar(this.props.params.signature);
     }
   }
@@ -61,15 +51,8 @@ export default class SongsheetDetail extends React.Component {
 
   onSongsheetStoreChange() {
     this.setState({
-      file: SongsheetStore.songsheets.find(item => {
-        return item.signature === this.props.params.signature;
-      }),
-      metadata: SongsheetStore.metadata.find(item => {
-        return item.signature === this.props.params.signature;
-      }),
+      songsheets: SongsheetStore.songsheets,
       similarityScores: SongsheetStore.similarityScores,
-      similarSongsheets: SongsheetStore.similarSongsheets,
-      similarMetadata: SongsheetStore.similarMetadata,
       loading: false
     });
   }
@@ -78,13 +61,14 @@ export default class SongsheetDetail extends React.Component {
     let signature = this.props.params.signature;
 
     let {
-      file,
-      metadata,
+      songsheets,
       similarityScores,
-      similarSongsheets,
-      similarMetadata,
       loading
     } = this.state;
+
+    let currentSongsheet = songsheets.find((item) => {
+      return item.signature === signature;
+    });
 
     return (
       <DocumentTitle title={`Liedblatt - ${signature} // ${APP_NAME}`}>
@@ -110,11 +94,9 @@ export default class SongsheetDetail extends React.Component {
 
           <div className="offset-container">
             <SongsheetView
-              file={file}
-              metadata={metadata}
+              songsheet={currentSongsheet}
+              songsheets={songsheets}
               similarityScores={similarityScores}
-              similarSongsheets={similarSongsheets}
-              similarMetadata={similarMetadata}
             />
           </div>
 

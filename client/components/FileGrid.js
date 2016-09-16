@@ -6,14 +6,12 @@ import '../stylesheets/FileGrid.less';
 export default class FileGrid extends React.Component {
 
   static propTypes = {
-    files: PropTypes.arrayOf(PropTypes.shape({
+    songsheets: PropTypes.arrayOf(PropTypes.shape({
       _id: PropTypes.string,
-      abc: PropTypes.string,
       json: PropTypes.object,
       name: PropTypes.string,
       signature: PropTypes.string.isRequired
     })).isRequired,
-    metadata: PropTypes.array,
     itemClass: PropTypes.string
   };
 
@@ -25,30 +23,15 @@ export default class FileGrid extends React.Component {
     super(props);
   }
 
-  renderFileGrid(files, metadata, itemClass) {
-    if (files.length > 0) {
-      return files.map((file, index) => {
-        let data = metadata.find(item => {
-          return item.signature == file.signature;
-        });
-
-        let title = 'Kein Incipit vorhanden';
-        let imagename = 'placeholder.jpg';
-        if (typeof data !== 'undefined') {
-          if (typeof data.title !== 'undefined') {
-            title = data.title;
-          }
-          if (typeof data.imagename !== 'undefined') {
-            imagename = data.imagename;
-          }
-        }
-
+  renderFileGrid(songsheets, itemClass) {
+    if (songsheets.length > 0) {
+      return songsheets.map((item, index) => {
         return (
           <div className={itemClass} key={index}>
-            <Link to={`/songsheets/${file.signature}`}>
-              <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + imagename}/>
-              <h4>{file.signature}</h4>
-              <h5>{title}</h5>
+            <Link to={`/songsheets/${item.signature}`}>
+              <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + item.imagename}/>
+              <h4>{item.signature}</h4>
+              <h5>{item.title}</h5>
             </Link>
           </div>
         );
@@ -57,10 +40,14 @@ export default class FileGrid extends React.Component {
   }
 
   render() {
-    let {files, metadata, itemClass} = this.props;
+    let {
+      songsheets,
+      itemClass
+    } = this.props;
+
     return (
       <div className="grid row start-xs">
-        { this.renderFileGrid(files, metadata, itemClass) }
+        { this.renderFileGrid(songsheets, itemClass) }
       </div>
     );
   }

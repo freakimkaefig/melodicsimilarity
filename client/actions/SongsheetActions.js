@@ -4,7 +4,6 @@ import {
   LOAD_LIST,
   LOAD_ITEM,
   UPDATE_SIMILAR,
-  LOAD_SIMILAR_ITEM
 } from '../constants/SongsheetConstants';
 
 export default {
@@ -35,12 +34,5 @@ export default {
       actionType: UPDATE_SIMILAR,
       similar: similar
     })
-  },
-
-  renderSimilarItem: (songsheet) => {
-    AppDispatcher.dispatch({
-      actionType: LOAD_SIMILAR_ITEM,
-      songsheet: songsheet
-    });
   }
 }

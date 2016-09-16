@@ -2,8 +2,7 @@ import {
   UPDATE_SONGSHEET_START,
   LOAD_LIST,
   LOAD_ITEM,
-  UPDATE_SIMILAR,
-  LOAD_SIMILAR_ITEM
+  UPDATE_SIMILAR
 } from '../../constants/SongsheetConstants';
 
 jest.mock('../../dispatchers/AppDispatcher');
@@ -55,14 +54,6 @@ describe('SongsheetActions', () => {
     expect(AppDispatcher.dispatch).toBeCalledWith({
       actionType: UPDATE_SIMILAR,
       similar: { signature: 'abc123', title: 'Title 1' }
-    });
-  });
-
-  it('dispatches similar songsheet metadata', () => {
-    SongsheetActions.renderSimilarItem({ signature: 'abc123', title: 'Title 1' });
-    expect(AppDispatcher.dispatch).toBeCalledWith({
-      actionType: LOAD_SIMILAR_ITEM,
-      songsheet: { signature: 'abc123', title: 'Title 1' }
     });
   });
 

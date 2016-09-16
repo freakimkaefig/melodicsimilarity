@@ -73,25 +73,6 @@ class SongsheetService {
         console.log(error);
       });
   }
-
-  loadSimilarItem(signature) {
-    return this.handleSimilarItemResponse(when(request({
-      url: ITEM_URL + signature,
-      method: 'GET',
-      crossOrigin: true
-    })));
-  }
-
-  handleSimilarItemResponse(itemPromise) {
-    return itemPromise
-      .then(response => {
-        SolrService.findSimilarDoc(response.signature);
-        SongsheetActions.renderSimilarItem(response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
 }
 
 export default new SongsheetService();

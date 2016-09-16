@@ -17,7 +17,7 @@ export default class SongsheetList extends React.Component {
 
     this.state = {
       songsheets: SongsheetStore.songsheets,
-      metadata: SongsheetStore.metadata,
+      start: SongsheetStore.start,
       activePage: (SongsheetStore.start / ROWS) + 1,
       numPages: this.getNumPages()
     };
@@ -41,32 +41,40 @@ export default class SongsheetList extends React.Component {
   onStoreChange() {
     this.setState({
       songsheets: SongsheetStore.songsheets,
-      metadata: SongsheetStore.metadata,
+      start: SongsheetStore.start,
       activePage: (SongsheetStore.start / ROWS) + 1,
       numPages: this.getNumPages()
     });
   }
 
-  handleSelect(event, {eventKey}) {
-    event.preventDefault();
-
-    // Load desired page
-    SongsheetService.loadList((eventKey - 1) * ROWS, ROWS);
-
+  handleSelect(eventKey) {
     // Resest songsheets (triggers LoadingOverlay)
     this.setState({
       songsheets: []
     });
+
+    // Load desired page
+    SongsheetService.loadList((eventKey - 1) * ROWS, ROWS);
   }
 
   render() {
+
+    let {
+      songsheets,
+      start,
+      numPages,
+      activePage
+    } = this.state;
+
+    let filteredsongsheets = songsheets.slice(start, start + ROWS);
+
     return (
       <DocumentTitle title={`Liedblätter // ${APP_NAME}`}>
         <div>
           <h1 className="text-center">Liedblatt-Galerie</h1>
-          <LoadingOverlay loading={this.state.songsheets <= 0} />
+          <LoadingOverlay loading={filteredsongsheets <= 0} />
           <div className="offset-container">
-            <FileGrid files={this.state.songsheets} metadata={this.state.metadata} />
+            <FileGrid songsheets={filteredsongsheets} />
           </div>
           <div className="text-center">
             <Pagination
@@ -75,9 +83,9 @@ export default class SongsheetList extends React.Component {
               first
               last
               ellipsis
-              items={this.state.numPages}
+              items={numPages}
               maxButtons={7}
-              activePage={this.state.activePage}
+              activePage={activePage}
               onSelect={this.handleSelect.bind(this)} />
           </div>
         </div>

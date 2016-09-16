@@ -11,11 +11,9 @@ import '../stylesheets/SongsheetView.less';
 export default class SongsheetView extends React.Component {
 
   static propTypes = {
-    file: PropTypes.object,
-    metadata: PropTypes.object,
+    songsheet: PropTypes.object,
+    songsheets: PropTypes.arrayOf(PropTypes.object),
     similarityScores: PropTypes.arrayOf(PropTypes.object),
-    similarSongsheets: PropTypes.arrayOf(PropTypes.object),
-    similarMetadata: PropTypes.arrayOf(PropTypes.object),
     melodicHighlighting: PropTypes.arrayOf(PropTypes.object),
     metadataHighlighting: PropTypes.arrayOf(PropTypes.object)
   };
@@ -44,21 +42,21 @@ export default class SongsheetView extends React.Component {
     });
   }
 
-  _getImageView(metadata) {
-    if (typeof metadata !== 'undefined') {
-      if (typeof metadata.imagename !== 'undefined') {
+  _getImageView(songsheet) {
+    if (typeof songsheet !== 'undefined') {
+      if (typeof songsheet.imagename !== 'undefined') {
         return (
-          <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + metadata.imagename} />
+          <ImageZoom itemKey={0} image={METADATA_IMAGE_BASE_URL + songsheet.imagename} />
         );
       }
     }
   }
 
-  _getMetadataText(metadata) {
-    if (typeof metadata !== 'undefined') {
-      if (typeof metadata.text !== 'undefined') {
+  _getMetadataText(songsheet) {
+    if (typeof songsheet !== 'undefined') {
+      if (typeof songsheet.text !== 'undefined') {
         return (
-          <div className="text">{metadata.text}</div>
+          <div className="text">{songsheet.text}</div>
         );
       }
     }
@@ -73,16 +71,16 @@ export default class SongsheetView extends React.Component {
     }
   }
 
-  _getMetadataViewer(metadata, highlighting) {
-    if (typeof metadata !== 'undefined') {
+  _getMetadataViewer(songsheet, highlighting) {
+    if (typeof songsheet !== 'undefined') {
       return (
-        <MetadataViewer metadata={metadata} highlight={highlighting} />
+        <MetadataViewer metadata={songsheet} highlight={highlighting} />
       );
     }
   }
 
-  _getSimilarSongsheets(similarityThreshold, similarityScores, similarSongsheets, similarMetadata) {
-    let similarItems = similarSongsheets.filter((item) => {
+  _getSimilarSongsheets(similarityThreshold, similarityScores, songsheets) {
+    let similarItems = songsheets.filter((item) => {
       let similarityScore = similarityScores.find((score) => {
         return score.signature === item.signature;
       });
@@ -93,21 +91,35 @@ export default class SongsheetView extends React.Component {
       }
     });
 
+    console.log(similarItems);
+
     if (similarItems.length > 0) {
       return (
-        <FileGrid files={similarItems} metadata={similarMetadata}
-                  itemClass="item col-xs-6 col-sm-3 text-center"/>
+        <div className="row">
+          <div className="col-xs-12 col-lg-8 col-lg-offset-2 text-center">
+            <div className="box">
+              <div className="heading row">
+                <div className="col-xs-12">
+                  <h3>Ähnliche Liedblätter</h3>
+                </div>
+              </div>
+              <div className="content row">
+                <div className="col-xs-12">
+                  <FileGrid songsheets={similarItems} itemClass="item col-xs-6 col-sm-3 text-center"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       );
     }
   }
 
   render() {
     let {
-      file,
-      metadata,
+      songsheet,
+      songsheets,
       similarityScores,
-      similarSongsheets,
-      similarMetadata,
       melodicHighlighting,
       metadataHighlighting
     } = this.props;
@@ -116,8 +128,8 @@ export default class SongsheetView extends React.Component {
       similarityThreshold
     } = this.state;
 
-    let signature = typeof file !== 'undefined' ? file.signature : '';
-    let title = typeof metadata !== 'undefined' ? ' - ' + metadata.title : '';
+    let signature = typeof songsheet !== 'undefined' ? songsheet.signature : '';
+    let title = typeof songsheet !== 'undefined' ? ' - ' + songsheet.title : '';
 
     return (
       <div className="songsheet-view">
@@ -132,10 +144,10 @@ export default class SongsheetView extends React.Component {
               </div>
               <div className="content row">
                 <div className="col-xs-12 col-md-5">
-                  { this._getImageView(metadata) }
+                  { this._getImageView(songsheet) }
                 </div>
                 <div className="col-xs-12 col-md-6 col-md-offset-1">
-                  { this._getAbcViewer(file, melodicHighlighting) }
+                  { this._getAbcViewer(songsheet, melodicHighlighting) }
                 </div>
               </div>
             </div>
@@ -152,7 +164,7 @@ export default class SongsheetView extends React.Component {
               </div>
               <div className="content row">
                 <div className="col-xs-12">
-                  { this._getMetadataText(metadata) }
+                  { this._getMetadataText(songsheet) }
                 </div>
               </div>
             </div>
@@ -166,29 +178,14 @@ export default class SongsheetView extends React.Component {
               </div>
               <div className="content row">
                 <div className="col-xs-12">
-                  { this._getMetadataViewer(metadata, metadataHighlighting) }
+                  { this._getMetadataViewer(songsheet, metadataHighlighting) }
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-xs-12 col-lg-8 col-lg-offset-2 text-center">
-            <div className="box">
-              <div className="heading row">
-                <div className="col-xs-12">
-                  <h3>Ähnliche Liedblätter</h3>
-                </div>
-              </div>
-              <div className="content row">
-                <div className="col-xs-12">
-                  { this._getSimilarSongsheets(similarityThreshold, similarityScores, similarSongsheets, similarMetadata) }
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        { this._getSimilarSongsheets(similarityThreshold, similarityScores, songsheets) }
 
       </div>
     );
