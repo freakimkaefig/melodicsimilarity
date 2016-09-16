@@ -210,7 +210,7 @@ class StatisticsService {
             }
           }
         });
-        StatisticsActions.updateGraphEdges(edges);
+        StatisticsActions.updateGraphEdges(edges, response.length);
       })
       .catch(error => {
         console.log(error);

@@ -183,11 +183,17 @@ class SolrService {
       .then(response => {
         if (response.response.numFound > 0) {
           let doc = response.response.docs[0];
+          let landscapeArchive = 'Unbekannt';
+          if (typeof doc.landscapeArchive !== 'undefined') {
+            if (doc.landscapeArchive !== '') {
+              landscapeArchive = doc.landscapeArchive;
+            }
+          }
           StatisticsActions.updateGraphNodes({
             id: doc.signature,
             label: doc.signature,
-            title: "Signatur: " + doc.signature + "<br>Titel: " + doc.title + "<br>Landschaftsarchiv: " + doc.landscapeArchive,
-            group: doc.landscapeArchive
+            title: "Signatur: " + doc.signature + "<br>Titel: " + doc.title + "<br>Landschaftsarchiv: " + landscapeArchive,
+            group: landscapeArchive
           });
         }
       })

@@ -27,6 +27,7 @@ class StatisticsStore extends BaseStore {
     this._dates = [];
     this._geo = {};
     this._tag = {};
+    this._nodeCount = 0;
     this._graph = {
       nodes: [],
       edges: []
@@ -64,6 +65,7 @@ class StatisticsStore extends BaseStore {
         break;
 
       case UPDATE_GRAPH_EDGES:
+        this._nodeCount = action.nodeCount;
         this._graph.edges = action.edges;
         this.emitChange();
         break;
@@ -127,7 +129,11 @@ class StatisticsStore extends BaseStore {
       return [];
     }
   }
-  
+
+  get nodeCount() {
+    return this._nodeCount;
+  }
+
   get graph() {
     return this._graph;
   }

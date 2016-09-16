@@ -18,7 +18,9 @@ export default class SimilarityStatistics extends React.Component {
     super(props);
 
     this.state = {
+      threshold: SettingsStore.settings['threshold'].value,
       network: null,
+      nodeCount: StatisticsStore.nodeCount,
       graphData: StatisticsStore.graph,
       nodeDataset: null,
       edgesDataset: null,
@@ -46,30 +48,25 @@ export default class SimilarityStatistics extends React.Component {
   }
 
   onStoreChange() {
-    let {
-      network
-    } = this.state;
-    let nextGraphData = StatisticsStore.graph;
-    let threshold = SettingsStore.settings['threshold'].value;
-
-    if (network) {
-      network.setData({
-        nodes: new vis.DataSet(nextGraphData.nodes),
-        edges: new vis.DataSet(nextGraphData.edges.filter(item => {
-          console.log(item.length, threshold * 1000)
-          return item.length > threshold * 1000;
-        }))
-      });
-    }
-
-    this.setState({
-      graphData: nextGraphData
+    let nextThreshold = SettingsStore.settings['threshold'].value;
+    let nextGraphNodeIds = StatisticsStore.graph.nodes.map(item => {
+      return item.id;
     });
+
+    if (StatisticsStore.nodeCount === nextGraphNodeIds.length || this.state.threshold != nextThreshold) {
+      this.drawNetwork();
+    }
   }
 
   drawNetwork() {
-    var nodesDataset = new vis.DataSet([]);
-    var edgesDataset = new vis.DataSet([]);
+    let threshold = SettingsStore.settings['threshold'].value;
+    let graphData = StatisticsStore.graph;
+
+    let nodesDataset = new vis.DataSet(graphData.nodes);
+    let edgesDataset = new vis.DataSet(graphData.edges.filter(item => {
+      return item.length > threshold * 1000;
+    }));
+    let allNodes = nodesDataset.get({returnType: 'Object'});
 
     var container = document.getElementById('songsheet-network');
     var options = {
@@ -93,7 +90,7 @@ export default class SimilarityStatistics extends React.Component {
         }
       },
       edges: {
-        width: 2,
+        width: 1.5,
         color: {inherit: 'from'},
         smooth: {
           type: 'continuous'
@@ -101,7 +98,7 @@ export default class SimilarityStatistics extends React.Component {
       },
       physics: true,
       interaction: {
-        tooltipDelay: 10,
+        tooltipDelay: 200,
         hideEdgesOnDrag: true
       }
     };
@@ -110,13 +107,20 @@ export default class SimilarityStatistics extends React.Component {
       edges: edgesDataset
     };
 
-    var network = new vis.Network(container, data, options);
-    var allNodes = nodesDataset.get({returnType:'Object'});
+    let network = new vis.Network(container, data, options);
+    network.setData({
+      nodes: nodesDataset,
+      edges: edgesDataset
+    });
+
     this.setState({
+      threshold: threshold,
       network: network,
-      allNodes: allNodes,
+      nodeCount: StatisticsStore.nodeCount,
+      graphData: graphData,
       nodesDataset: nodesDataset,
-      edgesDataset: edgesDataset
+      edgesDataset: edgesDataset,
+      allNodes: allNodes
     });
 
     network.on('click', this.neighbourhoodHighlight);
@@ -129,12 +133,12 @@ export default class SimilarityStatistics extends React.Component {
     // if something is selected:
     if (params.nodes.length > 0) {
       highlightActive = true;
-      var i,j;
+      var i, nodeId;
       var selectedNode = params.nodes[0];
-      var degrees = 1;
 
       // mark all nodes as hard to read.
-      for (var nodeId in allNodes) {
+      for (nodeId in allNodes) {
+        if (!allNodes.hasOwnProperty(nodeId)) continue;
         allNodes[nodeId].color = 'rgba(200,200,200,0.5)';
         if (allNodes[nodeId].hiddenLabel === undefined) {
           allNodes[nodeId].hiddenLabel = allNodes[nodeId].label;
@@ -142,23 +146,6 @@ export default class SimilarityStatistics extends React.Component {
         }
       }
       var connectedNodes = network.getConnectedNodes(selectedNode);
-      var allConnectedNodes = [];
-
-      // get the second degree nodes
-      for (i = 1; i < degrees; i++) {
-        for (j = 0; j < connectedNodes.length; j++) {
-          allConnectedNodes = allConnectedNodes.concat(network.getConnectedNodes(connectedNodes[j]));
-        }
-      }
-
-      // all second degree nodes get a different color and their label back
-      for (i = 0; i < allConnectedNodes.length; i++) {
-        allNodes[allConnectedNodes[i]].color = 'rgba(150,150,150,0.75)';
-        if (allNodes[allConnectedNodes[i]].hiddenLabel !== undefined) {
-          allNodes[allConnectedNodes[i]].label = allNodes[allConnectedNodes[i]].hiddenLabel;
-          allNodes[allConnectedNodes[i]].hiddenLabel = undefined;
-        }
-      }
 
       // all first degree nodes get their own color and their label back
       for (i = 0; i < connectedNodes.length; i++) {
@@ -178,7 +165,8 @@ export default class SimilarityStatistics extends React.Component {
     }
     else if (highlightActive === true) {
       // reset all nodes
-      for (var nodeId in allNodes) {
+      for (nodeId in allNodes) {
+        if (!allNodes.hasOwnProperty(nodeId)) continue;
         allNodes[nodeId].color = undefined;
         if (allNodes[nodeId].hiddenLabel !== undefined) {
           allNodes[nodeId].label = allNodes[nodeId].hiddenLabel;
@@ -198,7 +186,9 @@ export default class SimilarityStatistics extends React.Component {
     nodesDataset.update(updateArray);
 
     this.setState({
+      network: network,
       nodeDataset: nodesDataset,
+      allNodes: allNodes,
       highlightActive: highlightActive
     });
   }

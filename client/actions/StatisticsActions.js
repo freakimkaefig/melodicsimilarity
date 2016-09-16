@@ -47,10 +47,11 @@ export default {
     });
   },
 
-  updateGraphEdges: (edges) => {
+  updateGraphEdges: (edges, nodeCount) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_GRAPH_EDGES,
-      edges: edges
+      edges: edges,
+      nodeCount: nodeCount
     });
   }
 }
