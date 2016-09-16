@@ -213,6 +213,11 @@
           "type": "quarter"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 4,
           "type": "quarter"
@@ -413,6 +418,11 @@
           "type": "quarter"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 4,
           "type": "quarter"
@@ -839,6 +849,11 @@
           "type": "quarter"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 4,
           "type": "quarter"

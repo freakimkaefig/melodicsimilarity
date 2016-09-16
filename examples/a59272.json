@@ -148,6 +148,11 @@
           "type": "eighth"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 2,
           "type": "eighth"
@@ -262,6 +267,11 @@
           "type": "eighth"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 2,
           "type": "eighth"

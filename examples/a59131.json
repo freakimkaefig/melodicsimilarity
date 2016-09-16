@@ -191,6 +191,11 @@
           "type": "quarter"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 4,
           "type": "quarter"
@@ -370,6 +375,11 @@
     {
       "notes": [
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 8,
           "type": "half"
@@ -559,6 +569,11 @@
           "type": "quarter"
         },
         {
+          "pitch":{
+            "step":"C",
+            "octave":5,
+            "alter":0
+          },
           "rest": true,
           "duration": 4,
           "type": "quarter"

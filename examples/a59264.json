@@ -202,7 +202,7 @@
           "dot": false,
           "pitch": {
             "accidental": "undefined",
-            "alter": 1,
+            "alter": 0,
             "octave": 5,
             "step": "C"
           },
@@ -630,7 +630,7 @@
           "dot": false,
           "pitch": {
             "accidental": "undefined",
-            "alter": 1,
+            "alter": 0,
             "octave": 5,
             "step": "C"
           },
