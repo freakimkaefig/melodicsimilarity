@@ -1,0 +1,693 @@
+{
+  "_id": {
+    "$oid": "57cd35bddb8663d1243e3e65"
+  },
+  "id": "59192",
+  "attributes": {
+    "divisions": 4,
+    "clef": {
+      "sign": "G",
+      "line": 2
+    },
+    "key": {
+      "fifths": -1
+    },
+    "time": {
+      "beats": 2,
+      "beat-type": 4
+    }
+  },
+  "measures": [
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 4,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": -1,
+            "octave": 4,
+            "step": "B"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 4,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": -1,
+            "octave": 4,
+            "step": "B"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": -1,
+            "octave": 4,
+            "step": "B"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 2,
+          "type": "eighth"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 4,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": -1,
+            "octave": 4,
+            "step": "B"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "G"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 8,
+          "type": "half"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "flat",
+            "alter": -1,
+            "octave": 5,
+            "step": "E"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 4,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": -1,
+            "octave": 4,
+            "step": "B"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "C"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "G"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 8,
+          "type": "half"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "flat",
+            "alter": -1,
+            "octave": 5,
+            "step": "E"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        },
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "F"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    },
+    {
+      "notes": [
+        {
+          "dot": false,
+          "pitch": {
+            "accidental": "undefined",
+            "alter": 0,
+            "octave": 5,
+            "step": "D"
+          },
+          "rest": false,
+          "duration": 4,
+          "type": "quarter"
+        }
+      ],
+      "attributes": {
+        "repeat": {
+          "right": false,
+          "left": false
+        }
+      }
+    }
+  ],
+  "__v": 0
+}
