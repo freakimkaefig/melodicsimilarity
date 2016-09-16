@@ -91,8 +91,6 @@ export default class SongsheetView extends React.Component {
       }
     });
 
-    console.log(similarItems);
-
     if (similarItems.length > 0) {
       return (
         <div className="row">
