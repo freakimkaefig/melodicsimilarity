@@ -82,11 +82,11 @@ export default class App extends React.Component {
     return (
       <DocumentTitle title="MusicIR App">
         <div className="App">
-          <Navbar header={true} links={headerLinks} route={this.props.location.pathname} />
+          <Navbar header={true} links={headerLinks} route={this.props.location.pathname} loggedIn={this.state.userLoggedIn} />
           <div className="container-fluid" id="app">
             {this.props.children}
           </div>
-          <Navbar header={false} links={footerLinks} route={this.props.location.pathname} />
+          <Navbar header={false} links={footerLinks} route={this.props.location.pathname} loggedIn={this.state.userLoggedIn} />
         </div>
       </DocumentTitle>
     );

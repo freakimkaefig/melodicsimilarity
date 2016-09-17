@@ -27,12 +27,13 @@ export default class NavBar extends React.Component {
         children: PropTypes.array
       })
     ).isRequired,
-    route: PropTypes.string.isRequired
+    route: PropTypes.string.isRequired,
+    loggedIn: PropTypes.bool
   };
 
   getVisibleLinks() {
     return this.props.links.filter(link => {
-      return (link.nav === true && (link.auth === false || (link.auth === true && LoginStore.isLoggedIn())));
+      return (link.nav === true && (link.auth === false || (link.auth === true && this.props.loggedIn)));
     });
   }
   
