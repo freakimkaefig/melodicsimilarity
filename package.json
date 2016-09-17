@@ -121,7 +121,7 @@
     "server:stop": "./node_modules/.bin/forever stop bin/www",
     "server:dev": "./node_modules/.bin/nodemon bin/www",
     "test": "jest --runInBand",
-    "coverage": "jest --runInBand --coverage"
+    "coverage": "npm test -- --coverage"
   },
   "jest": {
     "rootDir": "./",

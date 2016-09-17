@@ -14,4 +14,4 @@ env.AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY;
 env.AWS_REGION = process.env.AWS_REGION;
 console.log(env);
 
-fs.writeFileSync(path.join(__dirname, '../', '.env.test.json'), JSON.stringify(env));
+fs.writeFileSync(path.join(__dirname, '../', '.env.json'), JSON.stringify(env));
