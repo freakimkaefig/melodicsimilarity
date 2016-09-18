@@ -105,7 +105,7 @@ export default class SongsheetView extends React.Component {
               </div>
               <div className="content row">
                 <div className="col-xs-12">
-                  <FileGrid songsheets={similarItems} itemClass="item col-xs-6 col-sm-3 text-center"/>
+                  <FileGrid songsheets={similarItems.slice(0, 4)} itemClass="item col-xs-6 col-sm-3 text-center"/>
                 </div>
               </div>
             </div>
