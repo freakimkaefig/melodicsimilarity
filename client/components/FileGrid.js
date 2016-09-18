@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import {Link} from 'react-router';
 import { METADATA_IMAGE_BASE_URL } from '../constants/SolrConstants';
+import { THUMBNAIL_PREFIX } from '../constants/SongsheetConstants';
 import '../stylesheets/FileGrid.less';
 
 export default class FileGrid extends React.Component {
@@ -29,7 +30,7 @@ export default class FileGrid extends React.Component {
         return (
           <div className={itemClass} key={index}>
             <Link to={`/songsheets/${item.signature}`}>
-              <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + item.imagename}/>
+              <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + THUMBNAIL_PREFIX + item.imagename}/>
               <h4>{item.signature}</h4>
               <h5>{item.title}</h5>
             </Link>

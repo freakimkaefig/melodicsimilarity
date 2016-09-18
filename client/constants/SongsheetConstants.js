@@ -11,3 +11,4 @@ export const LOAD_ITEM = 'LOAD_ITEM';
 export const UPDATE_SIMILAR = 'UPDATE_SIMILAR';
 export const IMAGE_WIDTH = 2743;
 export const IMAGE_HEIGHT = 3440;
+export const THUMBNAIL_PREFIX = 'thumbnail.';

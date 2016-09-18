@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import {Link} from 'react-router';
-import {METADATA_IMAGE_BASE_URL} from '../../constants/SolrConstants';
+import { METADATA_IMAGE_BASE_URL } from '../../constants/SolrConstants';
+import { THUMBNAIL_PREFIX } from '../../constants/SongsheetConstants';
 import { json2abc } from 'musicjson2abc';
 import AbcViewer from '../AbcViewer';
 import '../../stylesheets/SearchResultList.less';
@@ -27,7 +28,7 @@ export default class SearchResultList extends React.Component {
       );
       image = (
         <Link to={result.url}>
-          <img src={ METADATA_IMAGE_BASE_URL + result.metadata.imagename } className="img-responsive" />
+          <img src={ METADATA_IMAGE_BASE_URL + THUMBNAIL_PREFIX + result.metadata.imagename } className="img-responsive" />
         </Link>
       );
     } else {
@@ -35,7 +36,7 @@ export default class SearchResultList extends React.Component {
         <h3>{ this._getResultHeadline(result) }</h3>
       );
       image = (
-        <img src={ METADATA_IMAGE_BASE_URL + result.metadata.imagename } className="img-responsive" />
+        <img src={ METADATA_IMAGE_BASE_URL + THUMBNAIL_PREFIX + result.metadata.imagename } className="img-responsive" />
       );
     }
 
