@@ -108,7 +108,7 @@ export default class SearchResultList extends React.Component {
         attributes: result.json.attributes,
         measures: highlightMeasures
       };
-      let tempAbc = json2abc(JSON.stringify(tempJson));
+      let tempAbc = json2abc(tempJson);
 
       highlightMelody = (
         <div>

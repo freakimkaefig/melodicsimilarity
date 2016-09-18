@@ -62,12 +62,14 @@ export default class SongsheetView extends React.Component {
     }
   }
 
-  _getAbcViewer(file, highlighting) {
-    if (typeof file !== 'undefined') {
-      let abc = json2abc(JSON.stringify(file.json));
-      return (
-        <AbcViewer abc={abc} itemKey={0} player={true} highlight={highlighting} />
-      );
+  _getAbcViewer(songsheet, highlighting) {
+    if (typeof songsheet !== 'undefined') {
+      if (typeof songsheet.json !== 'undefined') {
+        let abc = json2abc(songsheet.json);
+        return (
+          <AbcViewer abc={abc} itemKey={0} player={true} highlight={highlighting}/>
+        );
+      }
     }
   }
 
