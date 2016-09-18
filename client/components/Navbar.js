@@ -17,6 +17,8 @@ require('../stylesheets/NavBar.less');
 export default class NavBar extends React.Component {
   static propTypes = {
     header: PropTypes.bool,
+    fixedTop: PropTypes.bool,
+    fixedBottom: PropTypes.bool,
     links: PropTypes.arrayOf(
       PropTypes.shape({
         path: PropTypes.string,
@@ -92,7 +94,7 @@ export default class NavBar extends React.Component {
   render() {
     return (
       <div>
-        <Navbar fluid={true} fixedTop={this.props.header} fixedBottom={!this.props.header} className={this.props.header ? 'header' : 'footer'}>
+        <Navbar fluid={true} fixedTop={this.props.fixedTop} fixedBottom={this.props.fixedBottom} className={this.props.header ? 'header' : 'footer'}>
           {this.getNavbarHeader()}
           <Navbar.Collapse>
             <Nav pullRight>
