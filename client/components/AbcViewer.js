@@ -108,7 +108,6 @@ export default class AbcViewer extends React.Component {
         tune.lines.forEach(line => {
           line.staff.forEach(staff => {
             staff.voices.forEach(voice => {
-              console.log(voice);
               let notes = voice.filter(el => {
                 return el.el_type === 'note';
               });
@@ -150,7 +149,7 @@ export default class AbcViewer extends React.Component {
     if (typeof player !== 'undefined' && player !== null) {
       player.loadFile(song, function () {
         player.addListener(this._midiEventListener.bind(this));
-        // this.setState({midiLoaded: true});
+        this.setState({midiLoaded: true});
       }.bind(this));
       this.setState({
         player: player,

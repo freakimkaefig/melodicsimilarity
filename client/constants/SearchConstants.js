@@ -8,3 +8,6 @@ export const UPDATE_SEARCH_START = 'UPDATE_SEARCH_START';
 export const RESET_SEARCH = 'RESET_SEARCH';
 export const START_SEARCH = 'START_SEARCH';
 export const UPDATE_RESULTS = 'UPDATE_RESULTS';
+export const SORT_FUNCTION = function(a, b) {
+  return a.rank - b.rank || b.maxSimilarityCount - a.maxSimilarityCount || a.id > b.id;
+};

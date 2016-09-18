@@ -24,6 +24,7 @@ import {
 } from '../constants/MelodyConstants';
 import SolrService from '../services/SolrService';
 import SolrQuery from '../helpers/SolrQuery';
+import { SORT_FUNCTION } from '../helpers/ResultHelper';
 
 class SearchStore extends BaseStore {
 
@@ -184,7 +185,7 @@ class SearchStore extends BaseStore {
   }
 
   get results() {
-    return this._results.sort((a, b) => a.rank - b.rank);
+    return this._results.sort(SORT_FUNCTION);
   }
 
   get highlighting() {

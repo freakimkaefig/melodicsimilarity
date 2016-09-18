@@ -10,6 +10,7 @@ var MusicJsonToolbox = require('musicjson-toolbox');
 var databaseService = require('../services/databaseService');
 var apiConfig = require('../config/api.config.json');
 var databaseConfig = require('../config/database.config.json');
+var SORT_FUNCTION = require('../../client/helpers/ResultHelper').SORT_FUNCTION;
 
 var that = {};
 
@@ -60,9 +61,7 @@ var _mergeResults = function() {
     }
   });
 
-  return results.sort(function(a, b) {
-    return a.rank - b.rank || b.maxSimilarityCount - a.maxSimilarityCount;
-  });
+  return results.sort(SORT_FUNCTION);
 };
 
 /**

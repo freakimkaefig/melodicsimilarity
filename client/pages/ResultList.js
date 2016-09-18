@@ -81,9 +81,7 @@ export default class ResultList extends React.Component {
     });
   }
 
-  handleSelect(event, {eventKey}) {
-    event.preventDefault();
-
+  handleSelect(eventKey) {
     SearchActions.updateStart((eventKey - 1) * SearchStore.rows);
   }
   

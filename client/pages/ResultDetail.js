@@ -25,15 +25,8 @@ export default class ResultDetail extends React.Component {
       parsonQuery: SearchStore.parsonQuery,
       intervalQuery: SearchStore.intervalQuery,
       melodyQuery: SearchStore.melodyQuery,
-      file: SongsheetStore.songsheets.find(item => {
-        return item.signature === props.params.signature;
-      }),
-      metadata: SongsheetStore.metadata.find(item => {
-        return item.signature === props.params.signature;
-      }),
+      songsheets: SongsheetStore.songsheets,
       similarityScores: SongsheetStore.similarityScores,
-      similarSongsheets: SongsheetStore.similarSongsheets,
-      similarMetadata: SongsheetStore.similarMetadata,
       loading: false,
       searchResult: SearchStore.results.find(item => {
         return item.id === props.params.signature;
@@ -44,7 +37,7 @@ export default class ResultDetail extends React.Component {
     this.onSearchStoreChange = this.onSearchStoreChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     SongsheetStore.addChangeListener(this.onSongsheetStoreChange);
 
     if (this.state.metadataQueryFields.length === 0
@@ -59,10 +52,6 @@ export default class ResultDetail extends React.Component {
         loading: true
       });
       SongsheetService.loadItem(this.props.params.signature);
-    }
-
-    if (this.state.similarSongsheets.length <= 0 || this.state.similarMetadata.length <= 0) {
-      SongsheetService.loadSimilar(this.props.params.signature);
     }
   }
 
@@ -82,15 +71,8 @@ export default class ResultDetail extends React.Component {
 
   onSongsheetStoreChange() {
     this.setState({
-      file: SongsheetStore.songsheets.find(item => {
-        return item.signature === this.props.params.signature;
-      }),
-      metadata: SongsheetStore.metadata.find(item => {
-        return item.signature === this.props.params.signature;
-      }),
+      songsheets: SongsheetStore.songsheets,
       similarityScores: SongsheetStore.similarityScores,
-      similarSongsheets: SongsheetStore.similarSongsheets,
-      similarMetadata: SongsheetStore.similarMetadata,
       loading: false
     });
   }
@@ -117,14 +99,15 @@ export default class ResultDetail extends React.Component {
       parsonQuery,
       intervalQuery,
       melodyQuery,
-      file,
-      metadata,
+      songsheets,
       similarityScores,
-      similarSongsheets,
-      similarMetadata,
       loading,
       searchResult
     } = this.state;
+
+    let currentSongsheet = songsheets.find((item) => {
+      return item.signature === signature;
+    });
 
     let melodicHighlighting = [];
     if (typeof searchResult !== 'undefined') {
@@ -167,11 +150,9 @@ export default class ResultDetail extends React.Component {
           </div>
 
           <SongsheetView
-            file={file}
-            metadata={metadata}
+            songsheet={currentSongsheet}
+            songsheets={songsheets}
             similarityScores={similarityScores}
-            similarSongsheets={similarSongsheets}
-            similarMetadata={similarMetadata}
             melodicHighlighting={melodicHighlighting}
             metadataHighlighting={metadataQueryFields}
           />
