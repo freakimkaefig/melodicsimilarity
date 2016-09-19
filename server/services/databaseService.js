@@ -231,6 +231,23 @@ var addDocument = function(data, callback) {
   });
 };
 
+// Remove single document from Mongo DB collection by query
+var deleteDocument = function(collectionName, query, callback) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      throw err;
+    }
+    var collection = db.collection(collectionName);
+    collection.deleteOne(query, function(err, result) {
+      if (err) {
+        throw err;
+      }
+      callback(result, query);
+      db.close();
+    });
+  });
+};
+
 that.getStats = getStats;
 that.getCollection = getCollection;
 that.getDocuments = getDocuments;
@@ -243,5 +260,6 @@ that.updateStatistics = updateStatistics;
 that.getSimilarity = getSimilarity;
 that.updateSimilarity = updateSimilarity;
 that.addDocument = addDocument;
+that.deleteDocument = deleteDocument;
 
 module.exports = that;

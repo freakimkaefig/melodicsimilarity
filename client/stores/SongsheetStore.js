@@ -5,6 +5,7 @@ import {
   LOAD_LIST,
   LOAD_ITEM,
   UPDATE_SIMILAR,
+  DELETE_SONGSHEET
 } from '../constants/SongsheetConstants';
 import {
   UPDATE_METADATA,
@@ -73,6 +74,14 @@ class SongsheetStore extends BaseStore {
         diff.forEach(item => {
           SongsheetService.loadItem(item.signature);
         });
+        this.emitChange();
+        break;
+
+      case DELETE_SONGSHEET:
+        this._songsheets = this._songsheets.filter(item => {
+          return item.signature !== action.signature;
+        });
+        this._totalCount = this._songsheets.length;
         this.emitChange();
         break;
     }

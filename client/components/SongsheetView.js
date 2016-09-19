@@ -82,36 +82,39 @@ export default class SongsheetView extends React.Component {
   }
 
   _getSimilarSongsheets(similarityThreshold, similarityScores, songsheets) {
-    let similarItems = songsheets.filter((item) => {
-      let similarityScore = similarityScores.find((score) => {
-        return score.signature === item.signature;
+    if (typeof songsheets !== 'undefined') {
+      let similarItems = songsheets.filter((item) => {
+        let similarityScore = similarityScores.find((score) => {
+          return score.signature === item.signature;
+        });
+        if (typeof similarityScore !== 'undefined') {
+          return similarityScore.distance >= similarityThreshold;
+        } else {
+          return false;
+        }
       });
-      if (typeof similarityScore !== 'undefined') {
-        return similarityScore.distance >= similarityThreshold;
-      } else {
-        return false;
-      }
-    });
 
-    if (similarItems.length > 0) {
-      return (
-        <div className="row">
-          <div className="col-xs-12 col-lg-8 col-lg-offset-2 text-center">
-            <div className="box">
-              <div className="heading row">
-                <div className="col-xs-12">
-                  <h3>Ähnliche Liedblätter</h3>
+      if (similarItems.length > 0) {
+        return (
+          <div className="row">
+            <div className="col-xs-12 col-lg-8 col-lg-offset-2 text-center">
+              <div className="box">
+                <div className="heading row">
+                  <div className="col-xs-12">
+                    <h3>Ähnliche Liedblätter</h3>
+                  </div>
                 </div>
-              </div>
-              <div className="content row">
-                <div className="col-xs-12">
-                  <FileGrid songsheets={similarItems.slice(0, 4)} itemClass="item col-xs-6 col-sm-3 text-center"/>
+                <div className="content row">
+                  <div className="col-xs-12">
+                    <FileGrid songsheets={similarItems.slice(0, 4)} urlPrefix="/songsheets/"
+                              itemClass="item col-xs-6 col-sm-3 text-center"/>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      );
+        );
+      }
     }
   }
 

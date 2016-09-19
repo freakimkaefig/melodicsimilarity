@@ -3,6 +3,7 @@ import {
   LOAD_LIST,
   LOAD_ITEM,
   UPDATE_SIMILAR,
+  DELETE_SONGSHEET,
   LOAD_SIMILAR_ITEM
 } from '../../constants/SongsheetConstants';
 import {
@@ -62,6 +63,11 @@ describe('SongsheetStore', () => {
   var actionUpdateSimilar = {
     actionType: UPDATE_SIMILAR,
     similar: [similar1, similar2]
+  };
+
+  var actionDeleteSongsheet = {
+    actionType: DELETE_SONGSHEET,
+    signature: 'abc123'
   };
 
   beforeEach(() => {
@@ -154,6 +160,31 @@ describe('SongsheetStore', () => {
     expect(ArrayHelper.differenceByProperty).toBeCalledWith([], [similar1, similar2], 'signature');
     expect(SongsheetService.loadItem).toBeCalledWith(similar1.signature);
     expect(SongsheetService.loadItem).toBeCalledWith(similar2.signature);
+  });
+
+  it('should remove item from list of songsheets', () => {
+    ArrayHelper.mergeByProperty = jest.fn()
+      .mockImplementationOnce(() => {
+        SongsheetStore._songsheets = [songsheet1, songsheet2];
+      })
+      .mockImplementationOnce(() => {
+        SongsheetStore._songsheets = [songsheetPlaceholder1, songsheet2];
+      })
+      .mockImplementationOnce(() => {
+        SongsheetStore._songsheets = [songsheetPlaceholder1, songsheetPlaceholder2];
+      });
+    callback(actionRenderList);
+    expect(ArrayHelper.mergeByProperty).toBeCalledWith([], [songsheet1, songsheet2], 'signature');
+    expect(SongsheetStore.songsheets.length).toBe(2);
+    expect(SongsheetStore.totalCount).toBe(2);
+    expect(ArrayHelper.mergeByProperty).toBeCalledWith([songsheet1, songsheet2], [metadataPlaceholder1], 'signature');
+    expect(ArrayHelper.mergeByProperty).toBeCalledWith([songsheetPlaceholder1, songsheet2], [metadataPlaceholder2], 'signature');
+    expect(SongsheetStore.songsheets).toEqual([songsheetPlaceholder1, songsheetPlaceholder2]);
+
+    callback(actionDeleteSongsheet);
+    expect(SongsheetStore.songsheets.length).toBe(1);
+    expect(SongsheetStore.totalCount).toBe(1);
+    expect(SongsheetStore.songsheets).toEqual([songsheetPlaceholder2]);
   });
 
 });

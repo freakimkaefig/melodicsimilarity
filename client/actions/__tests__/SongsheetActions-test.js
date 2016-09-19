@@ -2,7 +2,8 @@ import {
   UPDATE_SONGSHEET_START,
   LOAD_LIST,
   LOAD_ITEM,
-  UPDATE_SIMILAR
+  UPDATE_SIMILAR,
+  DELETE_SONGSHEET
 } from '../../constants/SongsheetConstants';
 
 jest.mock('../../dispatchers/AppDispatcher');
@@ -54,6 +55,14 @@ describe('SongsheetActions', () => {
     expect(AppDispatcher.dispatch).toBeCalledWith({
       actionType: UPDATE_SIMILAR,
       similar: { signature: 'abc123', title: 'Title 1' }
+    });
+  });
+
+  it('dispatches songsheet delete', () => {
+    SongsheetActions.deleteSongsheet('abc123');
+    expect(AppDispatcher.dispatch).toBeCalledWith({
+      actionType: DELETE_SONGSHEET,
+      signature: 'abc123'
     });
   });
 

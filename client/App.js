@@ -28,6 +28,7 @@ var headerLinks = [
 
 var footerLinks = [
   { path: '/settings', title: 'Einstellungen', nav: true, auth: true, dropdown: false },
+  { path: '/admin/songsheets', title: 'Liedblatt-Verwaltung', nav: true, auth: true, dropdown: false },
   { path: '/upload', title: 'Upload', nav: true, auth: true, dropdown: false },
   { path: '/login', title: 'Login', nav: false, auth: false, dropdown: false },
   { path: '/logout', title: 'Logout', nav: true, auth: true, dropdown: false },

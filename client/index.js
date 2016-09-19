@@ -20,6 +20,8 @@ import ResultList from './pages/ResultList';
 import ResultDetail from './pages/ResultDetail';
 import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
+import SongsheetAdminList from './pages/SongsheetAdminList';
+import SongsheetAdminDetail from './pages/SongsheetAdminDetail';
 import SettingsPage from './pages/SettingsPage';
 import UploadPage from './pages/UploadPage';
 import UploadProgressPage from './pages/UploadProgressPage';
@@ -53,7 +55,10 @@ var router = (
       <Route name="login" path="/login" component={LoginPage} />
       <Route name="logout" path="/logout" component={LogoutPage} />
 
-      <Route name="settings" path="/settings" component={SettingsPage} onEnter={UploadPage.willTransitionTo} />
+      <Route name="settings" path="/settings" component={SettingsPage} onEnter={SettingsPage.willTransitionTo} />
+
+      <Route name="admin-songsheets" path="/admin/songsheets" component={SongsheetAdminList} onEnter={SongsheetAdminList.willTransitionTo} />
+      <Route name="admin-songsheet" path="/admin/songsheets/:signature" component={SongsheetAdminDetail} onEnter={SongsheetAdminDetail.willTransitionTo} />
 
       <Route name="upload" path="/upload" component={UploadPage} onEnter={UploadPage.willTransitionTo} />
       <Route name="upload-progress" path="/upload/progress" component={UploadProgressPage} onEnter={UploadProgressPage.willTransitionTo} />

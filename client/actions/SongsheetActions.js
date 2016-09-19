@@ -4,6 +4,7 @@ import {
   LOAD_LIST,
   LOAD_ITEM,
   UPDATE_SIMILAR,
+  DELETE_SONGSHEET
 } from '../constants/SongsheetConstants';
 
 export default {
@@ -34,5 +35,12 @@ export default {
       actionType: UPDATE_SIMILAR,
       similar: similar
     })
+  },
+
+  deleteSongsheet: (signature) => {
+    AppDispatcher.dispatch({
+      actionType: DELETE_SONGSHEET,
+      signature: signature
+    });
   }
 }

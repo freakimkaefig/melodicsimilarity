@@ -13,7 +13,9 @@ export default class FileGrid extends React.Component {
       name: PropTypes.string,
       signature: PropTypes.string.isRequired
     })).isRequired,
-    itemClass: PropTypes.string
+    urlPrefix: PropTypes.string,
+    itemClass: PropTypes.string,
+    customField: PropTypes.element
   };
 
   static defaultProps = {
@@ -24,16 +26,17 @@ export default class FileGrid extends React.Component {
     super(props);
   }
 
-  renderFileGrid(songsheets, itemClass) {
+  renderFileGrid(songsheets, urlPrefix, itemClass, customField) {
     if (songsheets.length > 0) {
       return songsheets.map((item, index) => {
         return (
-          <div className={itemClass} key={index}>
-            <Link to={`/songsheets/${item.signature}`}>
+          <div className={itemClass} key={index} data-signature={item.signature}>
+            <Link to={`${urlPrefix}${item.signature}`}>
               <img className="img-responsive" src={METADATA_IMAGE_BASE_URL + THUMBNAIL_PREFIX + item.imagename}/>
               <h4>{item.signature}</h4>
               <h5>{item.title}</h5>
             </Link>
+            {customField}
           </div>
         );
       });
@@ -43,12 +46,14 @@ export default class FileGrid extends React.Component {
   render() {
     let {
       songsheets,
-      itemClass
+      urlPrefix,
+      itemClass,
+      customField
     } = this.props;
 
     return (
       <div className="grid row start-xs">
-        { this.renderFileGrid(songsheets, itemClass) }
+        { this.renderFileGrid(songsheets, urlPrefix, itemClass, customField) }
       </div>
     );
   }

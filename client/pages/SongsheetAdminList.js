@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react';
+import AuthenticatedComponent from '../components/AuthenticatedComponent';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
 import { ROWS } from '../constants/SongsheetConstants';
@@ -6,11 +7,14 @@ import SongsheetService from '../services/SongsheetService';
 import SongsheetStore from '../stores/SongsheetStore';
 import LoadingOverlay from '../components/LoadingOverlay';
 import FileGrid from '../components/FileGrid';
-import {Pagination} from 'react-bootstrap';
+import {
+  Pagination,
+  Button
+} from 'react-bootstrap';
 
 
-export default class SongsheetList extends React.Component {
-  static displayName = 'SongsheetList';
+export default AuthenticatedComponent(class SongsheetAdminList extends React.Component {
+  static displayName = 'SongsheetAdminList';
 
   constructor(props) {
     super(props);
@@ -29,7 +33,7 @@ export default class SongsheetList extends React.Component {
     SongsheetStore.addChangeListener(this.onStoreChange);
     SongsheetService.loadList(0, ROWS);
   }
-  
+
   componentWillUnmount() {
     SongsheetStore.removeChangeListener(this.onStoreChange);
   }
@@ -57,6 +61,10 @@ export default class SongsheetList extends React.Component {
     SongsheetService.loadList((eventKey - 1) * ROWS, ROWS);
   }
 
+  onSongsheetDelete(event) {
+    SongsheetService.deleteSongsheet(event.target.parentNode.dataset.signature);
+  }
+
   render() {
 
     let {
@@ -69,12 +77,12 @@ export default class SongsheetList extends React.Component {
     let filteredsongsheets = songsheets.slice(start, start + ROWS);
 
     return (
-      <DocumentTitle title={`Liedblätter // ${APP_NAME}`}>
+      <DocumentTitle title={`Liedblatt-Verwaltung // ${APP_NAME}`}>
         <div>
-          <h1 className="text-center">Liedblatt-Galerie</h1>
+          <h1 className="text-center">Liedblatt-Verwaltung</h1>
           <LoadingOverlay loading={filteredsongsheets <= 0} />
           <div className="offset-container">
-            <FileGrid songsheets={filteredsongsheets} urlPrefix="/songsheets/" />
+            <FileGrid songsheets={filteredsongsheets} urlPrefix="/admin/songsheets/" customField={<Button bsStyle="danger" onClick={this.onSongsheetDelete.bind(this)}><i className="fa fa-trash" aria-hidden="true"></i> Löschen</Button>}/>
           </div>
           <div className="text-center">
             <Pagination
@@ -92,4 +100,4 @@ export default class SongsheetList extends React.Component {
       </DocumentTitle>
     )
   }
-}
+});

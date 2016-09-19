@@ -80,10 +80,20 @@ var getImageByName = function(req, res) {
   }
 };
 
+var deleteSongsheet = function(req, res) {
+  databaseService.deleteDocument(databaseConfig.collections.songsheets, {signature: req.params.signature}, function(result, query) {
+    res.json({
+      signature: query.signature,
+      ok: result.result.ok
+    });
+  });
+};
+
 
 that.handleUpload = handleUpload;
 that.getSongsheets = getSongsheets;
 that.getSongsheetBySignature = getSongsheetBySignature;
 that.getImageByName = getImageByName;
+that.deleteSongsheet = deleteSongsheet;
 
 module.exports = that;

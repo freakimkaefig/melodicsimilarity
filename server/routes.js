@@ -46,6 +46,7 @@ router.get('/api/protected/users', userController.getUsers);
 
 /* Songsheets */
 router.put('/api/protected/songsheet/add', songsheetController.handleUpload);
+router.delete('/api/protected/songsheet/delete/:signature', songsheetController.deleteSongsheet);
 
 /* Statistics */
 router.put('/api/protected/index/update/:mode', statisticController.putStats);

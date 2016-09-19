@@ -4,9 +4,11 @@ import SongsheetActions from '../actions/SongsheetActions';
 import {
   LIST_URL,
   ITEM_URL,
-  SIMILAR_URL
+  SIMILAR_URL,
+  DELETE_URL
 } from '../constants/SongsheetConstants';
 import SolrService from './SolrService';
+import LoginStore from '../stores/LoginStore';
 
 class SongsheetService {
 
@@ -71,6 +73,29 @@ class SongsheetService {
       })
       .catch(error => {
         console.log(error);
+      });
+  }
+
+  deleteSongsheet(signature) {
+    return this.handleDeleteSongsheetResponse(when(request({
+      url: DELETE_URL + signature,
+      method: 'DELETE',
+      crossOrigin: true,
+      headers: {
+        'Authorization': 'Bearer ' + LoginStore.jwt
+      }
+    })));
+  }
+
+  handleDeleteSongsheetResponse(promise) {
+    return promise
+      .then(response => {
+        if (response.ok) {
+          SongsheetActions.deleteSongsheet(response.signature);
+        }
+      })
+      .catch(error => {
+        console.error(error);
       });
   }
 }
