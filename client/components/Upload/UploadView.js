@@ -71,9 +71,10 @@ export default class UploadView extends React.Component {
       reader.readAsText(f);
       reader.onload = (function(theFile) {
         return function(e) {
-          var content = e.target.result;
+          var content = JSON.parse(e.target.result);
+          console.log(content);
           var abc = json2abc(content);
-          var json = JSON.parse(content);
+          var json = content;
           var updatedFiles = this.state.files.concat({
             key: this.state.counter + 1,
             name: theFile.name,
