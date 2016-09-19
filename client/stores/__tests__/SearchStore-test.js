@@ -305,14 +305,14 @@ describe('SearchStore', () => {
     callback(actionUpdateResults);
     expect(SearchStore.results.length).toBe(2);
     expect(SearchStore.results).toEqual([
-      { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } },
-      { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
+      { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } },
+      { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
     ]);
 
     callback(actionUpdateMetadata);
     expect(SearchStore.results).toEqual([
-      { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { key1: 'value1', key2: 'value2', signature: 'xyz123' } },
-      { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
+      { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } },
+      { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { key1: 'value1', key2: 'value2', signature: 'xyz123' } }
     ]);
   });
 
@@ -320,8 +320,8 @@ describe('SearchStore', () => {
     callback(actionUpdateResults);
     expect(SearchStore.results.length).toBe(2);
     expect(SearchStore.results).toEqual([
-      { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { key1: 'value1', key2: 'value2', signature: 'xyz123' } },
-      { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } }
+      { id: 'abc456', key: 'value2', url: '/search/result/abc456', metadata: { imagename: 'placeholder.jpg', title: 'Kein Incipit vorhanden' } },
+      { id: 'xyz123', key: 'value1', url: '/search/result/xyz123', metadata: { key1: 'value1', key2: 'value2', signature: 'xyz123' } }
     ]);
   });
 
