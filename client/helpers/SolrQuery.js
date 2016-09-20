@@ -30,14 +30,6 @@ export default class SolrQuery {
     }
   }
 
-  setStart(value) {
-    // this._query += '&start=' + value;
-  }
-
-  setRows(value) {
-    // this._query += '&rows' + value;
-  }
-
   addQueryString(value) {
     this._q.push(value);
   }
@@ -46,7 +38,8 @@ export default class SolrQuery {
     if (exact) {
       value = '"' + value + '"';
     }
-    this._q.push(field + ':' + value);
+    var q = field + ':' + value;
+    this._q.push(q);
   }
 
   addDateField(field, value) {

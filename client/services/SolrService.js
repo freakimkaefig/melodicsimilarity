@@ -97,8 +97,6 @@ class SolrService {
     let query = new SolrQuery(SEARCH_QUERY_URL);
     query.setHighlighting(true, 'em', 300, 3);
     query.setOperator(operator);
-    query.setStart(start);
-    query.setRows(rows);
 
     for (var key in fields) {
       if (!fields.hasOwnProperty(key)) continue;
