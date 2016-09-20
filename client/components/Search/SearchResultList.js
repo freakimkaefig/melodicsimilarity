@@ -104,7 +104,6 @@ export default class SearchResultList extends React.Component {
         highlightMeasures.push(result.json.measures[melodic[i]]);
       }
       let tempJson = {
-        id: result.json.id,
         attributes: result.json.attributes,
         measures: highlightMeasures
       };
@@ -113,11 +112,13 @@ export default class SearchResultList extends React.Component {
       highlightMelody = (
         <div>
           <AbcViewer abc={tempAbc} itemKey={itemKey} player={false} />
-          <p><span className="text-info">DEBUG</span> <span className="text-muted">Similarity: {result.maxSimilarity}</span></p>
-          <p><span className="text-info">COUNT</span> <span className="text-muted">Count: {result.melodic.filter(item => {
-            return item.similarity >= result.maxSimilarity;
-          }).length}</span></p>
-          <p><span className="text-info">RANK</span> <span className="text-muted">Rank: {result.rank}</span></p>
+          <div className="hidden">
+            <p><span className="text-info">DEBUG</span> <span className="text-muted">Similarity: {result.maxSimilarity}</span></p>
+            <p><span className="text-info">COUNT</span> <span className="text-muted">Count: {result.melodic.filter(item => {
+              return item.similarity >= result.maxSimilarity;
+            }).length}</span></p>
+            <p><span className="text-info">RANK</span> <span className="text-muted">Rank: {result.rank}</span></p>
+          </div>
         </div>
       );
     }

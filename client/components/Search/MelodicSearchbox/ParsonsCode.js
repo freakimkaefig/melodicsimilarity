@@ -151,7 +151,7 @@ export default class ParsonsCode extends React.Component {
               <InputRange
                 maxValue={100}
                 minValue={0}
-                step={10}
+                step={5}
                 value={this.state.threshold}
                 labelSuffix="%"
                 onChange={this.handleThresholdChange.bind(this)} />
