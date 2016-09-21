@@ -15,6 +15,7 @@ import 'font-awesome-webpack!../config/font-awesome.config';
 import Highcharts from 'highcharts';
 require('highcharts-exporting')(Highcharts);
 require('highcharts-more')(Highcharts);
+import { APP_NAME } from './constants/AppConstants';
 
 var headerLinks = [
   { title: 'Statistik', nav: true, auth: false, dropdown: true, children: [
@@ -81,7 +82,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <DocumentTitle title="MusicIR App">
+      <DocumentTitle title={`${APP_NAME}`}>
         <div className="App">
           <Navbar header={true} fixedTop={true} links={headerLinks} route={this.props.location.pathname} loggedIn={this.state.userLoggedIn} />
           <div className="container-fluid" id="app">

@@ -1,0 +1,44 @@
+@import (reference) "../../config/_variables.less";
+
+.home-page {
+  .teaser-items {
+    .item {
+      h4 {
+        margin-top: 42px;
+      }
+      .icon {
+        font-size: 95px;
+      }
+    }
+  }
+
+  .about {
+    margin-top: 120px;
+    h4 {
+      margin-bottom: 40px;
+    }
+    p{
+      margin-bottom: 25px;
+    }
+
+    ul.github {
+      padding-left: 25px;
+      li {
+        display: block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        list-style: none;
+        line-height: 2;
+        &:before {
+          content: "\F09B";
+          margin-right: 10px;
+        }
+        > span {
+          font-family: @font-family-base;
+        }
+      }
+    }
+  }
+}

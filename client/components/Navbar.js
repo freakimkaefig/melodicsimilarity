@@ -10,7 +10,7 @@ import {
   IndexLinkContainer,
   LinkContainer
 } from 'react-router-bootstrap';
-import LoginStore from '../stores/LoginStore';
+import { APP_NAME } from '../constants/AppConstants';
 
 require('../stylesheets/NavBar.less');
 
@@ -72,7 +72,7 @@ export default class NavBar extends React.Component {
       this.props.header === true ? (
           <Navbar.Header>
             <Navbar.Brand>
-              <LinkContainer to="/"><div>MusicIR</div></LinkContainer>
+              <LinkContainer to="/"><div>{APP_NAME}</div></LinkContainer>
             </Navbar.Brand>
             <Navbar.Toggle />
           </Navbar.Header>

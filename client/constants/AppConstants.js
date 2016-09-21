@@ -7,4 +7,4 @@ import {
 export const APP_URL = BASE_URL;
 export const SOLR_URL = SOLR_URI;
 export const MONGO_URL = MONGO_URI;
-export const APP_NAME = 'Regensburger Volksmusikportal';
+export const APP_NAME = 'Informationssystem für das Regensburger Volksmusikportal';
