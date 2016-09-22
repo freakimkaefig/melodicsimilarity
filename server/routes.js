@@ -50,6 +50,7 @@ router.put('/api/protected/songsheet/add', songsheetController.handleUpload);
 router.delete('/api/protected/songsheet/delete/:signature', songsheetController.deleteSongsheet);
 
 /* Statistics */
+router.put('/api/protected/index/update', statisticController.putAllStats);
 router.put('/api/protected/index/update/:mode', statisticController.putStats);
 router.put('/api/protected/similarity/update/:signature', similarityController.updateOne);
 

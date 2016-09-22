@@ -28,7 +28,23 @@ var getStats = function(req, res) {
 };
 
 /**
- * Handles PUT request for statistics data
+ * Handles PUT request for all statistics data
+ * @param {object} req - request object
+ * @param {object} res - response object
+ */
+var putAllStats = function(req, res) {
+  for (var prop in apiConfig.statistics) {
+    if (!apiConfig.statistics.hasOwnProperty(prop)) continue;
+
+    if (apiConfig.statistics[prop].datatype === 'melodic') {
+      updateStats(apiConfig.statistics[prop].mode, function (result) {});
+    }
+  }
+  res.send("Enqueued update");
+};
+
+/**
+ * Handles PUT request for single statistics data
  * @param {object} req - request object
  * @param {object} res - response object
  */
@@ -504,6 +520,7 @@ function _numSort(a,b) {
 }
 
 that.getStats = getStats;
+that.putAllStats = putAllStats;
 that.putStats = putStats;
 that.updateStats = updateStats;
 
