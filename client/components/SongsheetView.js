@@ -88,6 +88,10 @@ export default class SongsheetView extends React.Component {
     if (typeof highlighting !== 'undefined') {
       if (highlighting.length > 0) {
 
+        highlighting.sort((a, b) => {
+          return a.highlight[0].measure - b.highlight[0].measure;
+        });
+
         let rows = highlighting.map((item, index) => {
           let start = item.highlight[0].measure + 1;
           let end = item.highlight[item.highlight.length - 1].measure + 1;
