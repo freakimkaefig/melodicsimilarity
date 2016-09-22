@@ -153,7 +153,7 @@ var getStatistics = function(mode, callback) {
 };
 
 // Update statistics in database
-var updateStatistics = function(mode, data, callback) {
+var updateStatistics = function(mode, songsheetsCount, data, callback) {
   MongoClient.connect(url, function(err, db) {
     if (err) {
       throw err;
@@ -161,7 +161,7 @@ var updateStatistics = function(mode, data, callback) {
     var collection = db.collection(databaseConfig.collections.statistics);
     collection.findOneAndUpdate(
       { mode: mode },
-      { mode: mode, data: data, lastUpdated: new Date() },
+      { mode: mode, songsheetsCount: songsheetsCount, data: data, lastUpdated: new Date() },
       { upsert: true, returnOriginal: false },
       function(err, result) {
         if (err) {

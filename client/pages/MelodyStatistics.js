@@ -12,7 +12,7 @@ import _ from 'lodash';
 import '../stylesheets/GraphPage.less';
 
 export default class MelodyStatistics extends React.Component {
-  static displayName = 'HomePage';
+  static displayName = 'MelodyStatistics';
   static propTypes = {};
 
   constructor(props) {
@@ -153,6 +153,7 @@ export default class MelodyStatistics extends React.Component {
     };
 
     this.state = {
+      songsheetsCount: StatisticsStore.songsheetsCount,
       notes: StatisticsStore.notes,
       intervals: StatisticsStore.intervals,
       durations: StatisticsStore.durations,
@@ -237,6 +238,7 @@ export default class MelodyStatistics extends React.Component {
     }
 
     this.setState({
+      songsheetsCount: StatisticsStore.songsheetsCount,
       notes: nextNotes,
       intervals: nextIntervals,
       durations: nextDurations,
@@ -325,7 +327,16 @@ export default class MelodyStatistics extends React.Component {
   }
 
   render() {
-    let {notes, intervals, durations, rests, keys, meters, counts} = this.state;
+    let {
+      songsheetsCount,
+      notes,
+      intervals,
+      durations,
+      rests,
+      keys,
+      meters,
+      counts
+    } = this.state;
 
     let ready = notes.values.length > 0
       && intervals.values.length > 0
@@ -349,7 +360,16 @@ export default class MelodyStatistics extends React.Component {
           <LoadingOverlay loading={!ready} />
           <div className="row charts-container">
             <div className="col-xs-12">
-              <h1 className="text-center">Melodieinformationen</h1>
+              <div className="row text-center">
+                <div className="col-xs-12 col-sm-8 col-sm-offset-2">
+                  <h1>Melodieinformationen</h1>
+                  <p>
+                    Die hier aufgeführten Graphen geben Aufschluss über verschiedene melodische Dimensionen. Dabei
+                    beziehen sich die berechneten Werte der Analyse auf das gesamte Liedblatt-Korpus. Aktuell
+                    sind <strong>{songsheetsCount}</strong> Liedblätter im Korpus enthalten.
+                  </p>
+                </div>
+              </div>
               <div className="row">
                 <div id="notes-chart" className="chart col-xs-12 col-md-6">
                   <ReactHighcharts config={notesChart} ref="notes" />

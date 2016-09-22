@@ -36,6 +36,7 @@ describe('statisticController', () => {
         expect(res.status).toBe(200);
         expect(res.headers['content-type']).toMatch(/json/);
         expect(res.body.mode).toBe('notes');
+        expect(res.body.songsheetsCount).toBe(2);
         expect(res.body.data.labels.length).toBe(3);
         expect(res.body.data.values.length).toBe(3);
         done();
@@ -68,6 +69,21 @@ describe('statisticController', () => {
       resolve);
   });
 
+  it('should enqueue update for all stats at once', (done) => {
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.text).toBe('Enqueued update');
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/index/update'),
+      resolve);
+  });
+
   it('should update stats for mode notes', (done) => {
     var resolve = (err, res) => {
       expect(err).toEqual(null);
@@ -75,6 +91,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('notes');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.labels.length).toBe(3);
       expect(res.body.value.data.values.length).toBe(3);
       done();
@@ -94,6 +111,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('intervals');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.labels.length).toBe(3);
       expect(res.body.value.data.values.length).toBe(3);
       done();
@@ -113,6 +131,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('durations');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.labels.length).toBe(3);
       expect(res.body.value.data.values.length).toBe(3);
       done();
@@ -132,6 +151,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('keys');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.labels.length).toBe(3);
       expect(res.body.value.data.values.length).toBe(3);
       done();
@@ -151,6 +171,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('rests');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.labels.length).toBe(3);
       expect(res.body.value.data.values.length).toBe(3);
       done();
@@ -170,6 +191,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('meters');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.labels.length).toBe(3);
       expect(res.body.value.data.values.length).toBe(3);
       done();
@@ -189,6 +211,7 @@ describe('statisticController', () => {
       expect(res.headers['content-type']).toMatch(/json/);
       expect(res.body.ok).toBe(1);
       expect(res.body.value.mode).toBe('counts');
+      expect(res.body.value.songsheetsCount).toBe(2);
       expect(res.body.value.data.length).toBe(2);
       done();
     };

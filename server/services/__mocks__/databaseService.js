@@ -107,11 +107,13 @@ databaseService.getStatistics = (mode, callback) => {
     || mode === 'meters') {
     callback({
       mode: mode,
+      songsheetsCount: 2,
       data: dummyStatistics
     });
   } else if (mode === 'counts') {
     callback({
       mode: mode,
+      songsheetsCount: 2,
       data: [
         { name: 'Series 1', data: [ [1, 2, 3], [4, 5, 6], [7, 8, 9] ] },
         { name: 'Series 2', data: [ [3, 2, 1], [6, 5, 4], [9, 8, 7] ] },
@@ -122,7 +124,7 @@ databaseService.getStatistics = (mode, callback) => {
   }
 };
 
-databaseService.updateStatistics = (mode, data, callback) => {
+databaseService.updateStatistics = (mode, count, data, callback) => {
   if (mode === 'notes'
     || mode === 'intervals'
     || mode === 'durations'
@@ -132,6 +134,7 @@ databaseService.updateStatistics = (mode, data, callback) => {
     callback({
       value: {
         mode: mode,
+        songsheetsCount: count,
         data: dummyStatistics
       },
       ok: 1
@@ -140,6 +143,7 @@ databaseService.updateStatistics = (mode, data, callback) => {
     callback({
       value: {
         mode: mode,
+        songsheetsCount: count,
         data: [
           {name: 'Series 1', data: [[1, 2, 3], [4, 5, 6], [7, 8, 9]]},
           {name: 'Series 2', data: [[3, 2, 1], [6, 5, 4], [9, 8, 7]]},

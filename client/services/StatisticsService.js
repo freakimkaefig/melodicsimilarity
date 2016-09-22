@@ -131,7 +131,7 @@ class StatisticsService {
         }
 
         // populate result
-        StatisticsActions.updateDateStatistics(data);
+        StatisticsActions.updateDateStatistics(data, response.response.numFound);
       })
       .catch(error => {
         console.log(error);
@@ -157,7 +157,7 @@ class StatisticsService {
             }
           }
         }
-        StatisticsActions.updateGeoStatistics(fieldName, labels, values);
+        StatisticsActions.updateGeoStatistics(fieldName, labels, values, response.response.numFound);
       })
       .catch(error => {
         console.log(error);
@@ -180,7 +180,7 @@ class StatisticsService {
             }
           }
         }
-        StatisticsActions.updateTagStatistics(fieldName, data);
+        StatisticsActions.updateTagStatistics(fieldName, data, response.response.numFound);
       })
       .catch(error => {
         console.log(error);

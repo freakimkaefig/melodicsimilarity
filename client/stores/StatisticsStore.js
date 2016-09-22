@@ -15,6 +15,8 @@ class StatisticsStore extends BaseStore {
     super();
     this.subscribe(() => this._registerToActions.bind(this));
 
+    this._songsheetsCount = 0;
+    this._metadataCount = 0;
     this._statistics = {
       notes: {labels: [], values: []},
       intervals: {labels: [], values: []},
@@ -37,16 +39,19 @@ class StatisticsStore extends BaseStore {
   _registerToActions(action) {
     switch(action.actionType) {
       case UPDATE_MELODIC_STATISTIC:
+        this._songsheetsCount = action.response.songsheetsCount;
         this._statistics[action.response.mode] = action.response.data;
         this.emitChange();
         break;
       
       case UPDATE_DATE_STATISTIC:
+        this._metadataCount = action.count;
         this._dates = action.data;
         this.emitChange();
         break;
       
       case UPDATE_GEO_STATISTIC:
+        this._metadataCount = action.count;
         this._geo[action.mode] = {
           labels: action.labels,
           values: action.values
@@ -55,6 +60,7 @@ class StatisticsStore extends BaseStore {
         break;
 
       case UPDATE_TAG_STATISTIC:
+        this._metadataCount = action.count;
         this._tag[action.mode] = action.data;
         this.emitChange();
         break;
@@ -70,6 +76,14 @@ class StatisticsStore extends BaseStore {
         this.emitChange();
         break;
     }
+  }
+
+  get songsheetsCount() {
+    return this._songsheetsCount;
+  }
+
+  get metadataCount() {
+    return this._metadataCount;
   }
 
   get notes() {

@@ -107,6 +107,7 @@ export default class MetadataStatistics extends React.Component {
     };
 
     this.state = {
+      metadataCount: StatisticsStore.metadataCount,
       dates: StatisticsStore.dates,
       origin: StatisticsStore.origin,
       archive: StatisticsStore.archive
@@ -162,6 +163,7 @@ export default class MetadataStatistics extends React.Component {
 
 
     this.setState({
+      metadataCount: StatisticsStore.metadataCount,
       dates: nextDates,
       origin: nextOrigin,
       archive: nextArchive
@@ -217,7 +219,12 @@ export default class MetadataStatistics extends React.Component {
   }
 
   render() {
-    let {dates, origin, archive} = this.state;
+    let {
+      metadataCount,
+      dates,
+      origin,
+      archive
+    } = this.state;
 
     let ready = dates.length > 0
       && origin !== false
@@ -233,7 +240,16 @@ export default class MetadataStatistics extends React.Component {
           <LoadingOverlay loading={!ready} />
           <div className="row charts-container">
             <div className="col-xs-12">
-              <h1 className="text-center">Metadaten</h1>
+              <div className="row text-center">
+                <div className="col-xs-12 col-sm-8 col-sm-offset-2">
+                  <h1>Metadaten</h1>
+                  <p>
+                    Hier werden einige Metainformationen der Liedblätter visualisiert. Dabei
+                    beziehen sich die berechneten Werte der Analyse auf das gesamte Metadaten-Korpus. Aktuell
+                    sind <strong>{metadataCount}</strong> Datensätze im Korpus enthalten.
+                  </p>
+                </div>
+              </div>
               <div className="row">
                 <div id="temporal-chart" className="chart zoom col-xs-12">
                   <ReactHighcharts config={temporalChart} ref="temporal" />

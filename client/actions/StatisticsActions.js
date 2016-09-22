@@ -16,27 +16,30 @@ export default {
     });
   },
   
-  updateDateStatistics: (data) => {
+  updateDateStatistics: (data, count) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_DATE_STATISTIC,
-      data: data
+      data: data,
+      count: count
     });
   },
 
-  updateGeoStatistics: (mode, labels, values) => {
+  updateGeoStatistics: (mode, labels, values, count) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_GEO_STATISTIC,
       mode: mode,
       labels: labels,
-      values: values
+      values: values,
+      count: count
     });
   },
 
-  updateTagStatistics: (mode, data) => {
+  updateTagStatistics: (mode, data, count) => {
     AppDispatcher.dispatch({
       actionType: UPDATE_TAG_STATISTIC,
       mode: mode,
-      data: data
+      data: data,
+      count: count
     });
   },
 

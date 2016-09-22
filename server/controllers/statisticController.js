@@ -140,6 +140,7 @@ var updateNotes = function(callback) {
       // Update database entry for notes
       databaseService.updateStatistics(
         apiConfig.statistics.notes.mode,
+        songsheets.length,
         {
           labels: labels,
           values: values
@@ -179,6 +180,7 @@ var updateIntervals = function(callback) {
       // Update database entry for intervals
       databaseService.updateStatistics(
         apiConfig.statistics.intervals.mode,
+        songsheets.length,
         {
           labels: labels,
           values: values
@@ -237,6 +239,7 @@ var updateDurations = function(callback) {
       // Update database entry for durations
       databaseService.updateStatistics(
         apiConfig.statistics.durations.mode,
+        songsheets.length,
         {
           labels: items.map(function(item) {
             return item.label;
@@ -276,6 +279,7 @@ var updateKeys = function(callback) {
       // Update database entry for keys
       databaseService.updateStatistics(
         apiConfig.statistics.keys.mode,
+        songsheets.length,
         {
           labels: labels,
           values: values
@@ -336,6 +340,7 @@ var updateRests = function(callback) {
       // Update database entry for rests
       databaseService.updateStatistics(
         apiConfig.statistics.rests.mode,
+        songsheets.length,
         {
           labels: items.map(function(item) {
             return item.label;
@@ -391,6 +396,7 @@ var updateMeters = function(callback) {
       // Update database entry for meters
       databaseService.updateStatistics(
         apiConfig.statistics.meters.mode,
+        songsheets.length,
         {
           labels: items.map(function(item) {
             return item.label;
@@ -443,6 +449,7 @@ var updateCounts = function(callback) {
       // Update database entry for note, rest and measure counts per songsheet
       databaseService.updateStatistics(
         apiConfig.statistics.counts.mode,
+        songsheets.length,
         values,
         callback
       );

@@ -6,6 +6,10 @@ import {statistics} from '../../server/config/api.config.json';
 import StatisticsService from '../services/StatisticsService';
 import StatisticsStore from '../stores/StatisticsStore';
 import SettingsStore from '../stores/SettingsStore';
+import {
+  OverlayTrigger,
+  Popover
+} from 'react-bootstrap';
 import vis from 'vis';
 import $ from 'jquery';
 import '../stylesheets/GraphPage.less';
@@ -96,7 +100,7 @@ export default class SimilarityStatistics extends React.Component {
           type: 'continuous'
         }
       },
-      physics: true,
+      physics: false,
       interaction: {
         tooltipDelay: 200,
         hideEdgesOnDrag: true
@@ -209,13 +213,31 @@ export default class SimilarityStatistics extends React.Component {
     let ready = graphData.nodes.length > 0
       && graphData.edges.length > 0;
 
+    let tutorial = (
+      <Popover title="Melodic Similarity Netzwerkdiagramm" id="network-tutorial">
+        <p>
+          Das Netzwerkdiagramm zeigt Ähnlichkeitsbeziehungen zwischen den Liedblättern.
+          Die Kanten spiegeln dabei die Melodic Similarity wider.
+          Die Farben signalisieren die unterschiedliche Herkunft (Landschaftsarchiv).
+        </p>
+        <p>Durch Bewegung des Mausrads, oder durch Pinch-Gesten kann der Diagrammausschnitt verkleinert bzw. vergrößert werden.</p>
+        <p>Durch Mausbewegung über einen Knoten werden zusätzliche Informationen eingeblendet.</p>
+        <p>Durch Mausbewegung über eine Verbindungslinie wird der Ähnlichkeitswert eingeblendet.</p>
+        <p>Die Knoten lassen sich mit gedrückter Maustaste beliebig verschieben.</p>
+        <p>Durch einen Klick auf einen Knoten, werden lediglich dessen direkte Beziehungen hervorgehoben. Ein Klick in den leeren Bereich beendet diesen Modus.</p>
+      </Popover>
+    );
+
     return (
       <DocumentTitle title={`Melodische Ähnlichkeit // Statistik // ${APP_NAME}`}>
         <div>
           <LoadingOverlay loading={!ready} />
           <div className="row charts-container">
-            <div className="col-sm-10 col-sm-offset-1">
+            <div className="col-sm-10 col-sm-offset-1 network-container">
               <h1 className="text-center">Melodische Ähnlichkeit</h1>
+              <OverlayTrigger trigger={['hover', 'focus']} placement="left" overlay={tutorial}>
+                <span className="network-help"><span className="fa fa-question-circle"></span></span>
+              </OverlayTrigger>
               <div id="songsheet-network" />
             </div>
           </div>
