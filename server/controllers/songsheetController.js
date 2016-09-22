@@ -3,6 +3,7 @@
  */
 
 'use strict';
+var fs = require('fs');
 var path = require('path');
 var request = require('sync-request');
 var databaseService = require('../services/databaseService');
@@ -59,6 +60,36 @@ var getSongsheetBySignature = function(req, res) {
   });
 };
 
+var getSongsheetDownloadBySignature = function(req, res) {
+  databaseService.getDocument(databaseConfig.collections.songsheets, {signature: req.params.signature}, function(songsheet) {
+    if (typeof songsheet !== 'undefined') {
+      var fileName = songsheet.signature + '.json';
+      var filePath = path.join(__dirname, '../', imageConfig.placeholder_path, fileName);
+      fs.writeFile(filePath, JSON.stringify(songsheet.json), function(err) {
+        if (err) {
+          throw err;
+        }
+        res.setHeader('Content-disposition', 'attachment; filename=' + fileName);
+        // res.sendFile(filePath);
+        var stream = fs.createReadStream(filePath, {bufferSize: 64 * 1024});
+        stream.pipe(res);
+
+        var had_error = false;
+        stream.on('error', function(err) {
+          had_error = true;
+        });
+        stream.on('close', function () {
+          if (!had_error) {
+            fs.unlink(filePath);
+          }
+        });
+      });
+    } else {
+      res.status(404).send('Songsheet not found!');
+    }
+  });
+};
+
 /**
  * Handles GET request for songsheet image.
  * Delivers image from SolrInteractionServer instance or placeholder if no file found.
@@ -93,6 +124,7 @@ var deleteSongsheet = function(req, res) {
 that.handleUpload = handleUpload;
 that.getSongsheets = getSongsheets;
 that.getSongsheetBySignature = getSongsheetBySignature;
+that.getSongsheetDownloadBySignature = getSongsheetDownloadBySignature;
 that.getImageByName = getImageByName;
 that.deleteSongsheet = deleteSongsheet;
 

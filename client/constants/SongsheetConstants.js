@@ -14,3 +14,4 @@ export const DELETE_SONGSHEET = 'DELETE_SONGSHEET';
 export const IMAGE_WIDTH = 2743;
 export const IMAGE_HEIGHT = 3440;
 export const THUMBNAIL_PREFIX = 'thumbnail.';
+export const DOWNLOAD_PATH = '/api/songsheets/download/';

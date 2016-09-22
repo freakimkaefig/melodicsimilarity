@@ -27,6 +27,7 @@ router.get('/api/settings/:key', settingsController.getField);
 /* Songsheets */
 router.get('/api/songsheets', songsheetController.getSongsheets);
 router.get('/api/songsheets/:signature', songsheetController.getSongsheetBySignature);
+router.get('/api/songsheets/download/:signature', songsheetController.getSongsheetDownloadBySignature);
 router.get('/api/image/:name', songsheetController.getImageByName);
 router.post('/api/search', searchController.search);
 
