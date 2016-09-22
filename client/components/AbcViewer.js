@@ -201,7 +201,7 @@ export default class AbcViewer extends React.Component {
             </div>
             <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onPlayClick : null}><span className={`fa fa-${playClass}`}></span></Button>
             <Button bsStyle="primary" disabled={!this.state.midiLoaded} onClick={this.state.midiLoaded ? this.onStopClick : null}><span className={`fa fa-stop`}></span></Button>
-            <div id={`midi-${key}`} className="midi-container"></div>
+            <div id={`midi-${key}`} className="download-container"></div>
           </div>
         </div>
       );

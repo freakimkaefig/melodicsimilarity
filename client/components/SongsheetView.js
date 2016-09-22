@@ -3,6 +3,7 @@ import { METADATA_IMAGE_BASE_URL } from '../constants/SolrConstants';
 import ImageZoom from '../components/ImageZoom';
 import { json2abc } from 'musicjson2abc';
 import AbcViewer from '../components/AbcViewer';
+import { Table } from 'react-bootstrap';
 import MetadataViewer from '../components/MetadataViewer';
 import FileGrid from '../components/FileGrid';
 import SettingsStore from '../stores/SettingsStore';
@@ -68,6 +69,52 @@ export default class SongsheetView extends React.Component {
         let abc = json2abc(songsheet.json);
         return (
           <AbcViewer abc={abc} itemKey={0} player={true} highlight={highlighting}/>
+        );
+      }
+    }
+  }
+
+  _getJsonDownload(songsheet) {
+    if (typeof songsheet !== 'undefined') {
+      return (
+        <div className="download-container">
+          <a download={`${songsheet.signature}.json`} href={`data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(songsheet.json, null, 4))}`}>download json</a>
+        </div>
+      );
+    }
+  }
+
+  _getResultStats(highlighting) {
+    if (typeof highlighting !== 'undefined') {
+      if (highlighting.length > 0) {
+
+        let rows = highlighting.map((item, index) => {
+          let start = item.highlight[0].measure + 1;
+          let end = item.highlight[item.highlight.length - 1].measure + 1;
+          let measures = start === end ? 'Takt ' + start : 'Takte ' + start + '-' + end;
+          return (
+            <tr key={index}>
+              <td>{measures}</td>
+              <td>{item.similarity}</td>
+            </tr>
+          );
+        });
+
+        return (
+          <div className="stats">
+            <h4>Trefferübersicht</h4>
+            <Table responsive>
+              <thead>
+              <tr>
+                <td>Takte</td>
+                <td>Melodic Similarity</td>
+              </tr>
+              </thead>
+              <tbody>
+              {rows}
+              </tbody>
+            </Table>
+          </div>
         );
       }
     }
@@ -151,6 +198,8 @@ export default class SongsheetView extends React.Component {
                 </div>
                 <div className="col-xs-12 col-md-6 col-md-offset-1">
                   { this._getAbcViewer(songsheet, melodicHighlighting) }
+                  { this._getJsonDownload(songsheet) }
+                  { this._getResultStats(melodicHighlighting) }
                 </div>
               </div>
             </div>
