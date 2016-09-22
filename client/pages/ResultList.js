@@ -87,6 +87,7 @@ export default class ResultList extends React.Component {
   
   render() {
     let {
+      results,
       metadataQueryFields,
       melodyMode,
       parsonQuery,
@@ -94,7 +95,7 @@ export default class ResultList extends React.Component {
       melodyQuery,
       highlighting
     } = this.state;
-    let currentResults = this.state.results.slice(SearchStore.start, SearchStore.start + SearchStore.rows);
+    let currentResults = results.slice(SearchStore.start, SearchStore.start + SearchStore.rows);
     return (
       <DocumentTitle title={`Suche // ${APP_NAME}`}>
         <div>
@@ -120,6 +121,7 @@ export default class ResultList extends React.Component {
           <div className="row">
             <div className="col-xs-12">
               <h1>Ergebnisse</h1>
+              <span className="pull-right">{`${results.length} Ergebnisse`}</span>
             </div>
           </div>
 

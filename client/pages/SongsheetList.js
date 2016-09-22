@@ -17,6 +17,7 @@ export default class SongsheetList extends React.Component {
 
     this.state = {
       songsheets: SongsheetStore.songsheets,
+      totalCount: SongsheetStore.totalCount,
       start: SongsheetStore.start,
       activePage: (SongsheetStore.start / ROWS) + 1,
       numPages: this.getNumPages()
@@ -41,6 +42,7 @@ export default class SongsheetList extends React.Component {
   onStoreChange() {
     this.setState({
       songsheets: SongsheetStore.songsheets,
+      totalCount: SongsheetStore.totalCount,
       start: SongsheetStore.start,
       activePage: (SongsheetStore.start / ROWS) + 1,
       numPages: this.getNumPages()
@@ -61,6 +63,7 @@ export default class SongsheetList extends React.Component {
 
     let {
       songsheets,
+      totalCount,
       start,
       numPages,
       activePage
@@ -71,7 +74,13 @@ export default class SongsheetList extends React.Component {
     return (
       <DocumentTitle title={`Liedblätter // ${APP_NAME}`}>
         <div>
-          <h1 className="text-center">Liedblatt-Galerie</h1>
+          <div className="row">
+            <div className="col-xs-12">
+              <h1 className="text-center">Liedblatt-Galerie</h1>
+              <span className="pull-right">{`Gesamtanzahl Liedblätter: ${totalCount}`}</span>
+            </div>
+          </div>
+
           <LoadingOverlay loading={filteredsongsheets <= 0} />
           <div className="offset-container">
             <FileGrid songsheets={filteredsongsheets} urlPrefix="/songsheets/" />

@@ -4,6 +4,7 @@ import { METADATA_IMAGE_BASE_URL } from '../../constants/SolrConstants';
 import { THUMBNAIL_PREFIX } from '../../constants/SongsheetConstants';
 import { json2abc } from 'musicjson2abc';
 import AbcViewer from '../AbcViewer';
+import { Table } from 'react-bootstrap';
 import '../../stylesheets/SearchResultList.less';
 
 export default class SearchResultList extends React.Component {
@@ -41,8 +42,8 @@ export default class SearchResultList extends React.Component {
     }
 
     return (
-      <div className="row">
-        <div className="hidden-xs col-sm-3 col-md-2">
+      <div className="row middle-xs">
+        <div className="col-xs-12 col-sm-3 col-md-2">
           { image }
         </div>
         <div className="col-xs-12 col-sm-8 col-sm-offset-1 col-md-7">
@@ -50,6 +51,9 @@ export default class SearchResultList extends React.Component {
           <div className="highlighting">
             { this._getResultHighlight(result, index) }
           </div>
+        </div>
+        <div className="col-xs-12 col-sm-2">
+          { this._getResultFacts(result, index) }
         </div>
       </div>
     );
@@ -112,13 +116,6 @@ export default class SearchResultList extends React.Component {
       highlightMelody = (
         <div>
           <AbcViewer abc={tempAbc} itemKey={itemKey} player={false} />
-          <div className="hidden">
-            <p><span className="text-info">DEBUG</span> <span className="text-muted">Similarity: {result.maxSimilarity}</span></p>
-            <p><span className="text-info">COUNT</span> <span className="text-muted">Count: {result.melodic.filter(item => {
-              return item.similarity >= result.maxSimilarity;
-            }).length}</span></p>
-            <p><span className="text-info">RANK</span> <span className="text-muted">Rank: {result.rank}</span></p>
-          </div>
         </div>
       );
     }
@@ -129,6 +126,28 @@ export default class SearchResultList extends React.Component {
         <div className="melody">{ highlightMelody }</div>
       </div>
     );
+  }
+
+  _getResultFacts(result, index) {
+    if (typeof result.melodic !== 'undefined') {
+      let hits = result.melodic.filter(item => {
+        return item.similarity >= result.maxSimilarity;
+      }).length;
+      return (
+        <Table responsive>
+          <tbody>
+          <tr key={`similarity-${index}`}>
+            <td>Melodic Similarity:</td>
+            <td>{result.maxSimilarity}</td>
+          </tr>
+          <tr key={`hits-${index}`}>
+            <td>Anzahl Treffer:</td>
+            <td>{hits}</td>
+          </tr>
+          </tbody>
+        </Table>
+      );
+    }
   }
 
   _getList(results) {
