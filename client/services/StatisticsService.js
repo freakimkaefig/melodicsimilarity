@@ -204,7 +204,9 @@ class StatisticsService {
               edges.push({
                 from: signature,
                 to: distance.signature,
-                title: "Edit-Distance (" + signature + " <> " + distance.signature + "): " + parseFloat(distance.distance).toFixed(2),
+                width: parseFloat(distance.distance),
+                // label: parseFloat(distance.distance).toFixed(2),
+                title: "Melodic Similarity (" + signature + " <> " + distance.signature + "): " + parseFloat(distance.distance).toFixed(2),
                 length: distance.distance * 1000
               });
             }

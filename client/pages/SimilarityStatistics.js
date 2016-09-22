@@ -78,6 +78,26 @@ export default class SimilarityStatistics extends React.Component {
       height: '100%',
       nodes: {
         shape: 'dot',
+        size: 15,
+        mass: 5,
+        scaling: {
+          label: {
+            min: 8,
+            max: 30,
+            drawThreshold: 12,
+            maxVisible: 20
+          }
+        },
+        font: {
+          size: 12,
+          face: '"Source Sans Pro", Calibri, Candara, Arial, sans-serif'
+        }
+      },
+      edges: {
+        color: {inherit: 'from'},
+        smooth: {
+          type: 'continuous'
+        },
         scaling: {
           min: 10,
           max: 30,
@@ -90,20 +110,18 @@ export default class SimilarityStatistics extends React.Component {
         },
         font: {
           size: 12,
-          face: 'Roboto'
+          face: '"Source Sans Pro", Calibri, Candara, Arial, sans-serif'
         }
       },
-      edges: {
-        width: 1.5,
-        color: {inherit: 'from'},
-        smooth: {
-          type: 'continuous'
-        }
+      layout: {
+        randomSeed: 0,
+        improvedLayout: true
       },
       physics: false,
       interaction: {
-        tooltipDelay: 200,
-        hideEdgesOnDrag: true
+        tooltipDelay: 100,
+        hideEdgesOnDrag: true,
+        navigationButtons: true
       }
     };
     var data = {
@@ -210,6 +228,7 @@ export default class SimilarityStatistics extends React.Component {
     let {
       graphData
     } = this.state;
+
     let ready = graphData.nodes.length > 0
       && graphData.edges.length > 0;
 

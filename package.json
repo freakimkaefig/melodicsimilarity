@@ -40,7 +40,7 @@
     "mongodb": "2.1.16",
     "multer": "1.1.0",
     "musicjson-toolbox": ">=1.2.3",
-    "musicjson2abc": ">=0.5.4",
+    "musicjson2abc": ">=0.5.5",
     "node-schedule": "1.1.1",
     "path": "0.12.7",
     "pwd": "1.0.0",
