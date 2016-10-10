@@ -11,5 +11,4 @@ vendor/
 public/build/
 public/uploads/
 coverage/
-dump/
 .env*.json
