@@ -25,6 +25,15 @@
       "control": "range",
       "value": 0,
       "loading": false
+    },
+    {
+      "key": "method",
+      "display": "Similarity-Methode",
+      "type": "text",
+      "control": "select",
+      "value": "ms",
+      "options": ["ms", "gar", "interval", "parson"],
+      "loading": false
     }
   ],
 

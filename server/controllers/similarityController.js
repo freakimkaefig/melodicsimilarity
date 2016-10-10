@@ -69,29 +69,56 @@ var updateOne = function(req, res) {
  * @param {updateCallback} callback - The callback when data is updated
  */
 var update = function(search, callback) {
-  // Get all songsheets (except searched)
-  databaseService.getDocuments(
-    databaseConfig.collections.songsheets,
-    {signature: {$ne: search.signature}},
-    function(songsheets) {
-      var distances = [];
-      for (var i = 0; i < songsheets.length; i++) {
-        // Calculate distance between songsheets and the searched one
-        var distance = MusicJsonToolbox.pitchDurationSimilarity(songsheets[i].json, search.json);
-        distances.push({
-          signature: songsheets[i].signature,
-          distance: distance
-        });
-      }
+  // Get setting 'method'
+  databaseService.getSetting('method', function(result) {
+    var method = result.value;
 
-      // Update data in database
-      databaseService.updateSimilarity(
-        search.signature,
-        distances,
-        callback
-      );
-    }
-  );
+    // Get all songsheets (except searched)
+    databaseService.getDocuments(
+      databaseConfig.collections.songsheets,
+      {signature: {$ne: search.signature}},
+      function(songsheets) {
+        var distances = [];
+        for (var i = 0; i < songsheets.length; i++) {
+          // Calculate distance between songsheets and the searched one
+          var distance;
+          switch (method) {
+            case 'ms':
+              distance = MusicJsonToolbox.pitchDurationSimilarity(songsheets[i].json, search.json, false);
+              break;
+
+            case 'gar':
+              distance = MusicJsonToolbox.pitchDurationSimilarity(songsheets[i].json, search.json, true);
+              break;
+
+            case 'interval':
+              distance = MusicJsonToolbox.intervalSimilarity(songsheets[i].json, search.json);
+              break;
+
+            case 'parson':
+              distance = MusicJsonToolbox.parsonSimilarity(songsheets[i].json, search.json);
+              break;
+
+            default:
+              distance = MusicJsonToolbox.pitchDurationSimilarity(songsheets[i].json, search.json, true);
+              break;
+          }
+
+          distances.push({
+            signature: songsheets[i].signature,
+            distance: distance
+          });
+        }
+
+        // Update data in database
+        databaseService.updateSimilarity(
+          search.signature,
+          distances,
+          callback
+        );
+      }
+    );
+  });
 };
 
 that.getAll = getAll;

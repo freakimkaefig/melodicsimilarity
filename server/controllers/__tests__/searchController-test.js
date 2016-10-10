@@ -38,7 +38,7 @@ describe('searchController', () => {
         "melodyMode": "PARSONS",
         "melodyQuery": {
           "parson": "udr",
-          "threshold": 75
+          "threshold": 76
         }
       })
       .end((err, res) => {
@@ -70,7 +70,7 @@ describe('searchController', () => {
       });
   });
 
-  it('should return melody results for "C D A A"', (done) => {
+  it('should return melody results for "C D A A (default)"', (done) => {
     request(server)
       .post('/api/search')
       .send({
@@ -84,6 +84,110 @@ describe('searchController', () => {
             { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 8, "type": "eighth", "dot": false }
           ],
           "threshold": 20
+        }
+      })
+      .end((err, res) => {
+        expect(err).toEqual(null);
+        expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toMatch(/json/);
+        expect(res.body.length).toBeGreaterThanOrEqual(0);
+        done();
+      });
+  });
+
+  it('should return melody results for "C D A A (ms)"', (done) => {
+    request(server)
+      .post('/api/search')
+      .send({
+        "solrQuery": false,
+        "melodyMode": "MELODY",
+        "melodyQuery": {
+          "melody": [
+            { "pitch": { "step": "C", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": "eighth", "dot": false },
+            { "pitch": { "step": "D", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": 'eighth', "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 16, "type": "quarter", "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 8, "type": "eighth", "dot": false }
+          ],
+          "threshold": 20,
+          "method": "ms"
+        }
+      })
+      .end((err, res) => {
+        expect(err).toEqual(null);
+        expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toMatch(/json/);
+        expect(res.body.length).toBeGreaterThanOrEqual(0);
+        done();
+      });
+  });
+
+  it('should return melody results for "C D A A (gar)"', (done) => {
+    request(server)
+      .post('/api/search')
+      .send({
+        "solrQuery": false,
+        "melodyMode": "MELODY",
+        "melodyQuery": {
+          "melody": [
+            { "pitch": { "step": "C", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": "eighth", "dot": false },
+            { "pitch": { "step": "D", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": 'eighth', "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 16, "type": "quarter", "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 8, "type": "eighth", "dot": false }
+          ],
+          "threshold": 20,
+          "method": "gar"
+        }
+      })
+      .end((err, res) => {
+        expect(err).toEqual(null);
+        expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toMatch(/json/);
+        expect(res.body.length).toBeGreaterThanOrEqual(0);
+        done();
+      });
+  });
+
+  it('should return melody results for "C D A A (interval)"', (done) => {
+    request(server)
+      .post('/api/search')
+      .send({
+        "solrQuery": false,
+        "melodyMode": "MELODY",
+        "melodyQuery": {
+          "melody": [
+            { "pitch": { "step": "C", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": "eighth", "dot": false },
+            { "pitch": { "step": "D", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": 'eighth', "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 16, "type": "quarter", "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 8, "type": "eighth", "dot": false }
+          ],
+          "threshold": 20,
+          "method": "interval"
+        }
+      })
+      .end((err, res) => {
+        expect(err).toEqual(null);
+        expect(res.status).toBe(200);
+        expect(res.headers['content-type']).toMatch(/json/);
+        expect(res.body.length).toBeGreaterThanOrEqual(0);
+        done();
+      });
+  });
+
+  it('should return melody results for "C D A A (parson)"', (done) => {
+    request(server)
+      .post('/api/search')
+      .send({
+        "solrQuery": false,
+        "melodyMode": "MELODY",
+        "melodyQuery": {
+          "melody": [
+            { "pitch": { "step": "C", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": "eighth", "dot": false },
+            { "pitch": { "step": "D", "octave": 4, "accidental": "" }, "rest": false, "duration": 8, "type": 'eighth', "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 16, "type": "quarter", "dot": false },
+            { "pitch": { "step": "A", "octave": 3, "alter": 1, "accidental": "sharp" }, "rest": false, "duration": 8, "type": "eighth", "dot": false }
+          ],
+          "threshold": 20,
+          "method": "parson"
         }
       })
       .end((err, res) => {

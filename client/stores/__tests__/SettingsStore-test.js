@@ -19,11 +19,18 @@ describe('SettingsStore', () => {
     field: settings[0].key
   };
 
-  var actionUpdateField = {
+  var actionUpdateFieldFloat = {
     actionType: UPDATE_FIELD,
     type: settings[0].type,
     field: settings[0].key,
     value: 0.6
+  };
+
+  var actionUpdateFieldText = {
+    actionType: UPDATE_FIELD,
+    type: settings[1].type,
+    field: settings[1].key,
+    value: 'value'
   };
 
   beforeEach(() => {
@@ -40,7 +47,7 @@ describe('SettingsStore', () => {
   it('should initialize correctly', () => {
     var keys = Object.keys(SettingsStore.settings);
     expect(SettingsStore.ready).toBe(false);
-    expect(keys.length).toBe(1);
+    expect(keys.length).toBe(settings.length);
   });
 
   it('updates fields loading state', () => {
@@ -48,11 +55,19 @@ describe('SettingsStore', () => {
     expect(SettingsStore.settings[settings[0].key].loading).toBe(true);
   });
 
-  it('updates fields value', () => {
-    callback(actionUpdateField);
+  it('updates fields value (float)', () => {
+    callback(actionUpdateFieldFloat);
     var setting = SettingsStore.settings[settings[0].key];
     expect(setting.loading).toBe(false);
     expect(setting.value).toBe(0.6);
+    expect(SettingsStore.ready).toBe(true);
+  });
+
+  it('updates fields value (text)', () => {
+    callback(actionUpdateFieldText);
+    var setting = SettingsStore.settings[settings[1].key];
+    expect(setting.loading).toBe(false);
+    expect(setting.value).toBe('value');
     expect(SettingsStore.ready).toBe(true);
   });
 

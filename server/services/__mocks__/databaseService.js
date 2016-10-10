@@ -26,6 +26,8 @@ var dummyStatistics = {
   values: [10, 0, 20]
 };
 
+var method = 'value';
+
 databaseService.getStats = (callback) => {
   callback({
     'key': 'value'
@@ -80,11 +82,19 @@ databaseService.addUser = (username, password, callback) => {
 };
 
 databaseService.getSetting = (key, callback) => {
-  callback({
-    type: 'type',
-    key: key,
-    value: 'value'
-  });
+  if (key === 'method') {
+    callback({
+      type: 'type',
+      key: key,
+      value: method
+    });
+  } else {
+    callback({
+      type: 'type',
+      key: key,
+      value: 'value'
+    });
+  }
 };
 
 databaseService.setSetting = (key, value, callback) => {
@@ -192,6 +202,10 @@ databaseService.addDocument = (data, callback) => {
     signature: data.signature,
     ok: 1
   });
+};
+
+databaseService.__setMethod = function(value) {
+  method = value;
 };
 
 module.exports = databaseService;

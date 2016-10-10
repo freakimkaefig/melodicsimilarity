@@ -28,7 +28,8 @@ export default AuthenticatedComponent(class SettingsPage extends React.Component
 
     this.state = {
       ready: SettingsStore.ready,
-      threshold: settings.threshold
+      threshold: settings.threshold,
+      method: settings.method
     };
 
     this.onSettingsStoreChange = this.onSettingsStoreChange.bind(this);
@@ -46,7 +47,8 @@ export default AuthenticatedComponent(class SettingsPage extends React.Component
     let settings = SettingsStore.settings;
     this.setState({
       ready: SettingsStore.ready,
-      threshold: settings.threshold
+      threshold: settings.threshold,
+      method: settings.method
     });
   }
 
@@ -60,6 +62,10 @@ export default AuthenticatedComponent(class SettingsPage extends React.Component
     SettingsService.updateField(field.props.name, value / 100);
   }
 
+  handleSelectChange(event) {
+    SettingsService.updateField(event.target.name, event.target.value);
+  }
+
   renderSettingsList(items, state) {
     return items.map((item, index) => {
       if (item.control === 'range') {
@@ -67,7 +73,7 @@ export default AuthenticatedComponent(class SettingsPage extends React.Component
         let disabled = state[item.key].loading;
         return (
           <div className="col-xs-12 col-sm-6" key={index}>
-            <label htmlFor="threshold">{item.display}</label>
+            <label htmlFor={item.key}>{item.display}</label>
             <div className="range-slider">
               <InputRange
                 name={item.key}
@@ -76,7 +82,25 @@ export default AuthenticatedComponent(class SettingsPage extends React.Component
                 value={value}
                 disabled={disabled}
                 onChange={this.handleChange.bind(this)}
-                onChangeComplete={this.handleChangeComplete.bind(this)} />
+                onChangeComplete={this.handleChangeComplete.bind(this)}/>
+            </div>
+          </div>
+        );
+      } else if (item.control === 'select') {
+        let options = item.options.map((option, index) => {
+          return (
+            <option value={option} key={index}>{option}</option>
+          );
+        });
+        return (
+          <div className="col-xs-12 col-sm-6" key={index}>
+            <label htmlFor={item.key}>{item.display}</label>
+            <div className="select">
+              <select
+                name={item.key}
+                className="form-control"
+                value={state[item.key].value}
+                onChange={this.handleSelectChange.bind(this)}>{options}</select>
             </div>
           </div>
         );
@@ -85,7 +109,7 @@ export default AuthenticatedComponent(class SettingsPage extends React.Component
           <div className="col-xs-12 col-sm-6">
             <p>Setting not implemented!</p>
           </div>
-        )
+        );
       }
     });
   }

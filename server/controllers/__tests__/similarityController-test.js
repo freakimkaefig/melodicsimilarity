@@ -97,4 +97,93 @@ describe('similarityController', () => {
       resolve);
   });
 
+  it('should update similarity (default) when authorized', (done) => {
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.body.ok).toBe(1);
+      expect(res.body.value.signature).toBe('test1');
+      expect(res.body.value.distances.length).toBe(1);
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/similarity/update/test1'),
+      resolve);
+  });
+
+  it('should update similarity (ms) when authorized', (done) => {
+    require('../../services/databaseService').__setMethod('ms');
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.body.ok).toBe(1);
+      expect(res.body.value.signature).toBe('test1');
+      expect(res.body.value.distances.length).toBe(1);
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/similarity/update/test1'),
+      resolve);
+  });
+
+  it('should update similarity (gar) when authorized', (done) => {
+    require('../../services/databaseService').__setMethod('gar');
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.body.ok).toBe(1);
+      expect(res.body.value.signature).toBe('test1');
+      expect(res.body.value.distances.length).toBe(1);
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/similarity/update/test1'),
+      resolve);
+  });
+
+  it('should update similarity (interval) when authorized', (done) => {
+    require('../../services/databaseService').__setMethod('interval');
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.body.ok).toBe(1);
+      expect(res.body.value.signature).toBe('test1');
+      expect(res.body.value.distances.length).toBe(1);
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/similarity/update/test1'),
+      resolve);
+  });
+
+  it('should update similarity (parson) when authorized', (done) => {
+    require('../../services/databaseService').__setMethod('parson');
+    var resolve = (err, res) => {
+      expect(err).toEqual(null);
+      expect(res.status).toBe(200);
+      expect(res.body.ok).toBe(1);
+      expect(res.body.value.signature).toBe('test1');
+      expect(res.body.value.distances.length).toBe(1);
+      done();
+    };
+
+    auth.authenticatedRequest(
+      server,
+      request(server)
+        .put('/api/protected/similarity/update/test1'),
+      resolve);
+  });
+
 });

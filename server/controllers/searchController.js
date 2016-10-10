@@ -297,6 +297,7 @@ var _searchIntervals = function() {
 var _searchMelody = function() {
   var melody = store.melodyQuery.melody;
   var threshold = store.melodyQuery.threshold / 100;
+  var method = store.melodyQuery.method;
   databaseService.getCollection(
     databaseConfig.collections.songsheets,
     0,
@@ -305,13 +306,51 @@ var _searchMelody = function() {
       var results = [];
       for (var i = 0; i < count; i++) {
         // Calculate distance between songsheets and search
-        var similarities = MusicJsonToolbox.pitchDurationNgramSimilarity(
-          songsheets[i].json,
-          MusicJsonToolbox.pitchDurationValues(
-            melody,
-            0, 16, 4
-          )
-        );
+        var similarities = [];
+        switch (method) {
+          case 'ms':
+            similarities = MusicJsonToolbox.pitchDurationNgramSimilarity(
+              songsheets[i].json,
+              MusicJsonToolbox.pitchDurationValues(
+                melody,
+                0, 16, 4
+              ),
+              false
+            );
+            break;
+
+          case 'gar':
+            similarities = MusicJsonToolbox.pitchDurationNgramSimilarity(
+              songsheets[i].json,
+              MusicJsonToolbox.pitchDurationValues(
+                melody,
+                0, 16, 4
+              ),
+              true
+            );
+            break;
+
+          case 'interval':
+            var intervalSearch = MusicJsonToolbox.valueMapping(MusicJsonToolbox.intervals(melody));
+            similarities = MusicJsonToolbox.intervalNgramSimilarity(songsheets[i].json, intervalSearch);
+            break;
+
+          case 'parson':
+            var parsonSearch = MusicJsonToolbox.valueMapping(MusicJsonToolbox.parsons(melody)).join('');
+            similarities = MusicJsonToolbox.parsonsNgramSimilarity(songsheets[i].json, parsonSearch);
+            break;
+
+          default:
+            similarities = MusicJsonToolbox.pitchDurationNgramSimilarity(
+              songsheets[i].json,
+              MusicJsonToolbox.pitchDurationValues(
+                melody,
+                0, 16, 4
+              ),
+              true
+            );
+            break;
+        }
 
         // Determine minimum distance
         var maxSimilarity = Math.max(...similarities.map(function(item) {
