@@ -39,7 +39,7 @@ export default class HomePage extends React.Component {
                 <span className="icon fa fa-file-text" aria-hidden="true"></span>
                 <div className="row">
                   <div className="col-sm-10 col-sm-offset-1">
-                    <h4>Stöbern Sie im Datenbestand des Regensburger Volksmusikportals</h4>
+                    <h4>Stöbern Sie im Datenbestand der Regensburger Liedblattsammlung</h4>
                   </div>
                 </div>
               </Link>

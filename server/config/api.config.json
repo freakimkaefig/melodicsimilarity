@@ -20,7 +20,7 @@
   "settings": [
     {
       "key": "threshold",
-      "display": "Similarity-Threshold",
+      "display": "Similarity-Schwellenwert",
       "type": "float",
       "control": "range",
       "value": 0,

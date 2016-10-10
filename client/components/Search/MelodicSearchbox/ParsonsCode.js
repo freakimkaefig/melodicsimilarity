@@ -146,7 +146,7 @@ export default class ParsonsCode extends React.Component {
           <div className="row threshold">
             <div className="col-xs-12 col-sm-6 col-md-4">
               <OverlayTrigger trigger={['hover', 'focus']} placement="top" overlay={thresholdTutorial}>
-                <label>Threshold <small><i className="fa fa-question-circle" aria-hidden="true"></i></small></label>
+                <label>Schwellenwert <small><i className="fa fa-question-circle" aria-hidden="true"></i></small></label>
               </OverlayTrigger>
               <InputRange
                 maxValue={100}

@@ -138,7 +138,7 @@ export default class SearchResultList extends React.Component {
           <tbody>
           <tr key={`similarity-${index}`}>
             <td>Melodic Similarity:</td>
-            <td>{result.maxSimilarity}</td>
+            <td>{result.maxSimilarity.toFixed(3)}</td>
           </tr>
           <tr key={`hits-${index}`}>
             <td>Anzahl Treffer:</td>
