@@ -1,6 +1,7 @@
 'use strict';
 var statisticController = require('../controllers/statisticController');
 var apiConfig = require('../config/api.config.json');
+var timestamp = require('../config/timestamp.helper');
 
 var that = {};
 
@@ -9,9 +10,9 @@ var run = function() {
     if (!apiConfig.statistics.hasOwnProperty(prop)) continue;
 
     if (apiConfig.statistics[prop].datatype === 'melodic') {
-      console.log('Enqueue updating statistics for', prop);
+      console.log(timestamp(), 'Enqueue updating statistics for', prop);
       statisticController.updateStats(apiConfig.statistics[prop].mode, function (result) {
-        console.log('Updated statistics for', result.value.mode);
+        console.log(timestamp(), 'Updated statistics for', result.value.mode);
       });
     }
   }

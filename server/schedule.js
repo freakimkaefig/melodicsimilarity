@@ -4,21 +4,23 @@
 
 'use strict';
 var schedule = require('node-schedule');
+var scheduleConfig = require('./config/schedule.config.json');
 var statisticsTask = require('./tasks/statistics');
 var similarityTask = require('./tasks/similarity');
+var timestamp = require('../config/timestamp.helper');
 
 var that = {};
 that.jobs = {};
 that.init = function() {
-  console.log('Waiting for next job ...');
-
   // schedule statistics updates
-  that.jobs.statistics = schedule.scheduleJob('0 4 * * *', function() {
+  console.log(timestamp(), 'Start scheduling statistics with interval ' + scheduleConfig.jobs.statistics);
+  that.jobs.statistics = schedule.scheduleJob(scheduleConfig.jobs.statistics, function() {
     statisticsTask.run();
   });
 
   // schedule similarity calculation
-  that.jobs.similarity = schedule.scheduleJob('0 5 * * *', function() {
+  console.log(timestamp(), 'Start scheduling similarity with interval ' + scheduleConfig.jobs.similarity);
+  that.jobs.similarity = schedule.scheduleJob(scheduleConfig.jobs.similarity, function() {
     similarityTask.run();
   });
 };
