@@ -2,7 +2,7 @@
 var databaseService = require('../services/databaseService');
 var databaseConfig = require('../config/database.config.json');
 var similarityController = require('../controllers/similarityController');
-var timestamp = require('../config/timestamp.helper');
+var timestamp = require('../../config/timestamp.helper');
 
 var that = {};
 

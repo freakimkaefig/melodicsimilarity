@@ -1,7 +1,7 @@
 'use strict';
 var statisticController = require('../controllers/statisticController');
 var apiConfig = require('../config/api.config.json');
-var timestamp = require('../config/timestamp.helper');
+var timestamp = require('../../config/timestamp.helper');
 
 var that = {};
 
