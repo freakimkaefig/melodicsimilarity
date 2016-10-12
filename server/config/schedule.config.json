@@ -1,6 +1,6 @@
 {
   "jobs": {
-    "statistics": "*/1 * * * *",
-    "similarity": "*/1 * * * *"
+    "statistics": "* 4 * * *",
+    "similarity": "* 5 * * *"
   }
 }
