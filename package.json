@@ -117,7 +117,7 @@
     "bundle:production": "./node_modules/.bin/webpack --progress --colors -p",
     "bundle:dev": "./node_modules/.bin/webpack -d",
     "bundle:watch": "./node_modules/.bin/webpack --progress --colors --watch -d",
-    "server:start": "./node_modules/.bin/forever start -m 1 -o ./log/melodicsimilarity-react.log -a bin/www",
+    "server:start": "./node_modules/.bin/forever start -m 1 -o ./log/wwwlog -a bin/www",
     "server:stop": "./node_modules/.bin/forever stop bin/www",
     "server:dev": "./node_modules/.bin/nodemon bin/www",
     "schedule:start": "./node_modules/.bin/forever start -m 1 -o ./log/schedule.log -a ./bin/cron",
