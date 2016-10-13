@@ -4,13 +4,26 @@
  */
 
 'use strict';
+var fs = require('fs');
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
+var morgan = require('morgan');
 
 var routes = require('./routes');
 
 var app = express();
+
+var logFile = fs.createWriteStream(path.join(__dirname, '../', 'log/', 'error.log'), {flags: 'a'});
+morgan.token('statusMessage', function(req, res) {
+  return res.statusMessage;
+});
+app.use(morgan(':date :method :url :status :statusMessage', {
+  stream: logFile,
+  skip: function(req, res) {
+    return res.statusCode < 400;
+  }
+}));
 
 // Set Access-Control
 app.use(function (req, res, next) {
