@@ -14,7 +14,7 @@ export default class ImprintPage extends React.Component {
             <div className="col-xs-12">
               <h1>Impressum</h1>
               <h2>Angaben gemäß § 5 TMG:</h2>
-              <p>Lehrstuhl für Medieninforamtik, Universität Regensburg<br />
+              <p>Lehrstuhl für Medieninformatik, Universität Regensburg<br />
                 Universitätsstraße 31<br />
                 93053 Regensburg
               </p>
