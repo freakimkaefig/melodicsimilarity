@@ -2,6 +2,7 @@ import request from 'reqwest';
 import when from 'when';
 import { LOGIN_URL } from '../constants/LoginConstants';
 import LoginActions from '../actions/LoginActions';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 class AuthService {
 
@@ -27,6 +28,9 @@ class AuthService {
         var jwt = response.id_token;
         LoginActions.loginUser(jwt);
         return true;
+      })
+      .catch(error => {
+        ErrorHelper.handleRequestError(error);
       });
   }
 }

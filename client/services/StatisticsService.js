@@ -14,6 +14,7 @@ import {
 import SolrService from './SolrService';
 import StatisticsActions from '../actions/StatisticsActions';
 import DateHelper from '../helpers/DateHelper';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 class StatisticsService {
 
@@ -68,7 +69,7 @@ class StatisticsService {
         }
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
   
@@ -134,7 +135,7 @@ class StatisticsService {
         StatisticsActions.updateDateStatistics(data, response.response.numFound);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
   
@@ -160,7 +161,7 @@ class StatisticsService {
         StatisticsActions.updateGeoStatistics(fieldName, labels, values, response.response.numFound);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
   handleTagStatisticResponse(promise) {
@@ -183,7 +184,7 @@ class StatisticsService {
         StatisticsActions.updateTagStatistics(fieldName, data, response.response.numFound);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -215,7 +216,7 @@ class StatisticsService {
         StatisticsActions.updateGraphEdges(edges, response.length);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 }

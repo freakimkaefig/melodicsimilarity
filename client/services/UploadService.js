@@ -3,6 +3,7 @@ import when from 'when';
 import LoginStore from '../stores/LoginStore';
 import UploadActions from '../actions/UploadActions';
 import { UPLOAD_SONGSHEET_URL } from '../constants/UploadConstants';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 class UploadService {
 
@@ -32,7 +33,7 @@ class UploadService {
         UploadActions.handleUpload(response);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 }

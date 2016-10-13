@@ -6,13 +6,14 @@ import {
   UPDATE_SETTINGS_URL
 } from '../constants/SettingsConstants';
 import LoginStore from '../stores/LoginStore';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 class SettingsService {
 
   getField(field) {
     SettingsActions.beginUpdateField(field);
     return this.handleGetField(when(request({
-      url: GET_SETTINGS_URL + field,
+      url: GET_SETTINGS_URL +  field,
       method: 'GET',
       crossOrigin: true,
       type: 'json'
@@ -25,7 +26,7 @@ class SettingsService {
         SettingsActions.updateField(response);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -48,7 +49,7 @@ class SettingsService {
         SettingsActions.updateField(response.value);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 }

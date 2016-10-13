@@ -9,6 +9,7 @@ import {
 } from '../constants/SongsheetConstants';
 import SolrService from './SolrService';
 import LoginStore from '../stores/LoginStore';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 class SongsheetService {
 
@@ -35,7 +36,7 @@ class SongsheetService {
         SongsheetActions.renderList(response.items, response.totalCount);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
   
@@ -54,7 +55,7 @@ class SongsheetService {
         SongsheetActions.renderItem(response);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -72,7 +73,7 @@ class SongsheetService {
         SongsheetActions.updateSimilar(response.distances);
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -95,7 +96,7 @@ class SongsheetService {
         }
       })
       .catch(error => {
-        console.error(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 }

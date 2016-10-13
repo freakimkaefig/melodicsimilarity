@@ -12,6 +12,7 @@ import SearchActions from '../actions/SearchActions';
 import StatisticsActions from '../actions/StatisticsActions';
 import SolrQuery from '../helpers/SolrQuery';
 import DateHelper from '../helpers/DateHelper';
+import ErrorHelper from '../helpers/ErrorHelper';
 
 class SolrService {
 
@@ -36,6 +37,9 @@ class SolrService {
       .then(response => {
         SolrActions.updateMetadata(response);
         return true;
+      })
+      .catch(error => {
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -88,7 +92,7 @@ class SolrService {
         }
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -156,7 +160,7 @@ class SolrService {
         return true;
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 
@@ -196,7 +200,7 @@ class SolrService {
         }
       })
       .catch(error => {
-        console.log(error);
+        ErrorHelper.handleRequestError(error);
       });
   }
 }

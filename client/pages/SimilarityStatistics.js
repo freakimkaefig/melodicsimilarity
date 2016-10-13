@@ -114,7 +114,7 @@ export default class SimilarityStatistics extends React.Component {
         }
       },
       layout: {
-        randomSeed: 0,
+        randomSeed: 1,
         improvedLayout: true
       },
       physics: false,
