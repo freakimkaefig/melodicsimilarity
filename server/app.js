@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 
 // Views engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 // Include parsers for url params and json
 app.use(bodyParser.json({limit: '500mb'}));
