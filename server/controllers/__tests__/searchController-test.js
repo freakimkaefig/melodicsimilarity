@@ -1,6 +1,8 @@
 import request from 'supertest';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000;
+jest.mock('../../services/databaseService');
+
 describe('searchController', () => {
 
   var server;
