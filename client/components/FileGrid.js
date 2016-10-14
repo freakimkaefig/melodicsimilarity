@@ -52,7 +52,7 @@ export default class FileGrid extends React.Component {
     } = this.props;
 
     return (
-      <div className="grid row start-xs">
+      <div className="grid row center-xs">
         { this.renderFileGrid(songsheets, urlPrefix, itemClass, customField) }
       </div>
     );
