@@ -1,5 +1,6 @@
 {
   "base_path": "SolrInteractionServer/FrontEnd/img/jpegs/",
   "placeholder_path": "assets/",
-  "placeholder_name": "placeholder.jpg"
+  "placeholder_name": "placeholder.jpg",
+  "placeholder_thumbnail": "thumbnail.placeholder.jpg"
 }

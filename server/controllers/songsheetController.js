@@ -98,8 +98,11 @@ var getSongsheetDownloadBySignature = function(req, res) {
  */
 var getImageByName = function(req, res) {
   var placeholder = path.join(__dirname, '../', imageConfig.placeholder_path + imageConfig.placeholder_name);
+  var thumbnail = path.join(__dirname, '../', imageConfig.placeholder_path + imageConfig.placeholder_thumbnail);
   if (req.params.name == imageConfig.placeholder_name) {
     res.sendFile(placeholder);
+  } else if (req.params.name == imageConfig.placeholder_thumbnail) {
+    res.sendFile(thumbnail);
   } else {
     var url = env.SOLRINTERACTION_BASE_URI + imageConfig.base_path + req.params.name;
     var image = request('HEAD', url);
