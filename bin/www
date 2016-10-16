@@ -5,13 +5,12 @@ var app = require('../server/app');
 var env = require('../.env.json');
 var timestamp = require('../config/timestamp.helper');
 
-app.set('port', env.PORT || process.env.PORT || 3000);
+app.set('port', env.NODE_PORT || process.env.NODE_PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
   console.log(timestamp(), 'Express server listening on port ' + server.address().port);
   console.log('    Environment Variables:');
-  console.log('    ├─HOST:', env.HOST);
-  console.log('    ├─PORT:', server.address().port);
+  console.log('    ├─NODE_PORT:', server.address().port);
   console.log('    ├─BASE_URL:', env.BASE_URL);
   console.log('    ├─MONGO_URI:', env.MONGO_URI);
   console.log('    ├─SOLR_URI:', env.SOLR_URI);
