@@ -38,7 +38,7 @@ var config = {
       {from: 'lib/abcjs/bin/abcjs_basic_2.4.0.js', to: '../../lib/abcjs.js'}
     ]),
     new webpack.DefinePlugin({
-      'process.env.NODE_ENV': process.env.NPM_CONFIG_PRODUCTION ? '"production"' : '"development"'
+      'process.env.NODE_ENV': process.env.PRODUCTION ? '"production"' : '"development"'
     })
   ],
   resolve: {
