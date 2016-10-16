@@ -112,7 +112,7 @@
     "tomcat:stop": "./lib/tomcat/bin/shutdown.sh",
     "bundle:env": "./bin/env",
     "bundle:production": "./node_modules/.bin/webpack --progress --colors -p",
-    "bundle:dev": "./node_modules/.bin/webpack -d",
+    "bundle:dev": "./node_modules/.bin/webpack --progress --colors -d",
     "bundle:watch": "./node_modules/.bin/webpack --progress --colors --watch -d",
     "server:start": "./node_modules/.bin/forever start -m 1 -o ./log/www.log -a bin/www",
     "server:stop": "./node_modules/.bin/forever stop bin/www",
