@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import DocumentTitle from 'react-document-title';
 import { APP_NAME } from '../constants/AppConstants';
 import { Link } from 'react-router';
+import { ResponsiveEmbed } from 'react-bootstrap';
 import '../stylesheets/HomePage.less';
 
 export default class HomePage extends React.Component {
@@ -55,6 +56,14 @@ export default class HomePage extends React.Component {
                   </div>
                 </div>
               </Link>
+            </div>
+          </div>
+
+          <div className="row video">
+            <div className="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
+              <div className="responsive-iframe responsive-16by9">
+                <iframe src="https://player.vimeo.com/video/187879605?color=2780E3&title=0&byline=0&portrait=0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+              </div>
             </div>
           </div>
 
