@@ -75,25 +75,13 @@ export default class HomePage extends React.Component {
 
             <div className="col-xs-12 col-sm-5">
               <h4>Kontext & Zielsetzung</h4>
-              <p>
-                Ziel des Informationssystems ist der webbasierte Zugang zu den digital erschlossenen Liedblättern aus
-                den, der Universitätsbibliothek Regensburg übertragenen, Quellen zur Volksmusikforschung.
-                Die Liedblattsammlung in Regensburg umfasst etwa 140.000 Blätter aus dem gesamten deutschsprachigen
-                Raum und ist, was Abdeckung und Umfang angeht, in dieser Form einzigartig.
-              </p>
+              <p>Ziel des Informationssystems ist der webbasierte Zugang zu den digital erschlossenen Liedblättern aus den, der Universitätsbibliothek Regensburg übertragenen, Quellen zur Volksmusikforschung. Die Liedblattsammlung in Regensburg umfasst etwa 140.000 Blätter aus dem gesamten deutschsprachigen Raum und ist, was Abdeckung und Umfang angeht, in dieser Form einzigartig.</p>
               <p>Ansprechpartner: <a target="_blank" href="http://www.uni-regensburg.de/sprache-literatur-kultur/medieninformatik/sekretariat-team/manuel-burghardt/index.html">Dr. Manuel Burghardt</a></p>
             </div>
             <div className="col-xs-12 col-sm-5 col-sm-offset-2">
               <h4>Informationssystem</h4>
-              <p>
-                Das Informationssystem wurde im Rahmen der Masterarbeit von <a target="_blank" href="http://lukaslamm.com">Lukas Lamm</a>
-                am <a target="_blank" href="http://www.uni-regensburg.de/sprache-literatur-kultur/medieninformatik/">Lehrstuhl für Medieninformatik</a>
-                der Universität Regensburg erstellt.
-                Das Projekt, sowie die dafür entworfenen Bibliotheken sind unter der MIT Lizenz veröffentlicht.
-              </p>
-              <p>
-                Für weitere Informationen finden Sie die einzelnen Komponenten auf GitHub:
-              </p>
+              <p>Das Informationssystem wurde im Rahmen der Masterarbeit von <a target="_blank" href="http://lukaslamm.com">Lukas Lamm</a> am <a target="_blank" href="http://www.uni-regensburg.de/sprache-literatur-kultur/medieninformatik/">Lehrstuhl für Medieninformatik</a> der Universität Regensburg erstellt. Das Projekt, sowie die dafür entworfenen Bibliotheken sind unter der MIT Lizenz veröffentlicht.</p>
+              <p>Für weitere Informationen finden Sie die einzelnen Komponenten auf GitHub:</p>
               <ul className="nolist github">
                 <li><span><a href="https://github.com/freakimkaefig/melodicsimilarity">Informationssystem</a></span></li>
                 <li><span><a href="https://github.com/freakimkaefig/musicjson-toolbox">MusicJson-Werkzeugkasten</a></span></li>
