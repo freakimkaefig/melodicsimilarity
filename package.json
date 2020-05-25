@@ -25,7 +25,7 @@
     "font-awesome": "4.5.0",
     "font-awesome-webpack": "0.0.4",
     "fuzzy": "^0.1.1",
-    "highcharts": "^4.2.5",
+    "highcharts": "^8.1.0",
     "highcharts-exporting": "0.1.2",
     "highcharts-more": "0.1.2",
     "history": "2.0.1",
